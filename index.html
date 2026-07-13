@@ -205,9 +205,99 @@
     }
     .hub-footer a { color: var(--accent); text-decoration: none; }
 
+    /* ── New Post Modal ── */
+    .hub-overlay {
+      display: none;
+      position: fixed; inset: 0; z-index: 100;
+      background: rgba(0,0,0,0.7);
+      backdrop-filter: blur(4px);
+      align-items: center; justify-content: center;
+      padding: 20px;
+    }
+    .hub-overlay.open { display: flex; }
+
+    .hub-modal {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      width: 100%; max-width: 620px;
+      max-height: 90vh; overflow-y: auto;
+      padding: 28px;
+      position: relative;
+    }
+    .hub-modal-header {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 22px;
+    }
+    .hub-modal-title { font-size: 18px; font-weight: 700; }
+    .hub-modal-close {
+      background: none; border: none; cursor: pointer;
+      color: var(--muted); padding: 4px; border-radius: 4px;
+      transition: color 0.15s;
+    }
+    .hub-modal-close:hover { color: var(--text); }
+
+    .hub-field { display: flex; flex-direction: column; gap: 7px; margin-bottom: 16px; }
+    .hub-label { font-size: 12px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; }
+    .hub-input, .hub-textarea, .hub-select {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      color: var(--text);
+      font-family: inherit; font-size: 14px;
+      padding: 11px 14px; border-radius: var(--radius);
+      outline: none; transition: border-color 0.15s;
+      width: 100%;
+    }
+    .hub-input:focus, .hub-textarea:focus, .hub-select:focus { border-color: var(--accent); }
+    .hub-input::placeholder, .hub-textarea::placeholder { color: var(--muted); }
+    .hub-textarea { min-height: 140px; resize: vertical; line-height: 1.6; }
+    .hub-select option { background: #001219; }
+
+    .hub-field-row { display: flex; gap: 12px; }
+    .hub-field-row .hub-field { flex: 1; }
+
+    .hub-modal-note {
+      background: rgba(200,122,65,0.1);
+      border: 1px solid rgba(200,122,65,0.3);
+      border-radius: var(--radius);
+      padding: 12px 14px;
+      font-size: 12px; color: var(--muted); line-height: 1.6;
+      margin-bottom: 18px;
+    }
+    .hub-modal-note strong { color: var(--accent); }
+
+    .hub-modal-actions { display: flex; gap: 10px; justify-content: flex-end; }
+    .hub-btn-cancel {
+      background: none; border: 1px solid var(--border);
+      color: var(--muted); font-family: inherit; font-size: 13px; font-weight: 700;
+      padding: 10px 18px; border-radius: var(--radius); cursor: pointer;
+      transition: border-color 0.15s, color 0.15s;
+    }
+    .hub-btn-cancel:hover { border-color: var(--text); color: var(--text); }
+    .hub-btn-submit {
+      background: var(--accent); border: none; color: #fff;
+      font-family: inherit; font-size: 13px; font-weight: 700;
+      padding: 10px 20px; border-radius: var(--radius); cursor: pointer;
+      display: flex; align-items: center; gap: 7px;
+      transition: opacity 0.15s;
+    }
+    .hub-btn-submit:hover { opacity: 0.85; }
+
+    .hub-copied-banner {
+      display: none;
+      background: rgba(34,197,94,0.15);
+      border: 1px solid rgba(34,197,94,0.4);
+      border-radius: var(--radius);
+      padding: 10px 14px;
+      font-size: 13px; color: #4ade80;
+      margin-bottom: 14px; text-align: center;
+    }
+
     @media (max-width: 600px) {
       .hub-logo-sub { display: none; }
       .hub-card { padding: 16px; }
+      .hub-field-row { flex-direction: column; }
+      .hub-modal { padding: 20px; }
     }
   </style>
 </head>
@@ -221,13 +311,81 @@
       <div class="hub-logo-sub">Community Research &amp; Discussion</div>
     </div>
   </div>
-  <a class="hub-post-btn" href="https://github.com/canduki21/SRT-HUB/discussions/new/choose" target="_blank" rel="noopener noreferrer">
+  <button class="hub-post-btn" id="hub-open-modal">
     <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24">
       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/>
     </svg>
     New Post
-  </a>
+  </button>
 </header>
+
+<!-- New Post Modal -->
+<div class="hub-overlay" id="hub-overlay">
+  <div class="hub-modal">
+    <div class="hub-modal-header">
+      <div class="hub-modal-title">New Post</div>
+      <button class="hub-modal-close" id="hub-modal-close" aria-label="Close">
+        <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+        </svg>
+      </button>
+    </div>
+
+    <div class="hub-copied-banner" id="hub-copied-banner">
+      ✓ Content copied to clipboard — paste it into the GitHub form that just opened.
+    </div>
+
+    <div class="hub-field">
+      <label class="hub-label" for="post-title">Title</label>
+      <input class="hub-input" id="post-title" type="text" placeholder="Give your post a clear title…">
+    </div>
+
+    <div class="hub-field-row">
+      <div class="hub-field">
+        <label class="hub-label" for="post-category">Category</label>
+        <select class="hub-select" id="post-category">
+          <option value="">Select category…</option>
+        </select>
+      </div>
+      <div class="hub-field">
+        <label class="hub-label" for="post-simulant">Simulant (optional)</label>
+        <select class="hub-select" id="post-simulant">
+          <option value="">None</option>
+          <option>LHS-1</option>
+          <option>LHS-1E</option>
+          <option>LHS-1D</option>
+          <option>LMS-1</option>
+          <option>LMS-1E</option>
+          <option>MGS-1</option>
+          <option>MGS-1C</option>
+          <option>MGS-1S</option>
+          <option>JEZ-1</option>
+          <option>CI-E</option>
+          <option>CM-E</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="hub-field">
+      <label class="hub-label" for="post-body">Content</label>
+      <textarea class="hub-textarea" id="post-body" placeholder="Share your research, notes, or start a discussion. Markdown supported — you can add images on GitHub after posting."></textarea>
+    </div>
+
+    <div class="hub-modal-note">
+      <strong>How posting works:</strong> Click "Open GitHub to Post" below. GitHub will open with your category pre-selected, and your content will be copied to your clipboard — just paste it in and hit submit. You'll need a free GitHub account.
+    </div>
+
+    <div class="hub-modal-actions">
+      <button class="hub-btn-cancel" id="hub-btn-cancel">Cancel</button>
+      <button class="hub-btn-submit" id="hub-btn-submit">
+        <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
+        </svg>
+        Open GitHub to Post
+      </button>
+    </div>
+  </div>
+</div>
 
 <main class="hub-main">
   <div class="hub-controls">
@@ -402,11 +560,77 @@
     renderList();
   });
 
+  // ── Modal ──
+  const overlay      = document.getElementById('hub-overlay');
+  const openBtn      = document.getElementById('hub-open-modal');
+  const closeBtn     = document.getElementById('hub-modal-close');
+  const cancelBtn    = document.getElementById('hub-btn-cancel');
+  const submitBtn    = document.getElementById('hub-btn-submit');
+  const copiedBanner = document.getElementById('hub-copied-banner');
+  const catSelect    = document.getElementById('post-category');
+
+  const CATEGORY_IDS = {
+    'announcements': 'DIC_kwDOTXasIs4DBIEC',
+    'general':       'DIC_kwDOTXasIs4DBIED',
+    'ideas':         'DIC_kwDOTXasIs4DBIEF',
+    'polls':         'DIC_kwDOTXasIs4DBIEH',
+    'q&a':           'DIC_kwDOTXasIs4DBIEE',
+    'show and tell': 'DIC_kwDOTXasIs4DBIEG',
+  };
+
+  function openModal() {
+    overlay.classList.add('open');
+    copiedBanner.style.display = 'none';
+    document.body.style.overflow = 'hidden';
+  }
+  function closeModal() {
+    overlay.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  openBtn.addEventListener('click', openModal);
+  closeBtn.addEventListener('click', closeModal);
+  cancelBtn.addEventListener('click', closeModal);
+  overlay.addEventListener('click', e => { if (e.target === overlay) closeModal(); });
+
+  submitBtn.addEventListener('click', () => {
+    const title    = document.getElementById('post-title').value.trim();
+    const body     = document.getElementById('post-body').value.trim();
+    const catName  = catSelect.options[catSelect.selectedIndex]?.text?.toLowerCase() || '';
+    const simulant = document.getElementById('post-simulant').value;
+
+    if (!title) { document.getElementById('post-title').focus(); return; }
+
+    // Build clipboard content
+    const fullBody = simulant ? `**Simulant:** ${simulant}\n\n${body}` : body;
+    const clipText = `## ${title}\n\n${fullBody}`;
+
+    navigator.clipboard.writeText(clipText).catch(() => {});
+
+    // Build GitHub URL with category pre-selected
+    const catId  = CATEGORY_IDS[catName] || '';
+    const ghUrl  = catId
+      ? `https://github.com/canduki21/SRT-HUB/discussions/new?category_id=${catId}`
+      : 'https://github.com/canduki21/SRT-HUB/discussions/new/choose';
+
+    window.open(ghUrl, '_blank');
+
+    copiedBanner.style.display = 'block';
+    setTimeout(() => { copiedBanner.style.display = 'none'; }, 8000);
+  });
+
   fetch(DATA_URL)
     .then(r => r.json())
     .then(data => {
       allDiscussions = data.discussions || [];
       allCategories  = data.categories  || [];
+
+      // Populate category dropdown in modal
+      catSelect.innerHTML = '<option value="">Select category…</option>' +
+        allCategories.map(c =>
+          `<option value="${c.slug}">${c.emoji} ${c.name}</option>`
+        ).join('');
+
       renderCategories();
       renderList();
     })
