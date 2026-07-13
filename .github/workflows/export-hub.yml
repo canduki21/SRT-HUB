@@ -1,0 +1,36 @@
+name: Export Hub Data
+
+on:
+  schedule:
+    - cron: '0 * * * *'   # every hour
+  discussion:
+    types: [created, edited, deleted]
+  discussion_comment:
+    types: [created]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  discussions: read
+
+jobs:
+  export:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: pip install requests
+
+      - name: Export discussions
+        run: python3 scripts/export_hub.py
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Commit updated data
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add hub-data.json
+          git diff --cached --quiet || git commit -m "chore: update hub data"
+          git push
