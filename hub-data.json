@@ -1,32 +1,39 @@
 {
-  "generated_at": "2026-07-13T18:45:18.407999+00:00",
+  "generated_at": "2026-07-13T20:10:20.793751+00:00",
+  "repo_id": "R_kgDOTXasIg",
   "categories": [
     {
+      "id": "DIC_kwDOTXasIs4DBIEC",
       "name": "Announcements",
       "emoji": ":mega:",
       "slug": "announcements"
     },
     {
+      "id": "DIC_kwDOTXasIs4DBIED",
       "name": "General",
       "emoji": ":speech_balloon:",
       "slug": "general"
     },
     {
+      "id": "DIC_kwDOTXasIs4DBIEF",
       "name": "Ideas",
       "emoji": ":bulb:",
       "slug": "ideas"
     },
     {
+      "id": "DIC_kwDOTXasIs4DBIEH",
       "name": "Polls",
       "emoji": ":ballot_box:",
       "slug": "polls"
     },
     {
+      "id": "DIC_kwDOTXasIs4DBIEE",
       "name": "Q&A",
       "emoji": ":pray:",
       "slug": "q-a"
     },
     {
+      "id": "DIC_kwDOTXasIs4DBIEG",
       "name": "Show and tell",
       "emoji": ":raised_hands:",
       "slug": "show-and-tell"
