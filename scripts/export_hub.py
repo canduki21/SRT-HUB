@@ -10,18 +10,27 @@ QUERY = """
 query($cursor: String) {
   repository(owner: "canduki21", name: "SRT-HUB") {
     discussionCategories(first: 10) {
-      nodes { name emoji slug }
+      nodes { id name emoji slug }
     }
     discussions(first: 100, after: $cursor, orderBy: {field: CREATED_AT, direction: DESC}) {
       pageInfo { hasNextPage endCursor }
       nodes {
+        id
         number
         title
         body
         author { login avatarUrl }
         category { name emoji slug }
         labels(first: 10) { nodes { name color } }
-        comments { totalCount }
+        comments(first: 50) {
+          totalCount
+          nodes {
+            id
+            body
+            author { login avatarUrl }
+            createdAt
+          }
+        }
         createdAt
         url
       }
@@ -56,6 +65,7 @@ while True:
 
 output = {
     'generated_at': datetime.now(timezone.utc).isoformat(),
+    'repo_id': 'R_kgDOTXasIg',
     'categories': categories,
     'discussions': all_discussions,
 }
@@ -63,4 +73,4 @@ output = {
 with open('hub-data.json', 'w') as f:
     json.dump(output, f, indent=2)
 
-print(f"Exported {len(all_discussions)} discussions across {len(categories)} categories")
+print(f"Exported {len(all_discussions)} discussions, {len(categories)} categories")
