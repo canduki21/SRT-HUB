@@ -1,1 +1,36 @@
-{"generated_at": null, "categories": [], "discussions": []}
+{
+  "generated_at": "2026-07-13T18:45:18.407999+00:00",
+  "categories": [
+    {
+      "name": "Announcements",
+      "emoji": ":mega:",
+      "slug": "announcements"
+    },
+    {
+      "name": "General",
+      "emoji": ":speech_balloon:",
+      "slug": "general"
+    },
+    {
+      "name": "Ideas",
+      "emoji": ":bulb:",
+      "slug": "ideas"
+    },
+    {
+      "name": "Polls",
+      "emoji": ":ballot_box:",
+      "slug": "polls"
+    },
+    {
+      "name": "Q&A",
+      "emoji": ":pray:",
+      "slug": "q-a"
+    },
+    {
+      "name": "Show and tell",
+      "emoji": ":raised_hands:",
+      "slug": "show-and-tell"
+    }
+  ],
+  "discussions": []
+}
