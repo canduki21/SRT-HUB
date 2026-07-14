@@ -203,6 +203,13 @@
 
     .hub-footer { text-align:center;padding:32px 20px;font-size:11px;color:var(--muted);border-top:1px solid var(--border);margin-top:40px; }
 
+    .profile-wrap { max-width:480px;margin:0 auto; }
+    .profile-avatar-section { display:flex;flex-direction:column;align-items:center;gap:14px;margin-bottom:32px; }
+    .profile-avatar-lg { width:96px;height:96px;border-radius:50%;object-fit:cover;border:2px solid var(--border); }
+    .profile-avatar-btn { font-size:12px;font-weight:700;color:var(--accent);cursor:pointer;background:none;border:none;font-family:inherit;padding:0; }
+    .profile-avatar-btn:hover { opacity:.8; }
+    .profile-section-title { font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:14px;padding-top:20px;border-top:1px solid var(--border); }
+
     @media(max-width:600px){
       .hub-logo-sub,.hub-logo-text { display:none; }
       .hub-field-row { flex-direction:column; }
@@ -331,6 +338,43 @@
     </button>
     <div id="detail-content"></div>
   </div>
+
+  <div class="view" id="view-profile">
+    <button class="detail-back" id="profile-back">
+      <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+      Back to Hub
+    </button>
+    <div class="profile-wrap">
+      <div class="profile-avatar-section">
+        <img class="profile-avatar-lg" id="profile-avatar-img" src="" alt="avatar">
+        <label class="profile-avatar-btn" for="profile-avatar-input">
+          Change Profile Picture
+          <input type="file" id="profile-avatar-input" accept="image/jpeg,image/png,image/webp" style="display:none">
+        </label>
+      </div>
+      <div class="hub-field">
+        <label class="hub-label" for="profile-username">Username</label>
+        <input class="hub-input" id="profile-username" type="text" maxlength="30">
+      </div>
+      <div class="profile-section-title">Change Password</div>
+      <div class="hub-field">
+        <label class="hub-label" for="profile-new-password">New Password</label>
+        <input class="hub-input" id="profile-new-password" type="password" placeholder="Leave blank to keep current">
+      </div>
+      <div class="hub-field">
+        <label class="hub-label" for="profile-confirm-password">Confirm Password</label>
+        <input class="hub-input" id="profile-confirm-password" type="password" placeholder="Repeat new password">
+      </div>
+      <div class="hub-alert hub-alert-error"   id="profile-error"></div>
+      <div class="hub-alert hub-alert-success" id="profile-success"></div>
+      <div style="display:flex;justify-content:flex-end;margin-top:8px">
+        <button class="btn btn-primary" id="profile-save">
+          <span id="profile-save-label">Save Changes</span>
+          <span id="profile-save-spinner" style="display:none"><span class="spinner" style="width:14px;height:14px;border-width:2px"></span></span>
+        </button>
+      </div>
+    </div>
+  </div>
 </main>
 
 <footer class="hub-footer">
@@ -349,11 +393,12 @@
   let authMode  = 'signin';
 
   /* ─── State ─── */
-  let allPosts       = [];
-  let allCategories  = [];
-  let activeCategory = 'all';
-  let searchQuery    = '';
+  let allPosts         = [];
+  let allCategories    = [];
+  let activeCategory   = 'all';
+  let searchQuery      = '';
   let openPostComments = [];
+  let profileMap       = {};
 
   /* ─── Helpers ─── */
   function catSlug(name) { return (name||'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,''); }
@@ -378,6 +423,10 @@
     const letter = (identifier||'?')[0].toUpperCase();
     const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64"><rect width="64" height="64" rx="32" fill="${color}"/><text x="32" y="43" font-size="28" font-family="sans-serif" fill="white" text-anchor="middle" font-weight="700">${letter}</text></svg>`;
     return 'data:image/svg+xml;base64,' + btoa(svg);
+  }
+  function avatarFor(authorEmail) {
+    const profile = Object.values(profileMap).find(p => p.username === authorEmail);
+    return profile?.avatar_url || initialAvatar(authorEmail);
   }
 
   /* ─── Views ─── */
@@ -479,17 +528,16 @@
     const el = document.getElementById('hub-auth-area');
     if (sbSession?.user) {
       const name   = currentUsername();
-      const avatar = initialAvatar(name);
+      const myProfile = profileMap[sbSession.user.id];
+      const avatar = myProfile?.avatar_url || initialAvatar(name);
       el.innerHTML = `
-        <img class="hub-avatar-sm" src="${avatar}" alt="${name}" title="${name} — click to sign out" id="user-avatar">
+        <img class="hub-avatar-sm" src="${avatar}" alt="${name}" title="Profile settings" id="user-avatar" style="border:2px solid var(--border)">
         <button class="btn btn-primary btn-sm" id="new-post-btn">
           <svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M12 4v16m8-8H4"/></svg>
           New Post
         </button>`;
       document.getElementById('new-post-btn').addEventListener('click', openModal);
-      document.getElementById('user-avatar').addEventListener('click', () => {
-        if (confirm(`Signed in as ${name}\n\nSign out?`)) sb.auth.signOut();
-      });
+      document.getElementById('user-avatar').addEventListener('click', openProfile);
     } else {
       el.innerHTML = `<button class="btn btn-ghost btn-sm" id="login-btn">Sign In / Register</button>`;
       document.getElementById('login-btn').addEventListener('click', () => openAuthModal('signin'));
@@ -532,7 +580,7 @@
     const cat = p => p.category || {};
     listEl.innerHTML = filtered.map(p => {
       const name   = displayName(p.author_email);
-      const avatar = initialAvatar(p.author_email);
+      const avatar = avatarFor(p.author_email);
       const preview = stripMd(p.body);
       const count = p.comment_count || 0;
       return `<div class="hub-card" data-id="${p.id}">
@@ -574,11 +622,11 @@
   function renderDetail(post, comments) {
     const cat        = post.category || {};
     const authorName = displayName(post.author_email);
-    const authorSrc  = initialAvatar(post.author_email);
+    const authorSrc  = avatarFor(post.author_email);
 
     const commentHtml = comments.map(c => {
       const cName = displayName(c.author_email);
-      const cSrc  = initialAvatar(c.author_email);
+      const cSrc  = avatarFor(c.author_email);
       return `<div class="comment">
         <img class="hub-avatar" src="${cSrc}" alt="${cName}" loading="lazy">
         <div class="comment-body">
@@ -750,6 +798,97 @@
     setTimeout(() => { closeModal(); renderCategories(); renderFeed(); }, 1200);
   });
 
+  /* ─── Profile ─── */
+  function openProfile() {
+    if (!sbSession) return;
+    const name      = currentUsername();
+    const myProfile = profileMap[sbSession.user.id];
+    const avatar    = myProfile?.avatar_url || initialAvatar(name);
+    document.getElementById('profile-avatar-img').src    = avatar;
+    document.getElementById('profile-username').value    = name;
+    document.getElementById('profile-new-password').value     = '';
+    document.getElementById('profile-confirm-password').value = '';
+    document.getElementById('profile-error').style.display   = 'none';
+    document.getElementById('profile-success').style.display = 'none';
+    showView('view-profile');
+  }
+
+  document.getElementById('profile-back').addEventListener('click', () => showView('view-feed'));
+
+  document.getElementById('profile-avatar-input').addEventListener('change', async (e) => {
+    const file = e.target.files[0];
+    if (!file || !sbSession) return;
+    const btn = document.querySelector('.profile-avatar-btn');
+    btn.textContent = 'Uploading…';
+
+    const ext  = file.name.split('.').pop();
+    const path = `${sbSession.user.id}/avatar.${ext}`;
+    const { error } = await sb.storage.from('profile-pictures').upload(path, file, { upsert: true });
+    if (error) { btn.textContent = 'Change Profile Picture'; alert('Upload failed: ' + error.message); e.target.value = ''; return; }
+
+    const { data: { publicUrl } } = sb.storage.from('profile-pictures').getPublicUrl(path);
+    const bustedUrl = publicUrl + '?t=' + Date.now();
+
+    await sb.from('hub_profiles').update({ avatar_url: bustedUrl }).eq('user_id', sbSession.user.id);
+    if (profileMap[sbSession.user.id]) profileMap[sbSession.user.id].avatar_url = bustedUrl;
+
+    document.getElementById('profile-avatar-img').src = bustedUrl;
+    btn.textContent = 'Change Profile Picture';
+    renderAuth();
+    e.target.value = '';
+  });
+
+  document.getElementById('profile-save').addEventListener('click', async () => {
+    const newUsername = document.getElementById('profile-username').value.trim();
+    const newPassword = document.getElementById('profile-new-password').value;
+    const confirmPw   = document.getElementById('profile-confirm-password').value;
+    const errEl       = document.getElementById('profile-error');
+    const sucEl       = document.getElementById('profile-success');
+    errEl.style.display = 'none'; sucEl.style.display = 'none';
+
+    if (!newUsername || newUsername.length < 3) { errEl.textContent='Username must be at least 3 characters.'; errEl.style.display='block'; return; }
+    if (newPassword && newPassword.length < 6)  { errEl.textContent='Password must be at least 6 characters.'; errEl.style.display='block'; return; }
+    if (newPassword && newPassword !== confirmPw) { errEl.textContent='Passwords do not match.'; errEl.style.display='block'; return; }
+
+    document.getElementById('profile-save-label').style.display   = 'none';
+    document.getElementById('profile-save-spinner').style.display = 'inline';
+    document.getElementById('profile-save').disabled = true;
+
+    const currentName = currentUsername();
+    if (newUsername !== currentName) {
+      const { data: taken } = await sb.from('hub_profiles').select('id').eq('username', newUsername).maybeSingle();
+      if (taken) {
+        errEl.textContent = 'Username already taken.'; errEl.style.display = 'block';
+        document.getElementById('profile-save-label').style.display   = 'inline';
+        document.getElementById('profile-save-spinner').style.display = 'none';
+        document.getElementById('profile-save').disabled = false;
+        return;
+      }
+      await sb.from('hub_profiles').update({ username: newUsername }).eq('user_id', sbSession.user.id);
+      await sb.auth.updateUser({ data: { username: newUsername } });
+      if (profileMap[sbSession.user.id]) profileMap[sbSession.user.id].username = newUsername;
+    }
+
+    if (newPassword) {
+      const { error } = await sb.auth.updateUser({ password: newPassword });
+      if (error) {
+        errEl.textContent = error.message; errEl.style.display = 'block';
+        document.getElementById('profile-save-label').style.display   = 'inline';
+        document.getElementById('profile-save-spinner').style.display = 'none';
+        document.getElementById('profile-save').disabled = false;
+        return;
+      }
+    }
+
+    document.getElementById('profile-save-label').style.display   = 'inline';
+    document.getElementById('profile-save-spinner').style.display = 'none';
+    document.getElementById('profile-save').disabled = false;
+    document.getElementById('profile-new-password').value     = '';
+    document.getElementById('profile-confirm-password').value = '';
+    sucEl.textContent = 'Profile updated!'; sucEl.style.display = 'block';
+    renderAuth();
+  });
+
   /* ─── Global helpers for inline HTML ─── */
   window.__openAuth = () => openAuthModal('signin');
 
@@ -763,12 +902,15 @@
     sbSession = session;
     renderAuth();
 
-    const [{ data: cats }, { data: posts }] = await Promise.all([
+    const [{ data: cats }, { data: posts }, { data: profiles }] = await Promise.all([
       sb.from('hub_categories').select('*').order('name'),
       sb.from('hub_posts')
         .select('*, category:hub_categories(*), hub_comments(count)')
-        .order('created_at', { ascending: false })
+        .order('created_at', { ascending: false }),
+      sb.from('hub_profiles').select('user_id, username, avatar_url')
     ]);
+
+    profileMap = Object.fromEntries((profiles || []).map(p => [p.user_id, p]));
 
     allCategories = cats || [];
     allPosts = (posts || []).map(p => ({
