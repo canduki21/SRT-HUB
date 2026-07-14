@@ -237,6 +237,10 @@
       <label class="hub-label" for="auth-username">Username</label>
       <input class="hub-input" id="auth-username" type="text" placeholder="your_username" autocomplete="username" maxlength="30">
     </div>
+    <div class="hub-field" id="auth-email-field" style="display:none">
+      <label class="hub-label" for="auth-email">Email</label>
+      <input class="hub-input" id="auth-email" type="email" placeholder="you@example.com" autocomplete="email">
+    </div>
     <div class="hub-field">
       <label class="hub-label" for="auth-password">Password</label>
       <input class="hub-input" id="auth-password" type="password" placeholder="••••••••" autocomplete="current-password">
@@ -374,14 +378,11 @@
   /* ─── Auth ─── */
   sb.auth.onAuthStateChange((_event, session) => { sbSession = session; renderAuth(); });
 
-  function usernameToEmail(u) {
-    return u.toLowerCase().replace(/[^a-z0-9._-]/g, '') + '@srthub.app';
-  }
-
   function openAuthModal(mode) {
     authMode = mode || 'signin';
     syncAuthMode();
     document.getElementById('auth-username').value = '';
+    document.getElementById('auth-email').value    = '';
     document.getElementById('auth-password').value = '';
     document.getElementById('auth-error').style.display   = 'none';
     document.getElementById('auth-success').style.display = 'none';
@@ -394,10 +395,12 @@
     document.body.style.overflow = '';
   }
   function syncAuthMode() {
-    document.getElementById('auth-title').textContent  = authMode === 'signin' ? 'Sign In' : 'Create Account';
-    document.getElementById('auth-label').textContent  = authMode === 'signin' ? 'Sign In' : 'Register';
-    document.getElementById('auth-switch').textContent = authMode === 'signin' ? 'No account? Register' : 'Have an account? Sign In';
-    document.getElementById('auth-password').setAttribute('autocomplete', authMode === 'signin' ? 'current-password' : 'new-password');
+    const isSignin = authMode === 'signin';
+    document.getElementById('auth-title').textContent  = isSignin ? 'Sign In' : 'Create Account';
+    document.getElementById('auth-label').textContent  = isSignin ? 'Sign In' : 'Register';
+    document.getElementById('auth-switch').textContent = isSignin ? 'No account? Register' : 'Have an account? Sign In';
+    document.getElementById('auth-password').setAttribute('autocomplete', isSignin ? 'current-password' : 'new-password');
+    document.getElementById('auth-email-field').style.display = isSignin ? 'none' : '';
   }
 
   document.getElementById('auth-close').addEventListener('click', closeAuthModal);
@@ -411,35 +414,48 @@
   document.getElementById('auth-submit').addEventListener('click', handleAuth);
   document.getElementById('auth-password').addEventListener('keydown', e => { if (e.key === 'Enter') handleAuth(); });
 
+  function setAuthBusy(busy) {
+    document.getElementById('auth-label').style.display   = busy ? 'none' : 'inline';
+    document.getElementById('auth-spinner').style.display = busy ? 'inline' : 'none';
+    document.getElementById('auth-submit').disabled = busy;
+  }
+
   async function handleAuth() {
     const username = document.getElementById('auth-username').value.trim();
     const password = document.getElementById('auth-password').value;
     const errEl    = document.getElementById('auth-error');
-    const sucEl    = document.getElementById('auth-success');
     errEl.style.display = 'none';
-    sucEl.style.display = 'none';
 
-    if (!username || !password) { errEl.textContent='Please fill in all fields.'; errEl.style.display='block'; return; }
-    if (username.length < 3)    { errEl.textContent='Username must be at least 3 characters.'; errEl.style.display='block'; return; }
-    if (password.length < 6)    { errEl.textContent='Password must be at least 6 characters.'; errEl.style.display='block'; return; }
+    if (!username || username.length < 3) { errEl.textContent='Username must be at least 3 characters.'; errEl.style.display='block'; return; }
+    if (!password || password.length < 6) { errEl.textContent='Password must be at least 6 characters.'; errEl.style.display='block'; return; }
 
-    document.getElementById('auth-label').style.display   = 'none';
-    document.getElementById('auth-spinner').style.display = 'inline';
-    document.getElementById('auth-submit').disabled = true;
+    setAuthBusy(true);
 
-    const email = usernameToEmail(username);
-    let error, data;
     if (authMode === 'signin') {
-      ({ data, error } = await sb.auth.signInWithPassword({ email, password }));
+      const { data: profile } = await sb.from('hub_profiles').select('email').eq('username', username).single();
+      if (!profile) {
+        errEl.textContent = 'Username not found.'; errEl.style.display = 'block';
+        setAuthBusy(false); return;
+      }
+      const { error } = await sb.auth.signInWithPassword({ email: profile.email, password });
+      setAuthBusy(false);
+      if (error) { errEl.textContent = 'Incorrect password.'; errEl.style.display = 'block'; return; }
+
     } else {
-      ({ data, error } = await sb.auth.signUp({ email, password, options: { data: { username } } }));
+      const email = document.getElementById('auth-email').value.trim();
+      if (!email) { errEl.textContent='Please enter your email.'; errEl.style.display='block'; setAuthBusy(false); return; }
+
+      const { data: existing } = await sb.from('hub_profiles').select('id').eq('username', username).maybeSingle();
+      if (existing) { errEl.textContent='Username already taken.'; errEl.style.display='block'; setAuthBusy(false); return; }
+
+      const { data, error } = await sb.auth.signUp({ email, password, options: { data: { username } } });
+      if (error) { errEl.textContent = error.message; errEl.style.display='block'; setAuthBusy(false); return; }
+      if (data.user) {
+        await sb.from('hub_profiles').insert({ user_id: data.user.id, username, email });
+      }
+      setAuthBusy(false);
     }
 
-    document.getElementById('auth-label').style.display   = 'inline';
-    document.getElementById('auth-spinner').style.display = 'none';
-    document.getElementById('auth-submit').disabled = false;
-
-    if (error) { errEl.textContent = error.message; errEl.style.display = 'block'; return; }
     closeAuthModal();
   }
 
