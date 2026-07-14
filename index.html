@@ -531,11 +531,11 @@
       const myProfile = profileMap[sbSession.user.id];
       const avatar = myProfile?.avatar_url || initialAvatar(name);
       el.innerHTML = `
-        <img class="hub-avatar-sm" src="${avatar}" alt="${name}" title="Profile settings" id="user-avatar" style="border:2px solid var(--border)">
         <button class="btn btn-primary btn-sm" id="new-post-btn">
           <svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M12 4v16m8-8H4"/></svg>
           New Post
-        </button>`;
+        </button>
+        <img class="hub-avatar-sm" src="${avatar}" alt="${name}" title="Profile settings" id="user-avatar" style="border:2px solid var(--border)">`;
       document.getElementById('new-post-btn').addEventListener('click', openModal);
       document.getElementById('user-avatar').addEventListener('click', openProfile);
     } else {
