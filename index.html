@@ -7,6 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@300;400;600;700&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
@@ -20,7 +21,6 @@
     }
     body { font-family:'Titillium Web',sans-serif; background:var(--bg); color:var(--text); min-height:100vh; }
 
-    /* Header */
     .hub-header {
       background:var(--surface); border-bottom:1px solid var(--border);
       padding:14px 24px; display:flex; align-items:center; justify-content:space-between;
@@ -45,14 +45,11 @@
 
     .hub-avatar-sm { width:30px;height:30px;border-radius:50%;object-fit:cover;cursor:pointer; }
 
-    /* Main */
     .hub-main { max-width:820px;margin:0 auto;padding:28px 20px; }
 
-    /* Views */
     .view { display:none; }
     .view.active { display:block; }
 
-    /* Controls */
     .hub-controls { display:flex;flex-direction:column;gap:12px;margin-bottom:24px; }
     .hub-search-wrap { position:relative; }
     .hub-search-icon { position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--muted);pointer-events:none; }
@@ -72,11 +69,9 @@
     .hub-cat-btn:hover { border-color:var(--accent);color:var(--text); }
     .hub-cat-btn.active { background:var(--accent);border-color:var(--accent);color:#fff; }
 
-    /* Stats */
     .hub-stats { font-size:12px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.08em;margin-bottom:16px; }
     .hub-stat-val { color:var(--accent); }
 
-    /* Cards */
     .hub-list { display:flex;flex-direction:column;gap:10px; }
     .hub-card {
       background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);
@@ -102,15 +97,11 @@
     .hub-card-title { font-size:16px;font-weight:700;line-height:1.4;margin-bottom:8px; }
     .hub-card-body  { font-size:13px;color:var(--muted);line-height:1.6;margin-bottom:14px;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden; }
     .hub-card-footer { display:flex;align-items:center;gap:14px;font-size:12px;color:var(--muted); }
-    .hub-labels { display:flex;flex-wrap:wrap;gap:5px;margin-left:auto; }
-    .hub-label { font-size:10px;font-weight:700;padding:2px 8px;border-radius:999px;font-family:monospace; }
 
-    /* Empty */
     .hub-empty { text-align:center;padding:80px 20px;color:var(--muted); }
     .hub-empty h3 { font-size:18px;color:var(--text);margin-bottom:8px; }
     .hub-empty p  { font-size:14px;margin-bottom:20px; }
 
-    /* ── Post Detail View ── */
     .detail-back {
       display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:700;
       color:var(--muted);cursor:pointer;margin-bottom:24px;transition:color .15s;background:none;border:none;
@@ -120,7 +111,6 @@
     .detail-meta { display:flex;align-items:center;gap:10px;margin-bottom:16px; }
     .detail-author-info { flex:1; }
     .detail-title { font-size:24px;font-weight:700;line-height:1.35;margin-bottom:12px; }
-    .detail-labels { display:flex;flex-wrap:wrap;gap:6px;margin-top:10px; }
 
     .detail-body {
       background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);
@@ -141,13 +131,9 @@
     .detail-body li  { margin-bottom:4px;color:rgba(250,250,250,.85); }
     .detail-body blockquote { border-left:3px solid var(--accent);padding-left:14px;color:var(--muted);margin-bottom:14px; }
 
-    /* Comments */
     .comments-section { margin-top:8px; }
     .comments-heading { font-size:14px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:16px; }
-    .comment {
-      display:flex;gap:12px;padding:16px 0;
-      border-bottom:1px solid var(--border);
-    }
+    .comment { display:flex;gap:12px;padding:16px 0;border-bottom:1px solid var(--border); }
     .comment:last-child { border-bottom:none; }
     .comment-body { flex:1; }
     .comment-meta { font-size:12px;color:var(--muted);margin-bottom:8px; }
@@ -162,8 +148,7 @@
     .comment-textarea {
       width:100%;background:var(--surface);border:1px solid var(--border);color:var(--text);
       font-family:inherit;font-size:14px;padding:12px 14px;border-radius:var(--radius);
-      outline:none;resize:vertical;min-height:100px;line-height:1.6;
-      transition:border-color .15s;
+      outline:none;resize:vertical;min-height:100px;line-height:1.6;transition:border-color .15s;
     }
     .comment-textarea:focus { border-color:var(--accent); }
     .comment-textarea::placeholder { color:var(--muted); }
@@ -175,7 +160,6 @@
       font-size:13px;color:var(--muted);display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:20px;
     }
 
-    /* ── New Post Modal ── */
     .hub-overlay { display:none;position:fixed;inset:0;z-index:100;background:rgba(0,0,0,.7);backdrop-filter:blur(4px);align-items:center;justify-content:center;padding:20px; }
     .hub-overlay.open { display:flex; }
     .hub-modal { background:var(--surface);border:1px solid var(--border);border-radius:12px;width:100%;max-width:640px;max-height:90vh;overflow-y:auto;padding:28px;position:relative; }
@@ -198,13 +182,14 @@
     .hub-field-row .hub-field { flex:1; }
     .hub-modal-actions { display:flex;gap:10px;justify-content:flex-end;margin-top:4px; }
 
+    .hub-modal-actions.space-between { justify-content:space-between;align-items:center;flex-wrap:wrap; }
+
     .hub-alert {
       padding:11px 14px;border-radius:var(--radius);font-size:13px;margin-bottom:14px;display:none;
     }
     .hub-alert-error   { background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.3);color:#f97474; }
     .hub-alert-success { background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.3);color:#4ade80; }
 
-    /* Loading spinner */
     .spinner {
       width:20px;height:20px;border:2px solid var(--border);border-top-color:var(--accent);
       border-radius:50%;animation:spin .7s linear infinite;display:inline-block;
@@ -212,7 +197,6 @@
     @keyframes spin { to { transform:rotate(360deg); } }
     .loading-center { display:flex;justify-content:center;padding:60px 0; }
 
-    /* Footer */
     .hub-footer { text-align:center;padding:32px 20px;font-size:11px;color:var(--muted);border-top:1px solid var(--border);margin-top:40px; }
 
     @media(max-width:600px){
@@ -237,6 +221,35 @@
     <div id="hub-auth-area"></div>
   </div>
 </header>
+
+<!-- Auth Modal -->
+<div class="hub-overlay" id="auth-overlay">
+  <div class="hub-modal" style="max-width:420px">
+    <div class="hub-modal-header">
+      <div class="hub-modal-title" id="auth-title">Sign In</div>
+      <button class="hub-modal-close" id="auth-close">
+        <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+      </button>
+    </div>
+    <div class="hub-alert hub-alert-error"   id="auth-error"></div>
+    <div class="hub-alert hub-alert-success" id="auth-success"></div>
+    <div class="hub-field">
+      <label class="hub-label" for="auth-username">Username</label>
+      <input class="hub-input" id="auth-username" type="text" placeholder="your_username" autocomplete="username" maxlength="30">
+    </div>
+    <div class="hub-field">
+      <label class="hub-label" for="auth-password">Password</label>
+      <input class="hub-input" id="auth-password" type="password" placeholder="••••••••" autocomplete="current-password">
+    </div>
+    <div class="hub-modal-actions space-between">
+      <button class="btn btn-ghost btn-sm" id="auth-switch">No account? Register</button>
+      <button class="btn btn-primary" id="auth-submit">
+        <span id="auth-label">Sign In</span>
+        <span id="auth-spinner" style="display:none"><span class="spinner" style="width:14px;height:14px;border-width:2px"></span></span>
+      </button>
+    </div>
+  </div>
+</div>
 
 <!-- New Post Modal -->
 <div class="hub-overlay" id="hub-overlay">
@@ -270,7 +283,7 @@
       </div>
     </div>
     <div class="hub-field">
-      <label class="hub-label" for="post-body">Content <span style="font-weight:400;text-transform:none;letter-spacing:0">(Markdown supported, you can paste images)</span></label>
+      <label class="hub-label" for="post-body">Content <span style="font-weight:400;text-transform:none;letter-spacing:0">(Markdown supported)</span></label>
       <textarea class="hub-textarea" id="post-body" placeholder="Share your research, notes, or start a discussion…"></textarea>
     </div>
     <div class="hub-modal-actions">
@@ -284,8 +297,6 @@
 </div>
 
 <main class="hub-main">
-
-  <!-- Feed View -->
   <div class="view active" id="view-feed">
     <div class="hub-controls">
       <div class="hub-search-wrap">
@@ -298,7 +309,6 @@
     <div class="hub-list" id="hub-list"></div>
   </div>
 
-  <!-- Post Detail View -->
   <div class="view" id="view-detail">
     <button class="detail-back" id="detail-back">
       <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
@@ -306,50 +316,52 @@
     </button>
     <div id="detail-content"></div>
   </div>
-
 </main>
 
 <footer class="hub-footer">
-  SRT Hub — Community powered by GitHub Discussions
+  SRT Hub — Community Research &amp; Discussion
 </footer>
 
 <script>
 (function () {
   /* ─── Config ─── */
-  const REPO_ID    = 'R_kgDOTXasIg';
-  const CLIENT_ID  = 'Ov23liuhhZV6Ln2nkFN4';
-  const OAUTH_FN   = 'https://srt-database.vercel.app/api/github-oauth';
-  const GH_API     = 'https://api.github.com/graphql';
-  const DATA_URL   = 'hub-data.json';
+  const SB_URL = 'https://mtdpaiadnldbvaqmyteg.supabase.co';
+  const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im10ZHBhaWFkbmxkYnZhcW15dGVnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODMwMDI5OTMsImV4cCI6MjA5ODU3ODk5M30.NnhrfI-GAioiylfl5zr8hiYGPAx52dGgpxM2j7htycI';
+
+  /* ─── Supabase ─── */
+  const sb = supabase.createClient(SB_URL, SB_KEY);
+  let sbSession = null;
+  let authMode  = 'signin';
 
   /* ─── State ─── */
-  let allDiscussions = [];
+  let allPosts       = [];
   let allCategories  = [];
   let activeCategory = 'all';
   let searchQuery    = '';
-  let currentUser    = null;
-  let userToken      = localStorage.getItem('srt_gh_token');
+  let openPostComments = [];
 
   /* ─── Helpers ─── */
-  function catSlug(name) { return name.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,''); }
+  function catSlug(name) { return (name||'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,''); }
   function catClass(name) {
     const map = { general:'cat-general', ideas:'cat-ideas', 'show-and-tell':'cat-show-and-tell',
                   'q-a':'cat-q-a', announcements:'cat-announcements', polls:'cat-polls' };
     return map[catSlug(name)] || 'cat-default';
   }
   function stripMd(md) {
-    return (md||'').replace(/!\[.*?\]\(.*?\)/g,'').replace(/\[([^\]]+)\]\(.*?\)/g,'$1')
+    return (md||'').replace(/<!--.*?-->/gs,'').replace(/!\[.*?\]\(.*?\)/g,'').replace(/\[([^\]]+)\]\(.*?\)/g,'$1')
       .replace(/#{1,6}\s+/g,'').replace(/(\*\*|__)(.*?)\1/g,'$2').replace(/(\*|_)(.*?)\1/g,'$2')
       .replace(/`{1,3}[^`]*`{1,3}/g,'').replace(/>\s+/g,'').replace(/[-*+]\s+/g,'')
       .replace(/\n+/g,' ').trim();
   }
   function fmtDate(iso) { return new Date(iso).toLocaleDateString('en-US',{year:'numeric',month:'short',day:'numeric'}); }
-  function gql(query, variables, token) {
-    return fetch(GH_API, {
-      method:'POST',
-      headers:{ 'Authorization': `Bearer ${token||userToken}`, 'Content-Type':'application/json' },
-      body: JSON.stringify({ query, variables })
-    }).then(r=>r.json());
+  function displayName(name) { return name || 'Anonymous'; }
+  function initialAvatar(identifier) {
+    const colors = ['#c87a41','#3b82f6','#8b5cf6','#10b981','#f59e0b','#ef4444','#ec4899'];
+    const hash = [...(identifier||'?')].reduce((a,c) => a + c.charCodeAt(0), 0);
+    const color = colors[hash % colors.length];
+    const letter = (identifier||'?')[0].toUpperCase();
+    const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64"><rect width="64" height="64" rx="32" fill="${color}"/><text x="32" y="43" font-size="28" font-family="sans-serif" fill="white" text-anchor="middle" font-weight="700">${letter}</text></svg>`;
+    return 'data:image/svg+xml;base64,' + btoa(svg);
   }
 
   /* ─── Views ─── */
@@ -360,75 +372,110 @@
   }
 
   /* ─── Auth ─── */
-  async function fetchUser(token) {
-    const res = await fetch('https://api.github.com/user', { headers:{ Authorization:`Bearer ${token}` } });
-    if (!res.ok) return null;
-    return res.json();
+  sb.auth.onAuthStateChange((_event, session) => { sbSession = session; renderAuth(); });
+
+  function usernameToEmail(u) {
+    return u.toLowerCase().replace(/[^a-z0-9._-]/g, '') + '@srthub.app';
+  }
+
+  function openAuthModal(mode) {
+    authMode = mode || 'signin';
+    syncAuthMode();
+    document.getElementById('auth-username').value = '';
+    document.getElementById('auth-password').value = '';
+    document.getElementById('auth-error').style.display   = 'none';
+    document.getElementById('auth-success').style.display = 'none';
+    document.getElementById('auth-overlay').classList.add('open');
+    document.body.style.overflow = 'hidden';
+    setTimeout(() => document.getElementById('auth-username').focus(), 50);
+  }
+  function closeAuthModal() {
+    document.getElementById('auth-overlay').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  function syncAuthMode() {
+    document.getElementById('auth-title').textContent  = authMode === 'signin' ? 'Sign In' : 'Create Account';
+    document.getElementById('auth-label').textContent  = authMode === 'signin' ? 'Sign In' : 'Register';
+    document.getElementById('auth-switch').textContent = authMode === 'signin' ? 'No account? Register' : 'Have an account? Sign In';
+    document.getElementById('auth-password').setAttribute('autocomplete', authMode === 'signin' ? 'current-password' : 'new-password');
+  }
+
+  document.getElementById('auth-close').addEventListener('click', closeAuthModal);
+  document.getElementById('auth-overlay').addEventListener('click', e => { if (e.target === document.getElementById('auth-overlay')) closeAuthModal(); });
+  document.getElementById('auth-switch').addEventListener('click', () => {
+    authMode = authMode === 'signin' ? 'register' : 'signin';
+    syncAuthMode();
+    document.getElementById('auth-error').style.display   = 'none';
+    document.getElementById('auth-success').style.display = 'none';
+  });
+  document.getElementById('auth-submit').addEventListener('click', handleAuth);
+  document.getElementById('auth-password').addEventListener('keydown', e => { if (e.key === 'Enter') handleAuth(); });
+
+  async function handleAuth() {
+    const username = document.getElementById('auth-username').value.trim();
+    const password = document.getElementById('auth-password').value;
+    const errEl    = document.getElementById('auth-error');
+    const sucEl    = document.getElementById('auth-success');
+    errEl.style.display = 'none';
+    sucEl.style.display = 'none';
+
+    if (!username || !password) { errEl.textContent='Please fill in all fields.'; errEl.style.display='block'; return; }
+    if (username.length < 3)    { errEl.textContent='Username must be at least 3 characters.'; errEl.style.display='block'; return; }
+    if (!/^[a-zA-Z0-9._-]+$/.test(username)) { errEl.textContent='Username may only contain letters, numbers, . _ -'; errEl.style.display='block'; return; }
+    if (password.length < 6)    { errEl.textContent='Password must be at least 6 characters.'; errEl.style.display='block'; return; }
+
+    document.getElementById('auth-label').style.display   = 'none';
+    document.getElementById('auth-spinner').style.display = 'inline';
+    document.getElementById('auth-submit').disabled = true;
+
+    const email = usernameToEmail(username);
+    let error, data;
+    if (authMode === 'signin') {
+      ({ data, error } = await sb.auth.signInWithPassword({ email, password }));
+    } else {
+      ({ data, error } = await sb.auth.signUp({ email, password, options: { data: { username } } }));
+    }
+
+    document.getElementById('auth-label').style.display   = 'inline';
+    document.getElementById('auth-spinner').style.display = 'none';
+    document.getElementById('auth-submit').disabled = false;
+
+    if (error) { errEl.textContent = error.message; errEl.style.display = 'block'; return; }
+    closeAuthModal();
+  }
+
+  function currentUsername() {
+    return sbSession?.user?.user_metadata?.username || sbSession?.user?.email?.split('@')[0] || 'user';
   }
 
   function renderAuth() {
     const el = document.getElementById('hub-auth-area');
-    if (currentUser) {
+    if (sbSession?.user) {
+      const name   = currentUsername();
+      const avatar = initialAvatar(name);
       el.innerHTML = `
-        <img class="hub-avatar-sm" src="${currentUser.avatar_url}&s=60" alt="${currentUser.login}" title="${currentUser.login}" id="user-avatar">
+        <img class="hub-avatar-sm" src="${avatar}" alt="${name}" title="${name} — click to sign out" id="user-avatar">
         <button class="btn btn-primary btn-sm" id="new-post-btn">
           <svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M12 4v16m8-8H4"/></svg>
           New Post
         </button>`;
       document.getElementById('new-post-btn').addEventListener('click', openModal);
       document.getElementById('user-avatar').addEventListener('click', () => {
-        if (confirm(`Logged in as @${currentUser.login}. Log out?`)) logout();
+        if (confirm(`Signed in as ${name}\n\nSign out?`)) sb.auth.signOut();
       });
     } else {
-      el.innerHTML = `<button class="btn btn-ghost btn-sm" id="login-btn">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
-        Login with GitHub
-      </button>`;
-      document.getElementById('login-btn').addEventListener('click', startOAuth);
+      el.innerHTML = `<button class="btn btn-ghost btn-sm" id="login-btn">Sign In / Register</button>`;
+      document.getElementById('login-btn').addEventListener('click', () => openAuthModal('signin'));
     }
-  }
-
-  function startOAuth() {
-    const state = Math.random().toString(36).slice(2);
-    sessionStorage.setItem('oauth_state', state);
-    location.href = `https://github.com/login/oauth/authorize?client_id=${CLIENT_ID}&scope=public_repo&state=${state}`;
-  }
-
-  async function handleOAuthCallback() {
-    const params = new URLSearchParams(location.search);
-    const code   = params.get('code');
-    const state  = params.get('state');
-    if (!code) return;
-    if (state !== sessionStorage.getItem('oauth_state')) { history.replaceState({},'',location.pathname); return; }
-    sessionStorage.removeItem('oauth_state');
-    history.replaceState({},'',location.pathname);
-
-    try {
-      const res  = await fetch(OAUTH_FN, { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({code}) });
-      const data = await res.json();
-      if (data.access_token) {
-        userToken = data.access_token;
-        localStorage.setItem('srt_gh_token', userToken);
-        currentUser = await fetchUser(userToken);
-        renderAuth();
-      }
-    } catch(e) { console.error('OAuth error', e); }
-  }
-
-  function logout() {
-    userToken = null;
-    currentUser = null;
-    localStorage.removeItem('srt_gh_token');
-    renderAuth();
   }
 
   /* ─── Feed ─── */
   function getFiltered() {
-    let r = allDiscussions;
-    if (activeCategory !== 'all') r = r.filter(d => catSlug(d.category.name) === activeCategory);
+    let r = allPosts;
+    if (activeCategory !== 'all') r = r.filter(p => catSlug(p.category?.name) === activeCategory);
     if (searchQuery) {
       const q = searchQuery.toLowerCase();
-      r = r.filter(d => d.title.toLowerCase().includes(q) || (d.body||'').toLowerCase().includes(q) || d.author.login.toLowerCase().includes(q));
+      r = r.filter(p => p.title.toLowerCase().includes(q) || stripMd(p.body).toLowerCase().includes(q));
     }
     return r;
   }
@@ -436,8 +483,8 @@
   function renderCategories() {
     const el = document.getElementById('hub-cats');
     const counts = {};
-    allDiscussions.forEach(d => { const k = catSlug(d.category.name); counts[k]=(counts[k]||0)+1; });
-    el.innerHTML = `<button class="hub-cat-btn${activeCategory==='all'?' active':''}" data-cat="all">All <span class="hub-stat-val">${allDiscussions.length}</span></button>` +
+    allPosts.forEach(p => { const k = catSlug(p.category?.name); counts[k]=(counts[k]||0)+1; });
+    el.innerHTML = `<button class="hub-cat-btn${activeCategory==='all'?' active':''}" data-cat="all">All <span class="hub-stat-val">${allPosts.length}</span></button>` +
       allCategories.filter(c => counts[catSlug(c.name)]).map(c => {
         const slug = catSlug(c.name);
         return `<button class="hub-cat-btn${activeCategory===slug?' active':''}" data-cat="${slug}">${c.emoji} ${c.name} <span class="hub-stat-val">${counts[slug]||0}</span></button>`;
@@ -455,51 +502,66 @@
       listEl.innerHTML = `<div class="hub-empty"><h3>${searchQuery||activeCategory!=='all'?'No posts match your filters':'No posts yet'}</h3><p>${searchQuery||activeCategory!=='all'?'Try a different search or category.':'Be the first to share your research.'}</p></div>`;
       return;
     }
-    listEl.innerHTML = filtered.map(d => {
-      const labels = (d.labels?.nodes||[]);
-      return `<div class="hub-card" data-id="${d.id}" data-number="${d.number}">
+    const cat = p => p.category || {};
+    listEl.innerHTML = filtered.map(p => {
+      const name   = displayName(p.author_email);
+      const avatar = initialAvatar(p.author_email);
+      const preview = stripMd(p.body);
+      const count = p.comment_count || 0;
+      return `<div class="hub-card" data-id="${p.id}">
         <div class="hub-card-top">
-          <img class="hub-avatar" src="${d.author.avatarUrl}&s=64" alt="${d.author.login}" loading="lazy">
+          <img class="hub-avatar" src="${avatar}" alt="${name}" loading="lazy">
           <div class="hub-author-info">
-            <div class="hub-author-name">${d.author.login}</div>
-            <div class="hub-author-date">${fmtDate(d.createdAt)}</div>
+            <div class="hub-author-name">${name}</div>
+            <div class="hub-author-date">${fmtDate(p.created_at)}</div>
           </div>
-          <span class="hub-cat-pill ${catClass(d.category.name)}">${d.category.emoji} ${d.category.name}</span>
+          <span class="hub-cat-pill ${catClass(cat(p).name)}">${cat(p).emoji||''} ${cat(p).name||''}</span>
         </div>
-        <div class="hub-card-title">${d.title}</div>
-        ${d.body?`<div class="hub-card-body">${stripMd(d.body)}</div>`:''}
+        <div class="hub-card-title">${p.title}</div>
+        ${preview?`<div class="hub-card-body">${preview}</div>`:''}
         <div class="hub-card-footer">
           <svg width="13" height="13" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
-          ${d.comments.totalCount} comment${d.comments.totalCount!==1?'s':''}
-          ${labels.length?`<div class="hub-labels">${labels.map(l=>`<span class="hub-label" style="background:#${l.color}22;color:#${l.color};border:1px solid #${l.color}44">${l.name}</span>`).join('')}</div>`:''}
+          ${count} comment${count!==1?'s':''}
         </div>
       </div>`;
     }).join('');
-
     listEl.querySelectorAll('.hub-card').forEach(card => card.addEventListener('click', () => openDetail(card.dataset.id)));
   }
 
   /* ─── Post Detail ─── */
-  function openDetail(discussionId) {
-    const d = allDiscussions.find(x => x.id === discussionId);
-    if (!d) return;
+  async function openDetail(id) {
+    const post = allPosts.find(x => x.id === id);
+    if (!post) return;
     showView('view-detail');
-    renderDetail(d);
+    document.getElementById('detail-content').innerHTML = '<div class="loading-center"><span class="spinner"></span></div>';
+
+    const { data: comments, error } = await sb.from('hub_comments')
+      .select('*')
+      .eq('post_id', id)
+      .order('created_at', { ascending: true });
+
+    openPostComments = comments || [];
+    renderDetail(post, openPostComments);
   }
 
-  function renderDetail(d) {
-    const labels = (d.labels?.nodes||[]);
-    const comments = d.comments?.nodes || [];
-    const commentHtml = comments.map(c => `
-      <div class="comment">
-        <img class="hub-avatar" src="${c.author.avatarUrl}&s=64" alt="${c.author.login}" loading="lazy">
-        <div class="comment-body">
-          <div class="comment-meta"><strong>${c.author.login}</strong> &middot; ${fmtDate(c.createdAt)}</div>
-          <div class="comment-text">${marked.parse(c.body||'')}</div>
-        </div>
-      </div>`).join('');
+  function renderDetail(post, comments) {
+    const cat        = post.category || {};
+    const authorName = displayName(post.author_email);
+    const authorSrc  = initialAvatar(post.author_email);
 
-    const commentFormHtml = currentUser
+    const commentHtml = comments.map(c => {
+      const cName = displayName(c.author_email);
+      const cSrc  = initialAvatar(c.author_email);
+      return `<div class="comment">
+        <img class="hub-avatar" src="${cSrc}" alt="${cName}" loading="lazy">
+        <div class="comment-body">
+          <div class="comment-meta"><strong>${cName}</strong> &middot; ${fmtDate(c.created_at)}</div>
+          <div class="comment-text">${marked.parse(c.body)}</div>
+        </div>
+      </div>`;
+    }).join('');
+
+    const commentFormHtml = sbSession
       ? `<div class="comment-form">
           <div class="comment-form-title">Leave a comment</div>
           <textarea class="comment-textarea" id="comment-input" placeholder="Write a comment… Markdown supported"></textarea>
@@ -512,81 +574,78 @@
           </div>
         </div>`
       : `<div class="login-prompt">
-          <span>Log in to leave a comment</span>
-          <button class="btn btn-primary btn-sm" onclick="document.getElementById('login-btn')?.click()||startOAuth()">Login with GitHub</button>
+          <span>Sign in to leave a comment</span>
+          <button class="btn btn-primary btn-sm" onclick="window.__openAuth()">Sign In</button>
         </div>`;
 
     document.getElementById('detail-content').innerHTML = `
       <div class="detail-header">
         <div class="detail-meta">
-          <img class="hub-avatar" src="${d.author.avatarUrl}&s=64" alt="${d.author.login}">
+          <img class="hub-avatar" src="${authorSrc}" alt="${authorName}">
           <div class="detail-author-info">
-            <div class="hub-author-name">${d.author.login}</div>
-            <div class="hub-author-date">${fmtDate(d.createdAt)}</div>
+            <div class="hub-author-name">${authorName}</div>
+            <div class="hub-author-date">${fmtDate(post.created_at)}</div>
           </div>
-          <span class="hub-cat-pill ${catClass(d.category.name)}">${d.category.emoji} ${d.category.name}</span>
+          <span class="hub-cat-pill ${catClass(cat.name)}">${cat.emoji||''} ${cat.name||''}</span>
         </div>
-        <div class="detail-title">${d.title}</div>
-        ${labels.length?`<div class="detail-labels">${labels.map(l=>`<span class="hub-label" style="background:#${l.color}22;color:#${l.color};border:1px solid #${l.color}44">${l.name}</span>`).join('')}</div>`:''}
+        <div class="detail-title">${post.title}</div>
       </div>
-      <div class="detail-body">${marked.parse(d.body||'')}</div>
+      <div class="detail-body">${marked.parse(post.body)}</div>
       <div class="comments-section">
         <div class="comments-heading">${comments.length} Comment${comments.length!==1?'s':''}</div>
         ${commentHtml}
         ${commentFormHtml}
       </div>`;
 
-    if (currentUser) {
-      document.getElementById('comment-submit').addEventListener('click', () => submitComment(d));
+    if (sbSession) {
+      document.getElementById('comment-submit').addEventListener('click', () => submitComment(post));
     }
   }
 
-  async function submitComment(discussion) {
-    const body = document.getElementById('comment-input').value.trim();
+  async function submitComment(post) {
+    const body  = document.getElementById('comment-input').value.trim();
     const errEl = document.getElementById('comment-error');
     errEl.style.display = 'none';
-    if (!body) return;
+    if (!body || !sbSession) return;
 
-    const submitBtn = document.getElementById('comment-submit');
-    document.getElementById('comment-label').style.display  = 'none';
+    document.getElementById('comment-label').style.display   = 'none';
     document.getElementById('comment-spinner').style.display = 'inline';
-    submitBtn.disabled = true;
+    document.getElementById('comment-submit').disabled = true;
 
-    const MUTATION = `mutation($id:ID!,$body:String!){addDiscussionComment(input:{discussionId:$id,body:$body}){comment{id body author{login avatarUrl}createdAt}}}`;
-    const res = await gql(MUTATION, { id: discussion.id, body });
+    const { data, error } = await sb.from('hub_comments')
+      .insert({ post_id: post.id, body, author_id: sbSession.user.id, author_email: currentUsername() })
+      .select()
+      .single();
 
-    document.getElementById('comment-label').style.display  = 'inline';
+    document.getElementById('comment-label').style.display   = 'inline';
     document.getElementById('comment-spinner').style.display = 'none';
-    submitBtn.disabled = false;
+    document.getElementById('comment-submit').disabled = false;
 
-    if (res.errors) { errEl.textContent = res.errors[0].message; errEl.style.display='block'; return; }
+    if (error) { errEl.textContent = error.message || 'Failed to post comment.'; errEl.style.display = 'block'; return; }
 
-    const comment = res.data.addDiscussionComment.comment;
-    // Add to local state
-    if (!discussion.comments) discussion.comments = { totalCount:0, nodes:[] };
-    discussion.comments.nodes.push(comment);
-    discussion.comments.totalCount++;
-    document.getElementById('comment-input').value = '';
-    renderDetail(discussion);
+    post.comment_count = (post.comment_count || 0) + 1;
+    openPostComments = [...openPostComments, data];
+    renderDetail(post, openPostComments);
   }
 
   /* ─── New Post Modal ─── */
   const overlay = document.getElementById('hub-overlay');
 
   function openModal() {
-    if (!currentUser) { startOAuth(); return; }
+    if (!sbSession) { openAuthModal('signin'); return; }
     overlay.classList.add('open');
     document.body.style.overflow = 'hidden';
     document.getElementById('modal-error').style.display   = 'none';
     document.getElementById('modal-success').style.display = 'none';
     document.getElementById('post-title').value = '';
     document.getElementById('post-body').value  = '';
+    document.getElementById('post-simulant').value = '';
   }
   function closeModal() { overlay.classList.remove('open'); document.body.style.overflow = ''; }
 
   document.getElementById('hub-modal-close').addEventListener('click', closeModal);
   document.getElementById('hub-btn-cancel').addEventListener('click', closeModal);
-  overlay.addEventListener('click', e => { if (e.target===overlay) closeModal(); });
+  overlay.addEventListener('click', e => { if (e.target === overlay) closeModal(); });
 
   document.getElementById('hub-btn-submit').addEventListener('click', async () => {
     const title    = document.getElementById('post-title').value.trim();
@@ -598,29 +657,43 @@
     const sucEl    = document.getElementById('modal-success');
 
     errEl.style.display = 'none'; sucEl.style.display = 'none';
-    if (!title) { errEl.textContent='Please add a title.'; errEl.style.display='block'; return; }
-    if (!catId) { errEl.textContent='Please select a category.'; errEl.style.display='block'; return; }
+    if (!title)  { errEl.textContent='Please add a title.'; errEl.style.display='block'; return; }
+    if (!catId)  { errEl.textContent='Please select a category.'; errEl.style.display='block'; return; }
+    if (!sbSession) { errEl.textContent='Please sign in first.'; errEl.style.display='block'; return; }
 
-    document.getElementById('submit-label').style.display  = 'none';
+    document.getElementById('submit-label').style.display   = 'none';
     document.getElementById('submit-spinner').style.display = 'inline';
     document.getElementById('hub-btn-submit').disabled = true;
 
     const fullBody = simulant ? `**Simulant:** ${simulant}\n\n${body}` : body;
-    const MUTATION = `mutation($repoId:ID!,$catId:ID!,$title:String!,$body:String!){createDiscussion(input:{repositoryId:$repoId,categoryId:$catId,title:$title,body:$body}){discussion{id number title body author{login avatarUrl}category{name emoji slug}labels(first:10){nodes{name color}}comments{totalCount nodes{id body author{login avatarUrl}createdAt}}createdAt url}}}`;
-    const res = await gql(MUTATION, { repoId:REPO_ID, catId, title, body:fullBody });
 
-    document.getElementById('submit-label').style.display  = 'inline';
+    const { data, error } = await sb.from('hub_posts')
+      .insert({
+        title,
+        body: fullBody,
+        category_id: catId,
+        simulant: simulant || null,
+        author_id: sbSession.user.id,
+        author_email: currentUsername()
+      })
+      .select('*, category:hub_categories(*)')
+      .single();
+
+    document.getElementById('submit-label').style.display   = 'inline';
     document.getElementById('submit-spinner').style.display = 'none';
     document.getElementById('hub-btn-submit').disabled = false;
 
-    if (res.errors) { errEl.textContent=res.errors[0].message; errEl.style.display='block'; return; }
+    if (error) { errEl.textContent = error.message || 'Failed to create post.'; errEl.style.display='block'; return; }
 
-    const newPost = res.data.createDiscussion.discussion;
-    allDiscussions.unshift(newPost);
+    data.comment_count = 0;
+    allPosts.unshift(data);
     sucEl.textContent = 'Post published!';
     sucEl.style.display = 'block';
-    setTimeout(() => { closeModal(); renderCategories(); renderFeed(); showView('view-feed'); }, 1200);
+    setTimeout(() => { closeModal(); renderCategories(); renderFeed(); }, 1200);
   });
+
+  /* ─── Global helpers for inline HTML ─── */
+  window.__openAuth = () => openAuthModal('signin');
 
   /* ─── Init ─── */
   document.getElementById('detail-back').addEventListener('click', () => showView('view-feed'));
@@ -628,22 +701,23 @@
   document.getElementById('hub-search').addEventListener('input', e => { searchQuery=e.target.value; renderFeed(); });
 
   async function init() {
-    // Handle OAuth callback first
-    await handleOAuthCallback();
-
-    // Load user if token exists
-    if (userToken && !currentUser) {
-      currentUser = await fetchUser(userToken);
-      if (!currentUser) { userToken=null; localStorage.removeItem('srt_gh_token'); }
-    }
+    const { data: { session } } = await sb.auth.getSession();
+    sbSession = session;
     renderAuth();
 
-    // Load feed data
-    const data = await fetch(DATA_URL).then(r=>r.json()).catch(()=>({discussions:[],categories:[]}));
-    allDiscussions = data.discussions || [];
-    allCategories  = data.categories  || [];
+    const [{ data: cats }, { data: posts }] = await Promise.all([
+      sb.from('hub_categories').select('*').order('name'),
+      sb.from('hub_posts')
+        .select('*, category:hub_categories(*), hub_comments(count)')
+        .order('created_at', { ascending: false })
+    ]);
 
-    // Populate category dropdown
+    allCategories = cats || [];
+    allPosts = (posts || []).map(p => ({
+      ...p,
+      comment_count: p.hub_comments?.[0]?.count ?? 0
+    }));
+
     document.getElementById('post-category').innerHTML =
       '<option value="">Select category…</option>' +
       allCategories.map(c => `<option value="${c.id}">${c.emoji} ${c.name}</option>`).join('');
