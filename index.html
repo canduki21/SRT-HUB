@@ -99,8 +99,12 @@
     .cat-default       { background:rgba(143,141,141,.1);  color:#adadad;border:1px solid rgba(143,141,141,.25); }
 
     .hub-card-title { font-size:16px;font-weight:700;line-height:1.4;margin-bottom:8px; }
+    .hub-card-title-row { display:flex;align-items:flex-start;gap:8px;flex-wrap:wrap;margin-bottom:8px; }
+    .hub-card-title-row .hub-card-title { margin-bottom:0; }
     .hub-card-body  { font-size:13px;color:var(--muted);line-height:1.6;margin-bottom:14px;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden; }
+    .hub-card-img   { width:100%;max-height:280px;object-fit:cover;border-radius:var(--radius);margin-bottom:14px;display:block; }
     .hub-card-footer { display:flex;align-items:center;gap:14px;font-size:12px;color:var(--muted); }
+    .hub-tag { font-size:10px;font-weight:700;padding:2px 8px;border-radius:4px;white-space:nowrap;background:rgba(200,122,65,.12);color:#e09057;border:1px solid rgba(200,122,65,.3);flex-shrink:0; }
 
     .hub-empty { text-align:center;padding:80px 20px;color:var(--muted); }
     .hub-empty h3 { font-size:18px;color:var(--text);margin-bottom:8px; }
@@ -424,6 +428,11 @@
     const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64"><rect width="64" height="64" rx="32" fill="${color}"/><text x="32" y="43" font-size="28" font-family="sans-serif" fill="white" text-anchor="middle" font-weight="700">${letter}</text></svg>`;
     return 'data:image/svg+xml;base64,' + btoa(svg);
   }
+  function extractFirstImage(md) {
+    const m = (md||'').match(/!\[.*?\]\((https?:\/\/[^\s)]+)\)/);
+    return m ? m[1] : null;
+  }
+
   function avatarFor(authorEmail) {
     const profile = Object.values(profileMap).find(p => p.username === authorEmail);
     return profile?.avatar_url || initialAvatar(authorEmail);
@@ -579,10 +588,12 @@
     }
     const cat = p => p.category || {};
     listEl.innerHTML = filtered.map(p => {
-      const name   = displayName(p.author_email);
-      const avatar = avatarFor(p.author_email);
+      const name    = displayName(p.author_email);
+      const avatar  = avatarFor(p.author_email);
       const preview = stripMd(p.body);
-      const count = p.comment_count || 0;
+      const imgUrl  = extractFirstImage(p.body);
+      const count   = p.comment_count || 0;
+      const tags    = [p.simulant].filter(Boolean);
       return `<div class="hub-card" data-id="${p.id}">
         <div class="hub-card-top">
           <img class="hub-avatar" src="${avatar}" alt="${name}" loading="lazy">
@@ -592,8 +603,12 @@
           </div>
           <span class="hub-cat-pill ${catClass(cat(p).name)}">${cat(p).emoji||''} ${cat(p).name||''}</span>
         </div>
-        <div class="hub-card-title">${p.title}</div>
+        <div class="hub-card-title-row">
+          <div class="hub-card-title">${p.title}</div>
+          ${tags.map(t=>`<span class="hub-tag">${t}</span>`).join('')}
+        </div>
         ${preview?`<div class="hub-card-body">${preview}</div>`:''}
+        ${imgUrl?`<img class="hub-card-img" src="${imgUrl}" alt="" loading="lazy">`:''}
         <div class="hub-card-footer">
           <svg width="13" height="13" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
           ${count} comment${count!==1?'s':''}
