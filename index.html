@@ -291,7 +291,14 @@
       </div>
     </div>
     <div class="hub-field">
-      <label class="hub-label" for="post-body">Content <span style="font-weight:400;text-transform:none;letter-spacing:0">(Markdown supported)</span></label>
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:7px">
+        <label class="hub-label" style="margin-bottom:0" for="post-body">Content <span style="font-weight:400;text-transform:none;letter-spacing:0">(Markdown supported)</span></label>
+        <label class="btn btn-ghost btn-sm" id="img-upload-btn" style="cursor:pointer;padding:4px 10px;font-size:11px">
+          <svg width="13" height="13" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+          <span id="img-upload-label">Add Image</span>
+          <input type="file" id="img-file-input" accept="image/*" style="display:none">
+        </label>
+      </div>
       <textarea class="hub-textarea" id="post-body" placeholder="Share your research, notes, or start a discussion…"></textarea>
     </div>
     <div class="hub-modal-actions">
@@ -647,6 +654,37 @@
     openPostComments = [...openPostComments, data];
     renderDetail(post, openPostComments);
   }
+
+  /* ─── Image Upload ─── */
+  document.getElementById('img-file-input').addEventListener('change', async (e) => {
+    const file = e.target.files[0];
+    if (!file || !sbSession) return;
+
+    const label = document.getElementById('img-upload-label');
+    label.textContent = 'Uploading…';
+
+    const ext  = file.name.split('.').pop();
+    const path = `${sbSession.user.id}/${Date.now()}.${ext}`;
+    const { data, error } = await sb.storage.from('post-images').upload(path, file, { upsert: false });
+
+    if (error) {
+      label.textContent = 'Add Image';
+      alert('Upload failed: ' + error.message);
+      e.target.value = '';
+      return;
+    }
+
+    const { data: { publicUrl } } = sb.storage.from('post-images').getPublicUrl(path);
+    const textarea = document.getElementById('post-body');
+    const md = `\n![image](${publicUrl})\n`;
+    const pos = textarea.selectionStart;
+    textarea.value = textarea.value.slice(0, pos) + md + textarea.value.slice(pos);
+    textarea.selectionStart = textarea.selectionEnd = pos + md.length;
+    textarea.focus();
+
+    label.textContent = 'Add Image';
+    e.target.value = '';
+  });
 
   /* ─── New Post Modal ─── */
   const overlay = document.getElementById('hub-overlay');
