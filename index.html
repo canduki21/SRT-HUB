@@ -92,6 +92,10 @@
     .cat-q-a           { background:rgba(234,179,8,.12);   color:#facc15;border:1px solid rgba(234,179,8,.3); }
     .cat-announcements { background:rgba(200,122,65,.12);  color:#e09057;border:1px solid rgba(200,122,65,.3); }
     .cat-polls         { background:rgba(239,68,68,.12);   color:#f97474;border:1px solid rgba(239,68,68,.3); }
+    .cat-research      { background:rgba(6,182,212,.12);   color:#67e8f9;border:1px solid rgba(6,182,212,.3); }
+    .cat-academia      { background:rgba(99,102,241,.12);  color:#a5b4fc;border:1px solid rgba(99,102,241,.3); }
+    .cat-hobby         { background:rgba(251,146,60,.12);  color:#fdba74;border:1px solid rgba(251,146,60,.3); }
+    .cat-just-for-fun  { background:rgba(236,72,153,.12);  color:#f9a8d4;border:1px solid rgba(236,72,153,.3); }
     .cat-default       { background:rgba(143,141,141,.1);  color:#adadad;border:1px solid rgba(143,141,141,.25); }
 
     .hub-card-title { font-size:16px;font-weight:700;line-height:1.4;margin-bottom:8px; }
@@ -348,7 +352,8 @@
   function catSlug(name) { return (name||'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,''); }
   function catClass(name) {
     const map = { general:'cat-general', ideas:'cat-ideas', 'show-and-tell':'cat-show-and-tell',
-                  'q-a':'cat-q-a', announcements:'cat-announcements', polls:'cat-polls' };
+                  'q-a':'cat-q-a', announcements:'cat-announcements', polls:'cat-polls',
+                  research:'cat-research', academia:'cat-academia', hobby:'cat-hobby', 'just-for-fun':'cat-just-for-fun' };
     return map[catSlug(name)] || 'cat-default';
   }
   function stripMd(md) {
