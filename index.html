@@ -105,6 +105,13 @@
     .hub-card-img   { width:100%;max-height:280px;object-fit:cover;border-radius:var(--radius);margin-bottom:14px;display:block; }
     .hub-card-footer { display:flex;align-items:center;gap:14px;font-size:12px;color:var(--muted); }
     .hub-tag { font-size:10px;font-weight:700;padding:2px 8px;border-radius:4px;white-space:nowrap;background:rgba(200,122,65,.12);color:#e09057;border:1px solid rgba(200,122,65,.3);flex-shrink:0; }
+    .moon-btn { display:inline-flex;align-items:center;gap:5px;background:none;border:1px solid var(--border);border-radius:999px;padding:4px 10px;font-size:12px;font-weight:700;color:var(--muted);cursor:pointer;font-family:inherit;transition:all .15s; }
+    .moon-btn:hover { border-color:#a78bfa;color:#a78bfa; }
+    .moon-btn.reacted { background:rgba(167,139,250,.12);border-color:#a78bfa;color:#a78bfa; }
+    .post-actions { display:flex;gap:8px;margin-left:auto; }
+    .action-btn { background:none;border:none;cursor:pointer;font-size:12px;font-weight:700;color:var(--muted);padding:4px 8px;border-radius:var(--radius);font-family:inherit;transition:color .15s; }
+    .action-btn:hover { color:var(--text); }
+    .action-btn.delete:hover { color:#f97474; }
 
     .hub-empty { text-align:center;padding:80px 20px;color:var(--muted); }
     .hub-empty h3 { font-size:18px;color:var(--text);margin-bottom:8px; }
@@ -403,6 +410,7 @@
   let searchQuery      = '';
   let openPostComments = [];
   let profileMap       = {};
+  let reactionsMap     = {};  // post_id → Set of user_ids
 
   /* ─── Helpers ─── */
   function catSlug(name) { return (name||'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,''); }
@@ -612,6 +620,7 @@
         <div class="hub-card-footer">
           <svg width="13" height="13" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
           ${count} comment${count!==1?'s':''}
+          <span style="margin-left:4px">🌙 ${(reactionsMap[p.id]?.size||0)}</span>
         </div>
       </div>`;
     }).join('');
@@ -638,14 +647,21 @@
     const cat        = post.category || {};
     const authorName = displayName(post.author_email);
     const authorSrc  = avatarFor(post.author_email);
+    const isOwner    = sbSession?.user?.id === post.author_id;
+    const reacted    = reactionsMap[post.id]?.has(sbSession?.user?.id);
+    const moonCount  = reactionsMap[post.id]?.size || 0;
 
     const commentHtml = comments.map(c => {
-      const cName = displayName(c.author_email);
-      const cSrc  = avatarFor(c.author_email);
-      return `<div class="comment">
+      const cName    = displayName(c.author_email);
+      const cSrc     = avatarFor(c.author_email);
+      const cIsOwner = sbSession?.user?.id === c.author_id;
+      return `<div class="comment" data-cid="${c.id}">
         <img class="hub-avatar" src="${cSrc}" alt="${cName}" loading="lazy">
         <div class="comment-body">
-          <div class="comment-meta"><strong>${cName}</strong> &middot; ${fmtDate(c.created_at)}</div>
+          <div class="comment-meta" style="display:flex;align-items:center;justify-content:space-between">
+            <span><strong>${cName}</strong> &middot; ${fmtDate(c.created_at)}</span>
+            ${cIsOwner ? `<button class="action-btn delete" data-delete-comment="${c.id}">Delete</button>` : ''}
+          </div>
           <div class="comment-text">${marked.parse(c.body)}</div>
         </div>
       </div>`;
@@ -679,13 +695,75 @@
           <span class="hub-cat-pill ${catClass(cat.name)}">${cat.emoji||''} ${cat.name||''}</span>
         </div>
         <div class="detail-title">${post.title}</div>
+        <div style="display:flex;align-items:center;gap:10px;margin-top:12px">
+          <button class="moon-btn${reacted?' reacted':''}" id="moon-btn">🌙 ${moonCount}</button>
+          ${isOwner ? `<div class="post-actions"><button class="action-btn" id="edit-post-btn">Edit</button><button class="action-btn delete" id="delete-post-btn">Delete</button></div>` : ''}
+        </div>
       </div>
-      <div class="detail-body">${marked.parse(post.body)}</div>
+      <div class="detail-body" id="detail-body-content">${marked.parse(post.body)}</div>
+      <div id="edit-post-form" style="display:none;margin-bottom:28px">
+        <textarea class="comment-textarea" id="edit-post-textarea" style="min-height:200px">${post.body}</textarea>
+        <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:10px">
+          <button class="btn btn-ghost btn-sm" id="edit-cancel-btn">Cancel</button>
+          <button class="btn btn-primary btn-sm" id="edit-save-btn">Save</button>
+        </div>
+      </div>
       <div class="comments-section">
         <div class="comments-heading">${comments.length} Comment${comments.length!==1?'s':''}</div>
         ${commentHtml}
         ${commentFormHtml}
       </div>`;
+
+    /* moon */
+    document.getElementById('moon-btn').addEventListener('click', () => toggleReaction(post));
+
+    /* edit / delete post */
+    if (isOwner) {
+      document.getElementById('edit-post-btn').addEventListener('click', () => {
+        document.getElementById('detail-body-content').style.display = 'none';
+        document.getElementById('edit-post-form').style.display = 'block';
+        document.getElementById('edit-post-btn').style.display  = 'none';
+      });
+      document.getElementById('edit-cancel-btn').addEventListener('click', () => {
+        document.getElementById('detail-body-content').style.display = 'block';
+        document.getElementById('edit-post-form').style.display = 'none';
+        document.getElementById('edit-post-btn').style.display  = 'inline-flex';
+      });
+      document.getElementById('edit-save-btn').addEventListener('click', async () => {
+        const newBody = document.getElementById('edit-post-textarea').value.trim();
+        if (!newBody) return;
+        const { error } = await sb.from('hub_posts').update({ body: newBody }).eq('id', post.id);
+        if (!error) {
+          post.body = newBody;
+          const idx = allPosts.findIndex(p => p.id === post.id);
+          if (idx !== -1) allPosts[idx].body = newBody;
+          renderDetail(post, openPostComments);
+        }
+      });
+      document.getElementById('delete-post-btn').addEventListener('click', async () => {
+        if (!confirm('Delete this post? This cannot be undone.')) return;
+        const { error } = await sb.from('hub_posts').delete().eq('id', post.id);
+        if (!error) {
+          allPosts = allPosts.filter(p => p.id !== post.id);
+          renderCategories(); renderFeed();
+          showView('view-feed');
+        }
+      });
+    }
+
+    /* delete comments */
+    document.querySelectorAll('[data-delete-comment]').forEach(btn => {
+      btn.addEventListener('click', async () => {
+        const cid = btn.dataset.deleteComment;
+        if (!confirm('Delete this comment?')) return;
+        const { error } = await sb.from('hub_comments').delete().eq('id', cid);
+        if (!error) {
+          openPostComments = openPostComments.filter(c => c.id !== cid);
+          post.comment_count = Math.max(0, (post.comment_count||1) - 1);
+          renderDetail(post, openPostComments);
+        }
+      });
+    });
 
     if (sbSession) {
       document.getElementById('comment-submit').addEventListener('click', () => submitComment(post));
@@ -716,6 +794,23 @@
     post.comment_count = (post.comment_count || 0) + 1;
     openPostComments = [...openPostComments, data];
     renderDetail(post, openPostComments);
+  }
+
+  /* ─── Reactions ─── */
+  async function toggleReaction(post) {
+    if (!sbSession) { openAuthModal('signin'); return; }
+    const uid = sbSession.user.id;
+    const set = reactionsMap[post.id] || new Set();
+    if (set.has(uid)) {
+      await sb.from('hub_reactions').delete().eq('post_id', post.id).eq('user_id', uid);
+      set.delete(uid);
+    } else {
+      await sb.from('hub_reactions').insert({ post_id: post.id, user_id: uid });
+      set.add(uid);
+    }
+    reactionsMap[post.id] = set;
+    renderDetail(post, openPostComments);
+    renderFeed();
   }
 
   /* ─── Image Upload ─── */
@@ -917,15 +1012,21 @@
     sbSession = session;
     renderAuth();
 
-    const [{ data: cats }, { data: posts }, { data: profiles }] = await Promise.all([
+    const [{ data: cats }, { data: posts }, { data: profiles }, { data: reactions }] = await Promise.all([
       sb.from('hub_categories').select('*').order('name'),
       sb.from('hub_posts')
         .select('*, category:hub_categories(*), hub_comments(count)')
         .order('created_at', { ascending: false }),
-      sb.from('hub_profiles').select('user_id, username, avatar_url')
+      sb.from('hub_profiles').select('user_id, username, avatar_url'),
+      sb.from('hub_reactions').select('post_id, user_id')
     ]);
 
     profileMap = Object.fromEntries((profiles || []).map(p => [p.user_id, p]));
+    reactionsMap = {};
+    (reactions || []).forEach(r => {
+      if (!reactionsMap[r.post_id]) reactionsMap[r.post_id] = new Set();
+      reactionsMap[r.post_id].add(r.user_id);
+    });
 
     allCategories = cats || [];
     allPosts = (posts || []).map(p => ({
