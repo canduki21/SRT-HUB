@@ -158,6 +158,15 @@
     .comment-text p:last-child { margin-bottom:0; }
     .comment-text code { background:rgba(255,255,255,.08);padding:1px 5px;border-radius:3px;font-family:monospace;font-size:12px; }
 
+    .comment-reply-btn { background:none;border:none;cursor:pointer;font-size:11px;font-weight:700;color:var(--muted);padding:2px 0;font-family:inherit;transition:color .15s; }
+    .comment-reply-btn:hover { color:var(--accent); }
+    .comment-replies { margin-top:8px;padding-left:20px;border-left:2px solid var(--border); }
+    .reply-form { margin-top:10px;display:none; }
+    .reply-form.open { display:block; }
+    .reply-textarea { width:100%;background:var(--bg);border:1px solid var(--border);color:var(--text);font-family:inherit;font-size:13px;padding:10px 12px;border-radius:var(--radius);outline:none;resize:vertical;min-height:72px;line-height:1.5;transition:border-color .15s; }
+    .reply-textarea:focus { border-color:var(--accent); }
+    .reply-textarea::placeholder { color:var(--muted); }
+    .reply-form-footer { display:flex;justify-content:flex-end;gap:8px;margin-top:6px; }
     .comment-form { margin-top:24px; }
     .comment-form-title { font-size:13px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px; }
     .comment-textarea {
@@ -652,21 +661,40 @@
     const reacted    = reactionsMap[post.id]?.has(sbSession?.user?.id);
     const moonCount  = reactionsMap[post.id]?.size || 0;
 
-    const commentHtml = comments.map(c => {
+    const topLevel = comments.filter(c => !c.parent_id);
+    const repliesOf = id => comments.filter(c => c.parent_id === id);
+
+    function buildComment(c, isReply) {
       const cName    = displayName(c.author_email);
       const cSrc     = avatarFor(c.author_email);
       const cIsOwner = sbSession?.user?.id === c.author_id;
+      const replies  = repliesOf(c.id);
+      const replyForm = sbSession ? `
+        <div class="reply-form" id="reply-form-${c.id}">
+          <textarea class="reply-textarea" id="reply-input-${c.id}" placeholder="Reply to ${cName}…"></textarea>
+          <div class="reply-form-footer">
+            <button class="btn btn-ghost btn-sm" data-cancel-reply="${c.id}">Cancel</button>
+            <button class="btn btn-primary btn-sm" data-submit-reply="${c.id}">Reply</button>
+          </div>
+        </div>` : '';
       return `<div class="comment" data-cid="${c.id}">
         <img class="hub-avatar" src="${cSrc}" alt="${cName}" loading="lazy">
-        <div class="comment-body">
+        <div class="comment-body" style="flex:1">
           <div class="comment-meta" style="display:flex;align-items:center;justify-content:space-between">
             <span><strong>${cName}</strong> &middot; ${fmtDate(c.created_at)}</span>
-            ${cIsOwner ? `<button class="action-btn delete" data-delete-comment="${c.id}">Delete</button>` : ''}
+            <div style="display:flex;gap:8px;align-items:center">
+              ${sbSession ? `<button class="comment-reply-btn" data-open-reply="${c.id}">↩ Reply</button>` : ''}
+              ${cIsOwner ? `<button class="action-btn delete" data-delete-comment="${c.id}">Delete</button>` : ''}
+            </div>
           </div>
           <div class="comment-text">${marked.parse(c.body)}</div>
+          ${replyForm}
+          ${replies.length ? `<div class="comment-replies">${replies.map(r => buildComment(r, true)).join('')}</div>` : ''}
         </div>
       </div>`;
-    }).join('');
+    }
+
+    const commentHtml = topLevel.map(c => buildComment(c, false)).join('');
 
     const commentFormHtml = sbSession
       ? `<div class="comment-form">
@@ -710,7 +738,7 @@
         </div>
       </div>
       <div class="comments-section">
-        <div class="comments-heading">${comments.length} Comment${comments.length!==1?'s':''}</div>
+        <div class="comments-heading">${topLevel.length} Comment${topLevel.length!==1?'s':''}</div>
         ${commentHtml}
         ${commentFormHtml}
       </div>`;
@@ -752,6 +780,39 @@
       });
     }
 
+    /* open/cancel reply forms */
+    document.querySelectorAll('[data-open-reply]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const form = document.getElementById('reply-form-' + btn.dataset.openReply);
+        if (form) { form.classList.toggle('open'); if (form.classList.contains('open')) form.querySelector('textarea')?.focus(); }
+      });
+    });
+    document.querySelectorAll('[data-cancel-reply]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const form = document.getElementById('reply-form-' + btn.dataset.cancelReply);
+        if (form) { form.classList.remove('open'); form.querySelector('textarea').value = ''; }
+      });
+    });
+
+    /* submit replies */
+    document.querySelectorAll('[data-submit-reply]').forEach(btn => {
+      btn.addEventListener('click', async () => {
+        const parentId = btn.dataset.submitReply;
+        const body = document.getElementById('reply-input-' + parentId)?.value.trim();
+        if (!body || !sbSession) return;
+        btn.disabled = true;
+        const { data, error } = await sb.from('hub_comments')
+          .insert({ post_id: post.id, parent_id: parentId, body, author_id: sbSession.user.id, author_email: currentUsername() })
+          .select().single();
+        btn.disabled = false;
+        if (!error && data) {
+          openPostComments = [...openPostComments, data];
+          post.comment_count = (post.comment_count || 0) + 1;
+          renderDetail(post, openPostComments);
+        }
+      });
+    });
+
     /* delete comments */
     document.querySelectorAll('[data-delete-comment]').forEach(btn => {
       btn.addEventListener('click', async () => {
@@ -759,7 +820,7 @@
         if (!confirm('Delete this comment?')) return;
         const { error } = await sb.from('hub_comments').delete().eq('id', cid);
         if (!error) {
-          openPostComments = openPostComments.filter(c => c.id !== cid);
+          openPostComments = openPostComments.filter(c => c.id !== cid && c.parent_id !== cid);
           post.comment_count = Math.max(0, (post.comment_count||1) - 1);
           renderDetail(post, openPostComments);
         }
