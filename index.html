@@ -43,7 +43,7 @@
     .btn-ghost:hover { border-color:var(--text);color:var(--text); }
     .btn-sm { padding:6px 14px;font-size:12px; }
 
-    .hub-avatar-sm { width:30px;height:30px;border-radius:50%;object-fit:cover;cursor:pointer; }
+    .hub-avatar-sm { width:32px;height:32px;border-radius:50%;object-fit:cover;cursor:pointer;border:2px solid var(--border);flex-shrink:0; }
 
     .hub-main { max-width:820px;margin:0 auto;padding:28px 20px; }
 
@@ -547,12 +547,13 @@
       const name   = currentUsername();
       const myProfile = profileMap[sbSession.user.id];
       const avatar = myProfile?.avatar_url || initialAvatar(name);
+      el.style.cssText = 'display:flex;align-items:center;gap:10px';
       el.innerHTML = `
         <button class="btn btn-primary btn-sm" id="new-post-btn">
           <svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M12 4v16m8-8H4"/></svg>
           New Post
         </button>
-        <img class="hub-avatar-sm" src="${avatar}" alt="${name}" title="Profile settings" id="user-avatar" style="border:2px solid var(--border)">`;
+        <img class="hub-avatar-sm" src="${avatar}" alt="${name}" title="Profile settings" id="user-avatar">`;
       document.getElementById('new-post-btn').addEventListener('click', openModal);
       document.getElementById('user-avatar').addEventListener('click', openProfile);
     } else {
