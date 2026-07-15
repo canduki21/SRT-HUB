@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Publication Reports — SRT Hub</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&family=Open+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <style>
+    *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
+    :root {
+      --bg:#001219; --surface:#022e4b; --border:rgba(143,141,141,0.25);
+      --accent:#c87a41; --text:#fafafa; --muted:#8f8d8d; --radius:8px;
+    }
+    body { font-family:'Open Sans',sans-serif; background:var(--bg); color:var(--text); min-height:100vh; }
+
+    /* NAV */
+    nav { background:#01202f; border-bottom:1px solid var(--border); padding:0 32px; height:56px; display:flex; align-items:center; gap:24px; position:sticky; top:0; z-index:100; }
+    .nav-logo { font-family:'Montserrat',sans-serif; font-weight:900; font-size:16px; letter-spacing:.08em; color:var(--text); text-decoration:none; display:flex; align-items:center; gap:10px; }
+    .nav-logo svg { width:28px; height:28px; }
+    .nav-links { display:flex; gap:6px; margin-left:auto; }
+    .nav-link { font-size:12px; font-weight:600; color:var(--muted); text-decoration:none; padding:6px 12px; border-radius:6px; transition:background .15s,color .15s; }
+    .nav-link:hover, .nav-link.active { background:rgba(200,122,65,.12); color:var(--accent); }
+    .nav-user { font-size:12px; color:var(--muted); margin-left:8px; }
+
+    /* PAGE HEADER */
+    .page-head { padding:48px 40px 36px; max-width:1200px; margin:0 auto; }
+    .page-eyebrow { font-family:'Montserrat',sans-serif; font-size:10px; font-weight:700; letter-spacing:.2em; text-transform:uppercase; color:var(--accent); margin-bottom:12px; }
+    .page-title { font-family:'Montserrat',sans-serif; font-size:clamp(24px,3.5vw,40px); font-weight:900; text-transform:uppercase; letter-spacing:.03em; color:var(--text); margin-bottom:14px; }
+    .page-sub { font-size:14px; color:var(--muted); line-height:1.75; max-width:620px; }
+
+    /* REPORT GRID */
+    .reports-wrap { max-width:1200px; margin:0 auto; padding:0 40px 60px; }
+    .reports-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:24px; }
+    @media(max-width:900px){ .reports-grid{grid-template-columns:repeat(2,1fr);} }
+    @media(max-width:560px){ .reports-grid{grid-template-columns:1fr;} .page-head,.reports-wrap{padding-left:20px;padding-right:20px;} }
+
+    .report-card { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); overflow:hidden; display:flex; flex-direction:column; transition:border-color .2s,box-shadow .2s; }
+    .report-card:hover { border-color:rgba(200,122,65,.4); box-shadow:0 4px 24px rgba(0,0,0,.4); }
+    .report-card-head { background:linear-gradient(135deg,#01202f 0%,#011828 100%); padding:24px 22px 20px; border-bottom:1px solid var(--border); position:relative; }
+    .report-card-head::after { content:''; position:absolute; bottom:0; left:22px; right:22px; height:2px; background:linear-gradient(90deg,var(--accent),transparent); }
+    .report-simulant { font-family:'Montserrat',sans-serif; font-size:22px; font-weight:900; color:var(--text); letter-spacing:.02em; margin-bottom:4px; }
+    .report-type { font-size:10.5px; font-weight:700; letter-spacing:.14em; text-transform:uppercase; color:var(--accent); }
+    .report-card-body { padding:20px 22px; flex:1; display:flex; flex-direction:column; gap:14px; }
+    .report-meta { display:flex; gap:16px; flex-wrap:wrap; }
+    .report-stat { display:flex; flex-direction:column; gap:3px; }
+    .report-stat-val { font-family:'Montserrat',sans-serif; font-size:18px; font-weight:900; color:var(--text); }
+    .report-stat-lbl { font-size:10px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--muted); }
+    .report-divider { height:1px; background:var(--border); }
+    .report-topics { display:flex; flex-wrap:wrap; gap:6px; }
+    .report-topic { font-size:10.5px; font-weight:600; background:rgba(200,122,65,.12); color:var(--accent); border:1px solid rgba(200,122,65,.2); border-radius:4px; padding:3px 8px; }
+    .report-desc { font-size:12.5px; color:var(--muted); line-height:1.65; }
+    .report-card-foot { padding:16px 22px; border-top:1px solid var(--border); display:flex; align-items:center; justify-content:space-between; gap:12px; }
+    .report-price { font-family:'Montserrat',sans-serif; font-size:20px; font-weight:900; color:var(--text); }
+    .report-price span { font-size:11px; font-weight:600; color:var(--muted); }
+    .btn-buy { background:var(--accent); color:#fff; font-family:'Montserrat',sans-serif; font-size:11px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; padding:10px 18px; border-radius:6px; border:none; cursor:pointer; transition:background .15s; white-space:nowrap; }
+    .btn-buy:hover { background:#b86d35; }
+    .btn-view { background:rgba(200,122,65,.15); color:var(--accent); font-family:'Montserrat',sans-serif; font-size:11px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; padding:10px 18px; border-radius:6px; border:1px solid rgba(200,122,65,.3); cursor:pointer; transition:background .15s; white-space:nowrap; text-decoration:none; display:inline-block; }
+    .btn-view:hover { background:rgba(200,122,65,.25); }
+
+    /* MODAL */
+    .modal-bg { display:none; position:fixed; inset:0; background:rgba(0,0,0,.7); z-index:500; align-items:center; justify-content:center; }
+    .modal-bg.open { display:flex; }
+    .modal { background:#01202f; border:1px solid var(--border); border-radius:12px; width:100%; max-width:480px; padding:36px; position:relative; }
+    .modal-close { position:absolute; top:16px; right:16px; background:none; border:none; color:var(--muted); font-size:20px; cursor:pointer; line-height:1; }
+    .modal-title { font-family:'Montserrat',sans-serif; font-size:18px; font-weight:800; color:var(--text); margin-bottom:6px; }
+    .modal-sub { font-size:12.5px; color:var(--muted); margin-bottom:24px; }
+    .modal-order-summary { background:rgba(0,0,0,.3); border:1px solid var(--border); border-radius:6px; padding:14px 16px; margin-bottom:22px; display:flex; justify-content:space-between; align-items:center; }
+    .modal-item-name { font-size:13px; color:var(--text); font-weight:600; }
+    .modal-item-price { font-family:'Montserrat',sans-serif; font-size:16px; font-weight:900; color:var(--accent); }
+    .fg { margin-bottom:14px; }
+    .fl { font-size:10px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--muted); display:block; margin-bottom:5px; }
+    .fi { width:100%; background:rgba(0,0,0,.3); border:1px solid var(--border); color:var(--text); font-family:'Open Sans',sans-serif; font-size:13px; padding:10px 12px; border-radius:6px; outline:none; transition:border-color .15s; }
+    .fi:focus { border-color:var(--accent); }
+    .form-row2 { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+    .btn-pay { width:100%; background:var(--accent); color:#fff; font-family:'Montserrat',sans-serif; font-size:12px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; padding:13px; border-radius:6px; border:none; cursor:pointer; transition:background .15s; margin-top:6px; }
+    .btn-pay:hover { background:#b86d35; }
+    .modal-confirm { display:none; text-align:center; padding:10px 0; }
+    .confirm-check { width:64px; height:64px; border-radius:50%; background:rgba(34,197,94,.1); border:3px solid #22c55e; display:flex; align-items:center; justify-content:center; margin:0 auto 18px; }
+    .confirm-check svg { width:30px; height:30px; stroke:#22c55e; fill:none; stroke-width:2.5; }
+    .confirm-title { font-family:'Montserrat',sans-serif; font-size:20px; font-weight:900; color:var(--text); margin-bottom:8px; }
+    .confirm-sub { font-size:13px; color:var(--muted); line-height:1.7; margin-bottom:22px; }
+    .btn-view-report { display:inline-block; background:var(--accent); color:#fff; font-family:'Montserrat',sans-serif; font-size:11.5px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; padding:12px 28px; border-radius:6px; text-decoration:none; transition:background .15s; }
+    .btn-view-report:hover { background:#b86d35; }
+
+    /* AUTH GATE */
+    .auth-gate { max-width:480px; margin:80px auto; text-align:center; padding:20px; }
+    .auth-gate h2 { font-family:'Montserrat',sans-serif; font-size:22px; font-weight:800; color:var(--text); margin-bottom:10px; }
+    .auth-gate p { font-size:14px; color:var(--muted); margin-bottom:24px; }
+    .btn-login { background:var(--accent); color:#fff; font-family:'Montserrat',sans-serif; font-size:12px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; padding:12px 28px; border-radius:6px; text-decoration:none; }
+
+    .loading { text-align:center; padding:60px; color:var(--muted); font-size:13px; }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="index.html">
+    <svg viewBox="0 0 28 28" fill="none"><polygon points="14,2 26,24 2,24" stroke="#c87a41" stroke-width="2" fill="none"/><line x1="14" y1="10" x2="14" y2="18" stroke="#c87a41" stroke-width="1.5"/><circle cx="14" cy="21" r="1.2" fill="#c87a41"/></svg>
+    SRT Hub
+  </a>
+  <div class="nav-links">
+    <a class="nav-link" href="index.html">Community</a>
+    <a class="nav-link active" href="reports.html">Reports</a>
+  </div>
+  <span class="nav-user" id="nav-user"></span>
+</nav>
+
+<div id="main-content">
+  <div class="loading">Loading reports...</div>
+</div>
+
+<!-- BUY MODAL -->
+<div class="modal-bg" id="buy-modal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal()">&times;</button>
+    <div id="modal-form-wrap">
+      <div class="modal-title" id="modal-title">Purchase Report</div>
+      <div class="modal-sub" id="modal-sub">Instant access after checkout. PDF-ready format.</div>
+      <div class="modal-order-summary">
+        <span class="modal-item-name" id="modal-item-name"></span>
+        <span class="modal-item-price" id="modal-item-price"></span>
+      </div>
+      <div class="fg"><label class="fl">Name</label><input class="fi" id="pay-name" type="text" value="Jane Smith" placeholder="Full name"></div>
+      <div class="fg"><label class="fl">Email</label><input class="fi" id="pay-email" type="email" value="jane.smith@nasa.gov" placeholder="you@institution.edu"></div>
+      <div class="fg"><label class="fl">Card Number</label><input class="fi" id="pay-card" type="text" value="4242 4242 4242 4242" placeholder="4242 4242 4242 4242"></div>
+      <div class="form-row2">
+        <div class="fg"><label class="fl">Expiry</label><input class="fi" type="text" value="12/28" placeholder="MM/YY"></div>
+        <div class="fg"><label class="fl">CVV</label><input class="fi" type="text" value="123" placeholder="123"></div>
+      </div>
+      <button class="btn-pay" onclick="completePurchase()">Complete Purchase</button>
+    </div>
+    <div class="modal-confirm" id="modal-confirm">
+      <div class="confirm-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+      <div class="confirm-title">Purchase Complete</div>
+      <p class="confirm-sub" id="confirm-sub-text"></p>
+      <a class="btn-view-report" id="confirm-view-link" href="#">View Report</a>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const SB_URL = 'https://mtdpaiadnldbvaqmyteg.supabase.co';
+const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im10ZHBhaWFkbmxkYnZhcW15dGVnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDc5NjA1NDUsImV4cCI6MjA2MzUzNjU0NX0.m_2N7JdFJPxjZMaGPUXlONM-TdBVZvtP79MJ60bXz08';
+const sb = supabase.createClient(SB_URL, SB_KEY);
+
+const REPORT_PRICE = 299;
+let currentSimulant = null;
+let purchases = [];
+
+async function init() {
+  const { data: { session } } = await sb.auth.getSession();
+  if (!session) {
+    document.getElementById('main-content').innerHTML = `
+      <div class="auth-gate">
+        <h2>Sign In to Access Reports</h2>
+        <p>Publication reports are available to registered SRT Hub members.</p>
+        <a class="btn-login" href="index.html">Go to Hub &amp; Sign In</a>
+      </div>`;
+    return;
+  }
+  document.getElementById('nav-user').textContent = session.user.email;
+
+  const { data: purch } = await sb.from('report_purchases').select('simulant').eq('user_id', session.user.id);
+  purchases = (purch || []).map(p => p.simulant);
+
+  const { data: papers } = await sb.from('paper_submissions').select('simulants,applications,category,year').eq('status','approved');
+
+  if (!papers || papers.length === 0) {
+    document.getElementById('main-content').innerHTML = '<div class="loading">No approved papers in the database yet.</div>';
+    return;
+  }
+
+  const simulantMap = {};
+  papers.forEach(p => {
+    (p.simulants || []).forEach(s => {
+      if (!simulantMap[s]) simulantMap[s] = { count:0, years:[], apps:new Set(), categories:new Set() };
+      simulantMap[s].count++;
+      if (p.year) simulantMap[s].years.push(p.year);
+      (p.applications||[]).forEach(a => simulantMap[s].apps.add(a));
+      if (p.category) simulantMap[s].categories.add(p.category);
+    });
+  });
+
+  renderPage(simulantMap);
+}
+
+function renderPage(simulantMap) {
+  const cards = Object.entries(simulantMap).map(([sim, data]) => {
+    const minYear = Math.min(...data.years);
+    const maxYear = Math.max(...data.years);
+    const yearRange = minYear === maxYear ? `${minYear}` : `${minYear}–${maxYear}`;
+    const topics = [...data.categories].slice(0,4);
+    const owned = purchases.includes(sim);
+    return `
+      <div class="report-card">
+        <div class="report-card-head">
+          <div class="report-simulant">${sim}</div>
+          <div class="report-type">Publication Report &mdash; Research Compendium</div>
+        </div>
+        <div class="report-card-body">
+          <div class="report-meta">
+            <div class="report-stat"><div class="report-stat-val">${data.count}</div><div class="report-stat-lbl">Papers</div></div>
+            <div class="report-stat"><div class="report-stat-val">${yearRange}</div><div class="report-stat-lbl">Year range</div></div>
+            <div class="report-stat"><div class="report-stat-val">${data.apps.size}</div><div class="report-stat-lbl">Applications</div></div>
+          </div>
+          <div class="report-divider"></div>
+          <div class="report-topics">${topics.map(t => `<span class="report-topic">${t}</span>`).join('')}</div>
+          <p class="report-desc">Comprehensive compilation of peer-reviewed publications utilizing ${sim} — including abstracts, applications, key findings, and full citation data in spec-sheet format.</p>
+        </div>
+        <div class="report-card-foot">
+          <div class="report-price">$${REPORT_PRICE} <span>/ report</span></div>
+          ${owned
+            ? `<a class="btn-view" href="report-view.html?simulant=${encodeURIComponent(sim)}">View Report</a>`
+            : `<button class="btn-buy" onclick="openModal('${sim}')">Buy Report</button>`}
+        </div>
+      </div>`;
+  }).join('');
+
+  document.getElementById('main-content').innerHTML = `
+    <div class="page-head">
+      <div class="page-eyebrow">Research Intelligence</div>
+      <div class="page-title">Simulant Publication Reports</div>
+      <p class="page-sub">Every peer-reviewed paper in our database, compiled by simulant into a structured research compendium &mdash; formatted identically to SRT spec sheets. Instant access after purchase.</p>
+    </div>
+    <div class="reports-wrap">
+      <div class="reports-grid">${cards}</div>
+    </div>`;
+}
+
+function openModal(simulant) {
+  currentSimulant = simulant;
+  document.getElementById('modal-title').textContent = `Purchase ${simulant} Report`;
+  document.getElementById('modal-item-name').textContent = `${simulant} Publication Report`;
+  document.getElementById('modal-item-price').textContent = `$${REPORT_PRICE}.00`;
+  document.getElementById('modal-form-wrap').style.display = 'block';
+  document.getElementById('modal-confirm').style.display = 'none';
+  document.getElementById('buy-modal').classList.add('open');
+}
+
+function closeModal() {
+  document.getElementById('buy-modal').classList.remove('open');
+  currentSimulant = null;
+}
+
+async function completePurchase() {
+  if (!currentSimulant) return;
+  const name = document.getElementById('pay-name').value;
+  const email = document.getElementById('pay-email').value;
+  if (!name || !email) { alert('Please fill in name and email.'); return; }
+
+  const orderRef = 'SRT-RPT-' + Math.random().toString(36).substring(2,8).toUpperCase();
+  const { data: { session } } = await sb.auth.getSession();
+
+  await sb.from('report_purchases').insert({
+    user_id: session.user.id,
+    simulant: currentSimulant,
+    order_ref: orderRef
+  });
+
+  purchases.push(currentSimulant);
+
+  document.getElementById('modal-form-wrap').style.display = 'none';
+  document.getElementById('confirm-sub-text').textContent =
+    `Order ${orderRef} confirmed for ${email}. Your ${currentSimulant} Publication Report is ready.`;
+  document.getElementById('confirm-view-link').href = `report-view.html?simulant=${encodeURIComponent(currentSimulant)}`;
+  document.getElementById('modal-confirm').style.display = 'block';
+}
+
+document.getElementById('buy-modal').addEventListener('click', e => { if (e.target === e.currentTarget) closeModal(); });
+init();
+</script>
+</body>
+</html>

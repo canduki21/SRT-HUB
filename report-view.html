@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Publication Report — SRT</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&family=Open+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <style>
+    *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
+    body { font-family:'Open Sans',sans-serif; background:#f0f0f0; color:#1a1a1a; }
+
+    /* SCREEN NAV */
+    .screen-nav { background:#01202f; padding:10px 32px; display:flex; align-items:center; gap:16px; position:sticky; top:0; z-index:100; }
+    .screen-nav a { color:#8f8d8d; font-size:12px; text-decoration:none; }
+    .screen-nav a:hover { color:#fafafa; }
+    .screen-nav .sep { color:#444; }
+    .btn-print { margin-left:auto; background:#c87a41; color:#fff; font-family:'Montserrat',sans-serif; font-size:10.5px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; padding:8px 18px; border-radius:5px; border:none; cursor:pointer; }
+    .btn-print:hover { background:#b86d35; }
+    .screen-nav .auth-msg { font-size:12px; color:#e87676; }
+
+    /* REPORT PAGES */
+    .report-pages { max-width:900px; margin:30px auto; padding:0 20px 60px; display:flex; flex-direction:column; gap:24px; }
+
+    /* EACH PAGE */
+    .rpt-page { background:#fff; box-shadow:0 2px 20px rgba(0,0,0,.15); page-break-after:always; position:relative; }
+
+    /* SPEC SHEET HEADER — matches SRT dark bar */
+    .rpt-header { background:#1a1a1a; display:flex; align-items:center; padding:0 28px; height:64px; gap:18px; }
+    .rpt-logo { display:flex; align-items:center; gap:10px; flex-shrink:0; }
+    .rpt-logo svg { width:36px; height:36px; }
+    .rpt-logo-text { font-family:'Montserrat',sans-serif; font-weight:900; font-size:18px; letter-spacing:.06em; color:#fff; }
+    .rpt-header-divider { width:1px; height:36px; background:rgba(255,255,255,.2); }
+    .rpt-header-title { flex:1; }
+    .rpt-header-main { font-family:'Montserrat',sans-serif; font-size:14px; font-weight:700; color:#fff; }
+    .rpt-header-main strong { font-weight:900; }
+    .rpt-header-sub { font-size:10px; color:#888; letter-spacing:.08em; margin-top:2px; }
+
+    /* PAGE 1 BODY */
+    .rpt-body { padding:28px 30px; }
+
+    /* SUMMARY BAND */
+    .rpt-summary { display:grid; grid-template-columns:1fr auto; gap:24px; align-items:start; margin-bottom:24px; }
+    .rpt-summary-table { display:flex; flex-direction:column; gap:0; }
+    .rpt-sum-row { display:flex; border-bottom:1px solid #e8e8e8; padding:6px 0; font-size:12px; }
+    .rpt-sum-row:first-child { border-top:1px solid #e8e8e8; }
+    .rpt-sum-key { font-weight:700; color:#333; width:200px; flex-shrink:0; }
+    .rpt-sum-val { color:#555; }
+    .rpt-stat-boxes { display:flex; flex-direction:column; gap:8px; min-width:140px; }
+    .rpt-stat-box { background:#1a1a1a; color:#fff; padding:10px 14px; text-align:center; border-radius:4px; }
+    .rpt-stat-box-val { font-family:'Montserrat',sans-serif; font-size:22px; font-weight:900; color:#c87a41; }
+    .rpt-stat-box-lbl { font-size:9px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:#999; margin-top:2px; }
+
+    /* SECTION HEADING */
+    .rpt-section-head { background:#1a1a1a; color:#fff; font-family:'Montserrat',sans-serif; font-size:10px; font-weight:700; letter-spacing:.14em; text-transform:uppercase; padding:7px 12px; margin:22px 0 14px; }
+
+    /* APPLICATIONS TABLE */
+    .rpt-app-table { width:100%; border-collapse:collapse; font-size:11.5px; }
+    .rpt-app-table th { background:#f0f0f0; font-family:'Montserrat',sans-serif; font-size:9.5px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:#555; padding:7px 10px; text-align:left; border-bottom:2px solid #1a1a1a; }
+    .rpt-app-table td { padding:6px 10px; border-bottom:1px solid #e8e8e8; color:#444; vertical-align:top; }
+    .rpt-app-table tr:nth-child(even) td { background:#fafafa; }
+    .rpt-app-tag { display:inline-block; background:#f5ede4; color:#c87a41; font-size:9px; font-weight:700; padding:2px 6px; border-radius:3px; margin:1px; }
+
+    /* PAPER ENTRIES */
+    .paper-entry { border:1px solid #e0e0e0; border-left:4px solid #1a1a1a; margin-bottom:20px; background:#fff; }
+    .paper-head { background:#f7f7f7; padding:12px 16px; border-bottom:1px solid #e8e8e8; display:flex; align-items:flex-start; gap:14px; }
+    .paper-num { font-family:'Montserrat',sans-serif; font-size:18px; font-weight:900; color:#c87a41; flex-shrink:0; min-width:28px; line-height:1.2; }
+    .paper-title { font-family:'Montserrat',sans-serif; font-size:12.5px; font-weight:800; color:#1a1a1a; line-height:1.4; margin-bottom:4px; }
+    .paper-meta { font-size:11px; color:#777; }
+    .paper-body { padding:12px 16px; display:grid; grid-template-columns:1fr auto; gap:16px; }
+    .paper-abstract { font-size:11.5px; color:#444; line-height:1.7; }
+    .paper-sidebar { display:flex; flex-direction:column; gap:8px; min-width:150px; }
+    .paper-sidebar-box { background:#f5f5f5; border:1px solid #e8e8e8; padding:8px 10px; border-radius:3px; }
+    .paper-sidebar-label { font-size:8.5px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:#999; margin-bottom:5px; }
+    .paper-sidebar-val { font-size:10.5px; color:#333; }
+    .paper-app-tag { display:inline-block; background:#f5ede4; color:#c87a41; font-size:9px; font-weight:700; padding:2px 6px; border-radius:3px; margin:1px 1px 0 0; }
+    .paper-doi { font-size:10px; color:#c87a41; word-break:break-all; }
+    .paper-doi a { color:#c87a41; }
+
+    /* FOOTER */
+    .rpt-footer { background:#1a1a1a; color:#666; font-size:9px; padding:8px 28px; display:flex; justify-content:space-between; letter-spacing:.04em; }
+    .rpt-footer span { color:#999; }
+
+    /* LOADING / ACCESS DENIED */
+    .rpt-gate { text-align:center; padding:80px 20px; }
+    .rpt-gate h2 { font-family:'Montserrat',sans-serif; font-size:20px; font-weight:800; color:#1a1a1a; margin-bottom:10px; }
+    .rpt-gate p { font-size:14px; color:#666; margin-bottom:20px; }
+    .btn-back { background:#1a1a1a; color:#fff; font-family:'Montserrat',sans-serif; font-size:11px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; padding:11px 24px; border-radius:5px; text-decoration:none; display:inline-block; }
+
+    /* PRINT */
+    @media print {
+      .screen-nav { display:none; }
+      body { background:#fff; }
+      .report-pages { margin:0; padding:0; max-width:100%; gap:0; }
+      .rpt-page { box-shadow:none; page-break-after:always; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="screen-nav">
+  <a href="reports.html">&larr; Reports</a>
+  <span class="sep">|</span>
+  <span id="breadcrumb-sim" style="color:#fafafa; font-size:12px;"></span>
+  <span id="auth-msg" class="auth-msg" style="display:none">Purchase required to view this report.</span>
+  <button class="btn-print" onclick="window.print()">Print / Save PDF</button>
+</div>
+
+<div id="report-output">
+  <div class="rpt-gate"><h2>Loading report...</h2></div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const SB_URL = 'https://mtdpaiadnldbvaqmyteg.supabase.co';
+const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im10ZHBhaWFkbmxkYnZhcW15dGVnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDc5NjA1NDUsImV4cCI6MjA2MzUzNjU0NX0.m_2N7JdFJPxjZMaGPUXlONM-TdBVZvtP79MJ60bXz08';
+const sb = supabase.createClient(SB_URL, SB_KEY);
+
+const simulant = new URLSearchParams(window.location.search).get('simulant') || '';
+document.getElementById('breadcrumb-sim').textContent = simulant + ' Publication Report';
+document.title = simulant + ' Publication Report — SRT';
+
+async function init() {
+  const { data: { session } } = await sb.auth.getSession();
+  if (!session) {
+    showGate('Sign in required', 'You must be signed in to view reports.', true);
+    return;
+  }
+
+  const { data: purch } = await sb.from('report_purchases')
+    .select('id').eq('user_id', session.user.id).eq('simulant', simulant).maybeSingle();
+
+  if (!purch) {
+    document.getElementById('auth-msg').style.display = 'inline';
+    showGate('Purchase Required', `You have not purchased the ${simulant} report. Return to the Reports page to buy access.`, false);
+    return;
+  }
+
+  const { data: papers } = await sb.from('paper_submissions')
+    .select('*').eq('status','approved').contains('simulants', [simulant]).order('year', { ascending:false });
+
+  renderReport(papers || []);
+}
+
+function showGate(title, msg, isLogin) {
+  document.getElementById('report-output').innerHTML = `
+    <div class="rpt-gate">
+      <h2>${title}</h2>
+      <p>${msg}</p>
+      <a class="btn-back" href="${isLogin ? 'index.html' : 'reports.html'}">${isLogin ? 'Go to Hub' : 'Back to Reports'}</a>
+    </div>`;
+}
+
+function renderReport(papers) {
+  if (papers.length === 0) {
+    showGate('No papers found', `No approved papers found for ${simulant}.`, false);
+    return;
+  }
+
+  const years = papers.map(p=>p.year).filter(Boolean);
+  const minYear = Math.min(...years);
+  const maxYear = Math.max(...years);
+  const allApps = [...new Set(papers.flatMap(p=>p.applications||[]))];
+  const allCats = [...new Set(papers.map(p=>p.category).filter(Boolean))];
+  const reportNum = `RPT-${simulant.replace(/[^A-Z0-9]/gi,'').toUpperCase()}-${maxYear}`;
+  const today = new Date().toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'});
+
+  const appRows = allApps.map(a => {
+    const relevant = papers.filter(p=>(p.applications||[]).includes(a));
+    return `<tr><td>${a}</td><td>${relevant.length}</td><td>${relevant.map(p=>`<span class="rpt-app-tag">${p.year||'—'}</span>`).join('')}</td></tr>`;
+  }).join('');
+
+  const paperEntries = papers.map((p, i) => {
+    const apps = (p.applications||[]).map(a=>`<span class="paper-app-tag">${a}</span>`).join('');
+    const cats = (p.category||'').replace(/_/g,' ');
+    return `
+      <div class="paper-entry">
+        <div class="paper-head">
+          <div class="paper-num">${String(i+1).padStart(2,'0')}</div>
+          <div>
+            <div class="paper-title">${p.title||'Untitled'}</div>
+            <div class="paper-meta">${p.authors||'Unknown authors'} &mdash; ${p.year||'n.d.'}</div>
+          </div>
+        </div>
+        <div class="paper-body">
+          <div>
+            <div class="paper-abstract">${p.abstract||'No abstract available.'}</div>
+            ${p.url ? `<div class="paper-doi" style="margin-top:10px">DOI: <a href="${p.url}" target="_blank">${p.url}</a></div>` : ''}
+          </div>
+          <div class="paper-sidebar">
+            <div class="paper-sidebar-box">
+              <div class="paper-sidebar-label">Category</div>
+              <div class="paper-sidebar-val">${cats||'General'}</div>
+            </div>
+            ${apps ? `<div class="paper-sidebar-box"><div class="paper-sidebar-label">Applications</div><div class="paper-sidebar-val">${apps}</div></div>` : ''}
+            <div class="paper-sidebar-box">
+              <div class="paper-sidebar-label">Year</div>
+              <div class="paper-sidebar-val">${p.year||'n.d.'}</div>
+            </div>
+          </div>
+        </div>
+      </div>`;
+  }).join('');
+
+  const html = `
+  <div class="report-pages">
+
+    <!-- PAGE 1: OVERVIEW -->
+    <div class="rpt-page">
+      <div class="rpt-header">
+        <div class="rpt-logo">
+          <svg viewBox="0 0 36 36" fill="none"><polygon points="18,3 33,31 3,31" stroke="#c87a41" stroke-width="2.2" fill="none"/><line x1="18" y1="13" x2="18" y2="24" stroke="#c87a41" stroke-width="1.8"/><circle cx="18" cy="27.5" r="1.5" fill="#c87a41"/></svg>
+          <span class="rpt-logo-text">SRT</span>
+        </div>
+        <div class="rpt-header-divider"></div>
+        <div class="rpt-header-title">
+          <div class="rpt-header-main">${simulant} Simulant &nbsp;|&nbsp; <strong>Publication Report</strong></div>
+          <div class="rpt-header-sub">${reportNum}</div>
+        </div>
+      </div>
+      <div class="rpt-body">
+        <div class="rpt-summary">
+          <div class="rpt-summary-table">
+            <div class="rpt-sum-row"><span class="rpt-sum-key">Simulant:</span><span class="rpt-sum-val">${simulant}</span></div>
+            <div class="rpt-sum-row"><span class="rpt-sum-key">Report Type:</span><span class="rpt-sum-val">Research Publication Compendium</span></div>
+            <div class="rpt-sum-row"><span class="rpt-sum-key">Publication Year Range:</span><span class="rpt-sum-val">${minYear} – ${maxYear}</span></div>
+            <div class="rpt-sum-row"><span class="rpt-sum-key">Total Papers:</span><span class="rpt-sum-val">${papers.length}</span></div>
+            <div class="rpt-sum-row"><span class="rpt-sum-key">Research Areas:</span><span class="rpt-sum-val">${allCats.join(', ')}</span></div>
+            <div class="rpt-sum-row"><span class="rpt-sum-key">Applications Covered:</span><span class="rpt-sum-val">${allApps.length}</span></div>
+            <div class="rpt-sum-row"><span class="rpt-sum-key">Report Generated:</span><span class="rpt-sum-val">${today}</span></div>
+            <div class="rpt-sum-row"><span class="rpt-sum-key">Data Source:</span><span class="rpt-sum-val">SRT Hub Publication Database</span></div>
+          </div>
+          <div class="rpt-stat-boxes">
+            <div class="rpt-stat-box"><div class="rpt-stat-box-val">${papers.length}</div><div class="rpt-stat-box-lbl">Total Papers</div></div>
+            <div class="rpt-stat-box"><div class="rpt-stat-box-val">${allApps.length}</div><div class="rpt-stat-box-lbl">Applications</div></div>
+            <div class="rpt-stat-box"><div class="rpt-stat-box-val">${maxYear - minYear + 1}</div><div class="rpt-stat-box-lbl">Year Span</div></div>
+          </div>
+        </div>
+
+        <div class="rpt-section-head">Applications Coverage</div>
+        <table class="rpt-app-table">
+          <thead><tr><th>Application</th><th># Papers</th><th>Years</th></tr></thead>
+          <tbody>${appRows}</tbody>
+        </table>
+      </div>
+      <div class="rpt-footer">
+        <span>Space Resource Technologies &mdash; SRT Hub Publication Database</span>
+        <span>${reportNum} &mdash; Page 1 of ${Math.ceil(papers.length / 3) + 1}</span>
+      </div>
+    </div>
+
+    <!-- PAGE 2+: PAPER ENTRIES -->
+    <div class="rpt-page">
+      <div class="rpt-header">
+        <div class="rpt-logo">
+          <svg viewBox="0 0 36 36" fill="none"><polygon points="18,3 33,31 3,31" stroke="#c87a41" stroke-width="2.2" fill="none"/><line x1="18" y1="13" x2="18" y2="24" stroke="#c87a41" stroke-width="1.8"/><circle cx="18" cy="27.5" r="1.5" fill="#c87a41"/></svg>
+          <span class="rpt-logo-text">SRT</span>
+        </div>
+        <div class="rpt-header-divider"></div>
+        <div class="rpt-header-title">
+          <div class="rpt-header-main">${simulant} Simulant &nbsp;|&nbsp; <strong>Publication Report</strong></div>
+          <div class="rpt-header-sub">${reportNum}</div>
+        </div>
+      </div>
+      <div class="rpt-body">
+        <div class="rpt-section-head">Full Paper Compendium &mdash; ${papers.length} publications</div>
+        ${paperEntries}
+      </div>
+      <div class="rpt-footer">
+        <span>Space Resource Technologies &mdash; SRT Hub Publication Database</span>
+        <span>${reportNum} &mdash; Research Compendium</span>
+      </div>
+    </div>
+
+  </div>`;
+
+  document.getElementById('report-output').innerHTML = html;
+}
+
+init();
+</script>
+</body>
+</html>
