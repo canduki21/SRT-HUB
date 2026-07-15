@@ -10,8 +10,14 @@
     .prod-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:0; border:1px solid var(--border); border-radius:6px; overflow:hidden; }
     .prod-card { display:flex; flex-direction:column; border-right:1px solid var(--border); border-bottom:1px solid var(--border); background:var(--bg); transition:background .15s; }
     .prod-card:hover { background:#fafbfc; }
-    .prod-img-wrap { background:#f7f8fa; padding:28px 20px 0; display:flex; align-items:flex-end; justify-content:center; height:240px; overflow:hidden; }
-    .prod-img-wrap img { max-width:100%; max-height:210px; object-fit:contain; filter:drop-shadow(0 6px 14px rgba(0,0,0,.13)); }
+    .prod-img-wrap { background:#f7f8fa; padding:28px 20px 0; display:flex; align-items:flex-end; justify-content:center; height:240px; overflow:hidden; position:relative; }
+    .prod-img-wrap img { max-width:100%; max-height:210px; object-fit:contain; filter:drop-shadow(0 6px 14px rgba(0,0,0,.13)); transition:opacity .2s; }
+
+    .pkg-tabs { display:flex; gap:0; border-top:1px solid var(--border); }
+    .pkg-tab { flex:1; padding:8px 0; font-family:'Montserrat',sans-serif; font-size:10px; font-weight:700; letter-spacing:.09em; text-transform:uppercase; text-align:center; background:var(--bg2); color:var(--muted); border:none; cursor:pointer; border-right:1px solid var(--border); transition:background .15s,color .15s; }
+    .pkg-tab:last-child { border-right:none; }
+    .pkg-tab.active { background:#fff; color:var(--orange); }
+
     .prod-body { padding:20px 22px 24px; flex:1; display:flex; flex-direction:column; border-top:1px solid var(--border); }
     .prod-grade { font-size:9.5px; font-weight:700; letter-spacing:.13em; text-transform:uppercase; color:var(--muted); margin-bottom:5px; }
     .prod-name { font-family:'Montserrat',sans-serif; font-size:19px; font-weight:800; color:var(--text); margin-bottom:6px; }
@@ -75,7 +81,7 @@
   <div class="page-hero-inner">
     <div class="page-hero-eyebrow">Greenspar Product Line</div>
     <div class="page-hero-title">Anorthosite Products</div>
-    <div class="page-hero-sub">From run-of-mine lump ore to ultra-fine milled powder &mdash; five grades engineered for space research and advanced industry.</div>
+    <div class="page-hero-sub">From run-of-mine lump ore to ultra-fine milled powder &mdash; five grades in two formats, engineered for space research and advanced industry.</div>
   </div>
 </div>
 
@@ -85,11 +91,17 @@
 
       <!-- AnoRoq -->
       <div class="prod-card">
-        <div class="prod-img-wrap"><img src="../images/anoroq.png" alt="AnoRoq"></div>
+        <div class="prod-img-wrap">
+          <img id="img-anoroq" src="../images/anoroq-bag.png" alt="AnoRoq">
+        </div>
+        <div class="pkg-tabs">
+          <button class="pkg-tab active" id="tab-anoroq-bag" onclick="switchPkg('anoroq','bag')">Bulk Bag</button>
+          <button class="pkg-tab" id="tab-anoroq-bucket" onclick="switchPkg('anoroq','bucket')">Bucket</button>
+        </div>
         <div class="prod-body">
           <div class="prod-grade">High-Purity Anorthosite</div>
           <div class="prod-name">AnoRoq</div>
-          <div class="prod-price">$28.00 <span>/ kg</span></div>
+          <div class="prod-price" id="price-anoroq">$28.00 <span>/ kg &mdash; Bulk Bag</span></div>
           <p class="prod-desc">Run-of-mine lump ore. High purity, very low quartz, low alkali &mdash; primary feedstock for all Greenspar products and bulk lunar analog studies.</p>
           <div class="prod-specs">
             <div class="spec-row"><span class="spec-k">Form</span><span class="spec-v">Lump ore</span></div>
@@ -104,17 +116,23 @@
               <button class="qty-btn" onclick="changeQty('anoroq',1)">+</button>
             </div>
           </div>
-          <button class="btn-cart" onclick="addToCart({id:'anoroq',name:'AnoRoq',price:28,img:'../images/anoroq.png'},'anoroq')">Add to Cart</button>
+          <button class="btn-cart" onclick="addToCart('anoroq')">Add to Cart</button>
         </div>
       </div>
 
       <!-- Greenspar 2000 -->
       <div class="prod-card">
-        <div class="prod-img-wrap"><img src="../images/greenspar-2000.png" alt="Greenspar 2000"></div>
+        <div class="prod-img-wrap">
+          <img id="img-gs2000" src="../images/greenspar-2000-bag.png" alt="Greenspar 2000">
+        </div>
+        <div class="pkg-tabs">
+          <button class="pkg-tab active" id="tab-gs2000-bag" onclick="switchPkg('gs2000','bag')">Bulk Bag</button>
+          <button class="pkg-tab" id="tab-gs2000-bucket" onclick="switchPkg('gs2000','bucket')">Bucket</button>
+        </div>
         <div class="prod-body">
           <div class="prod-grade">High-Purity Anorthosite</div>
           <div class="prod-name">Greenspar 2000</div>
-          <div class="prod-price">$45.00 <span>/ kg</span></div>
+          <div class="prod-price" id="price-gs2000">$45.00 <span>/ kg &mdash; Bulk Bag</span></div>
           <p class="prod-desc">Sand-like anorthosite product. High purity, low iron &mdash; ideal for fiberglass manufacturing and ISRU feedstock experiments.</p>
           <div class="prod-specs">
             <div class="spec-row"><span class="spec-k">Form</span><span class="spec-v">Coarse sand</span></div>
@@ -129,17 +147,23 @@
               <button class="qty-btn" onclick="changeQty('gs2000',1)">+</button>
             </div>
           </div>
-          <button class="btn-cart" onclick="addToCart({id:'gs2000',name:'Greenspar 2000',price:45,img:'../images/greenspar-2000.png'},'gs2000')">Add to Cart</button>
+          <button class="btn-cart" onclick="addToCart('gs2000')">Add to Cart</button>
         </div>
       </div>
 
       <!-- Greenspar 60 -->
       <div class="prod-card">
-        <div class="prod-img-wrap"><img src="../images/greenspar-60.png" alt="Greenspar 60"></div>
+        <div class="prod-img-wrap">
+          <img id="img-gs60" src="../images/greenspar-60-bag.png" alt="Greenspar 60">
+        </div>
+        <div class="pkg-tabs">
+          <button class="pkg-tab active" id="tab-gs60-bag" onclick="switchPkg('gs60','bag')">Bulk Bag</button>
+          <button class="pkg-tab" id="tab-gs60-bucket" onclick="switchPkg('gs60','bucket')">Bucket</button>
+        </div>
         <div class="prod-body">
           <div class="prod-grade">High-Purity Anorthosite</div>
           <div class="prod-name">Greenspar 60</div>
-          <div class="prod-price">$65.00 <span>/ kg</span></div>
+          <div class="prod-price" id="price-gs60">$65.00 <span>/ kg &mdash; Bulk Bag</span></div>
           <p class="prod-desc">60 &micro;m milled anorthosite powder. High whiteness, low quartz &mdash; for coatings, polymer applications, and simulant blending.</p>
           <div class="prod-specs">
             <div class="spec-row"><span class="spec-k">Form</span><span class="spec-v">Milled powder</span></div>
@@ -154,17 +178,23 @@
               <button class="qty-btn" onclick="changeQty('gs60',1)">+</button>
             </div>
           </div>
-          <button class="btn-cart" onclick="addToCart({id:'gs60',name:'Greenspar 60',price:65,img:'../images/greenspar-60.png'},'gs60')">Add to Cart</button>
+          <button class="btn-cart" onclick="addToCart('gs60')">Add to Cart</button>
         </div>
       </div>
 
       <!-- Greenspar 45 -->
       <div class="prod-card">
-        <div class="prod-img-wrap"><img src="../images/greenspar-45.png" alt="Greenspar 45"></div>
+        <div class="prod-img-wrap">
+          <img id="img-gs45" src="../images/greenspar-45-bag.png" alt="Greenspar 45">
+        </div>
+        <div class="pkg-tabs">
+          <button class="pkg-tab active" id="tab-gs45-bag" onclick="switchPkg('gs45','bag')">Bulk Bag</button>
+          <button class="pkg-tab" id="tab-gs45-bucket" onclick="switchPkg('gs45','bucket')">Bucket</button>
+        </div>
         <div class="prod-body">
           <div class="prod-grade">High-Purity Anorthosite</div>
           <div class="prod-name">Greenspar 45</div>
-          <div class="prod-price">$75.00 <span>/ kg</span></div>
+          <div class="prod-price" id="price-gs45">$75.00 <span>/ kg &mdash; Bulk Bag</span></div>
           <p class="prod-desc">45 &micro;m milled powder. Tighter particle sizing than GS-60 with the same high-whiteness, low-quartz specification.</p>
           <div class="prod-specs">
             <div class="spec-row"><span class="spec-k">Form</span><span class="spec-v">Milled powder</span></div>
@@ -179,17 +209,23 @@
               <button class="qty-btn" onclick="changeQty('gs45',1)">+</button>
             </div>
           </div>
-          <button class="btn-cart" onclick="addToCart({id:'gs45',name:'Greenspar 45',price:75,img:'../images/greenspar-45.png'},'gs45')">Add to Cart</button>
+          <button class="btn-cart" onclick="addToCart('gs45')">Add to Cart</button>
         </div>
       </div>
 
       <!-- Greenspar 15 -->
       <div class="prod-card">
-        <div class="prod-img-wrap"><img src="../images/greenspar-15.png" alt="Greenspar 15"></div>
+        <div class="prod-img-wrap">
+          <img id="img-gs15" src="../images/greenspar-15-bag.png" alt="Greenspar 15">
+        </div>
+        <div class="pkg-tabs">
+          <button class="pkg-tab active" id="tab-gs15-bag" onclick="switchPkg('gs15','bag')">Bulk Bag</button>
+          <button class="pkg-tab" id="tab-gs15-bucket" onclick="switchPkg('gs15','bucket')">Bucket</button>
+        </div>
         <div class="prod-body">
           <div class="prod-grade">High-Purity Anorthosite</div>
           <div class="prod-name">Greenspar 15</div>
-          <div class="prod-price">$95.00 <span>/ kg</span></div>
+          <div class="prod-price" id="price-gs15">$95.00 <span>/ kg &mdash; Bulk Bag</span></div>
           <p class="prod-desc">15 &micro;m ultra-fine milled powder. Finest grade &mdash; for specialized coatings, advanced polymers, and lunar dust simulant research.</p>
           <div class="prod-specs">
             <div class="spec-row"><span class="spec-k">Form</span><span class="spec-v">Ultra-fine powder</span></div>
@@ -204,7 +240,7 @@
               <button class="qty-btn" onclick="changeQty('gs15',1)">+</button>
             </div>
           </div>
-          <button class="btn-cart" onclick="addToCart({id:'gs15',name:'Greenspar 15',price:95,img:'../images/greenspar-15.png'},'gs15')">Add to Cart</button>
+          <button class="btn-cart" onclick="addToCart('gs15')">Add to Cart</button>
         </div>
       </div>
 
@@ -242,16 +278,47 @@
 <div class="toast" id="toast"></div>
 <script src="cart.js"></script>
 <script>
+const PRODUCTS = {
+  anoroq:  { name:'AnoRoq',        bagPrice:28,  bucketPrice:34,  bagImg:'../images/anoroq-bag.png',          bucketImg:'../images/anoroq-bucket.png' },
+  gs2000:  { name:'Greenspar 2000', bagPrice:45,  bucketPrice:55,  bagImg:'../images/greenspar-2000-bag.png',  bucketImg:'../images/greenspar-2000-bucket.png' },
+  gs60:    { name:'Greenspar 60',   bagPrice:65,  bucketPrice:79,  bagImg:'../images/greenspar-60-bag.png',    bucketImg:'../images/greenspar-60-bucket.png' },
+  gs45:    { name:'Greenspar 45',   bagPrice:75,  bucketPrice:90,  bagImg:'../images/greenspar-45-bag.png',    bucketImg:'../images/greenspar-45-bucket.png' },
+  gs15:    { name:'Greenspar 15',   bagPrice:95,  bucketPrice:115, bagImg:'../images/greenspar-15-bag.png',    bucketImg:'../images/greenspar-15-bucket.png' }
+};
+
+const selectedFormat = {};
+Object.keys(PRODUCTS).forEach(id => selectedFormat[id] = 'bag');
+
+function switchPkg(pid, format) {
+  const p = PRODUCTS[pid];
+  selectedFormat[pid] = format;
+  const price = format === 'bag' ? p.bagPrice : p.bucketPrice;
+  const img   = format === 'bag' ? p.bagImg   : p.bucketImg;
+  const label = format === 'bag' ? 'Bulk Bag'  : 'Bucket';
+  document.getElementById('img-' + pid).src = img;
+  document.getElementById('price-' + pid).innerHTML = '$' + price.toFixed(2) + ' <span>/ kg &mdash; ' + label + '</span>';
+  document.getElementById('tab-' + pid + '-bag').classList.toggle('active', format === 'bag');
+  document.getElementById('tab-' + pid + '-bucket').classList.toggle('active', format === 'bucket');
+}
+
 function changeQty(id, delta) {
   const el = document.getElementById('qty-' + id);
   el.value = Math.max(1, parseInt(el.value || 1) + delta);
 }
-function addToCart(product, qtyId) {
-  const qty = parseInt(document.getElementById('qty-' + qtyId).value) || 1;
-  Cart.add({ ...product, qty });
-  showToast(product.name + ' added to cart');
+
+function addToCart(pid) {
+  const p = PRODUCTS[pid];
+  const format = selectedFormat[pid];
+  const price = format === 'bag' ? p.bagPrice : p.bucketPrice;
+  const img   = format === 'bag' ? p.bagImg   : p.bucketImg;
+  const label = format === 'bag' ? 'Bulk Bag'  : 'Bucket';
+  const qty = parseInt(document.getElementById('qty-' + pid).value) || 1;
+  const cartId = pid + '-' + format;
+  Cart.add({ id: cartId, name: p.name + ' (' + label + ')', price, img, qty });
+  showToast(p.name + ' (' + label + ') added to cart');
   updateCartBar();
 }
+
 function updateCartBar() {
   const bar = document.getElementById('cart-bar');
   const n = Cart.count();
