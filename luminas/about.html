@@ -19,7 +19,10 @@
     @media(max-width:768px){ .mission-grid{grid-template-columns:1fr; gap:36px;} }
     .mission-quote { font-family:'Montserrat',sans-serif; font-size:clamp(17px,2.2vw,24px); font-weight:800; line-height:1.35; color:var(--text); border-left:4px solid var(--orange); padding-left:22px; margin-bottom:22px; }
     .mission-body { font-size:15px; color:var(--muted); line-height:1.8; }
-    .mission-img { width:100%; height:380px; object-fit:cover; border-radius:8px; border:1px solid var(--border); }
+    .mission-img { width:100%; height:380px; object-fit:cover; border-radius:8px; border:1px solid var(--border); display:block; }
+    .mission-img-wrap { position:relative; border-radius:8px; overflow:hidden; height:380px; }
+    .mission-img-wrap img { width:100%; height:100%; object-fit:cover; display:block; }
+    .mission-img-caption { position:absolute; bottom:0; left:0; right:0; background:linear-gradient(to top,rgba(10,12,22,.75),transparent); padding:18px 20px 14px; font-size:11.5px; color:rgba(255,255,255,.75); font-style:italic; }
 
     /* HISTORY TIMELINE */
     .timeline { display:flex; flex-direction:column; max-width:720px; }
@@ -112,7 +115,10 @@
           <div class="mission-quote">&ldquo;We are a pioneering material science company addressing today&rsquo;s significant manufacturing challenges with unparalleled sustainability.&rdquo;</div>
           <p class="mission-body">Lumina crafts specialized products through tailored chemistry and processing solutions, operating primary mining facilities 80 km west of Kangerlussuaq on Greenland&rsquo;s west coast.<br><br>Our anorthosite &mdash; marketed under the Greenspar brand &mdash; is the only commercially available high-purity anorthosite product in the world, offering a sustainable alternative to conventional industrial minerals across e-glass, coatings, polymers, friction materials, and space research.<br><br>With no toxic by-products and an exceptionally low environmental footprint, Lumina is uniquely positioned at the intersection of industrial materials science and planetary exploration.</p>
         </div>
-        <img class="mission-img" src="https://images.squarespace-cdn.com/content/v1/68235d218bb2330e46b287e0/dji_fly_20241008_110738_140_1728390257891_photo_optimized.jpg?format=2500w" alt="Lumina mining operations" onerror="this.style.background='var(--bg2)'">
+        <div class="mission-img-wrap">
+          <img src="../images/moon.jpg" alt="Lumina Greenland operations">
+          <div class="mission-img-caption">White Mountain anorthosite deposit &mdash; 80 km west of Kangerlussuaq, Greenland</div>
+        </div>
       </div>
     </div>
 
