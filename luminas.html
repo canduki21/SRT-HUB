@@ -3,22 +3,22 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Lunar Anorthosite — Space Resource Technologies</title>
+  <title>Lumina Greenland — Sustainable Anorthosite Materials</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Open+Sans:wght@400;500;600&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --nav:    #1b2030;
-      --bg:     #ffffff;
-      --bg2:    #f4f5f7;
-      --border: #e0e3ea;
-      --orange: #e07820;
+      --nav:      #1b2030;
+      --bg:       #ffffff;
+      --bg2:      #f4f5f7;
+      --border:   #e0e3ea;
+      --orange:   #e07820;
       --orange-d: #c46310;
-      --text:   #1a1c26;
-      --muted:  #5c6070;
-      --radius: 4px;
+      --text:     #1a1c26;
+      --muted:    #5c6070;
+      --radius:   4px;
     }
 
     body { font-family: 'Open Sans', sans-serif; background: var(--bg); color: var(--text); }
@@ -31,7 +31,7 @@
     }
     .topbar a { font-size: 11px; color: #8090a8; letter-spacing: .03em; }
     .topbar a:hover { color: #c8d0e0; }
-    .topbar-sep { color: #404555; font-size: 11px; }
+    .topbar-sep { color: #3a4050; font-size: 11px; }
 
     /* ── NAV ── */
     nav {
@@ -43,37 +43,18 @@
       padding: 0 40px; height: 68px;
       display: flex; align-items: center; justify-content: space-between;
     }
-    .nav-logo { display: flex; align-items: center; gap: 12px; }
-    .nav-logo-mark {
-      height: 38px; width: auto;
-      display: flex; align-items: center; gap: 8px;
-    }
-    .nav-logo-box {
-      width: 36px; height: 36px; background: var(--orange); border-radius: 3px;
-      display: flex; align-items: center; justify-content: center;
-      font-family: 'Montserrat', sans-serif; font-weight: 900;
-      font-size: 13px; color: #fff; letter-spacing: .8px; flex-shrink: 0;
-    }
-    .nav-logo-text {
-      font-family: 'Montserrat', sans-serif; font-weight: 700;
-      font-size: 13.5px; color: #ffffff; letter-spacing: .2px; line-height: 1.25;
-    }
-    .nav-logo-sub { font-size: 9.5px; color: #7888a4; letter-spacing: .08em; font-weight: 500; }
-    .nav-menu { display: flex; align-items: center; gap: 0; }
-    .nav-item {
-      position: relative; display: flex; align-items: center;
-    }
+    .nav-logo img { height: 38px; width: auto; display: block; }
+    .nav-menu { display: flex; align-items: center; }
     .nav-link {
       font-family: 'Montserrat', sans-serif;
       font-size: 12px; font-weight: 600; color: #c0c8da;
       padding: 0 16px; height: 68px;
-      display: flex; align-items: center; gap: 5px;
+      display: inline-flex; align-items: center; gap: 4px;
       letter-spacing: .04em; text-transform: uppercase;
       border-bottom: 3px solid transparent;
       transition: color .15s, border-color .15s;
     }
     .nav-link:hover, .nav-link.active { color: #fff; border-bottom-color: var(--orange); }
-    .nav-link svg { opacity: .6; flex-shrink: 0; }
     .nav-cta {
       background: var(--orange); color: #fff;
       font-family: 'Montserrat', sans-serif;
@@ -95,34 +76,24 @@
     }
     .hero-overlay {
       position: absolute; inset: 0;
-      background: linear-gradient(
-        to bottom,
-        rgba(10,12,22,.72) 0%,
-        rgba(10,12,22,.55) 50%,
-        rgba(10,12,22,.80) 100%
-      );
+      background: linear-gradient(to bottom, rgba(10,12,22,.72) 0%, rgba(10,12,22,.50) 50%, rgba(10,12,22,.82) 100%);
     }
-    .hero-content {
-      position: relative; z-index: 2;
-      max-width: 860px; padding: 0 24px;
-    }
+    .hero-content { position: relative; z-index: 2; max-width: 860px; padding: 0 24px; }
+    .hero-logo { height: 54px; width: auto; margin: 0 auto 28px; display: block; }
     .hero-eyebrow {
       font-family: 'Montserrat', sans-serif;
       font-size: 11px; font-weight: 700; letter-spacing: .2em;
       text-transform: uppercase; color: var(--orange);
-      margin-bottom: 20px; display: block;
+      margin-bottom: 18px; display: block;
     }
     .hero-h1 {
       font-family: 'Montserrat', sans-serif;
-      font-size: clamp(32px, 5vw, 58px);
-      font-weight: 900; line-height: 1.06;
-      color: #ffffff; text-transform: uppercase;
-      letter-spacing: .03em; margin-bottom: 20px;
+      font-size: clamp(30px, 5vw, 56px); font-weight: 900; line-height: 1.06;
+      color: #ffffff; text-transform: uppercase; letter-spacing: .03em; margin-bottom: 20px;
     }
     .hero-sub {
-      font-size: 16px; line-height: 1.75;
-      color: rgba(220,228,245,.85); margin-bottom: 36px;
-      max-width: 620px; margin-left: auto; margin-right: auto;
+      font-size: 16px; line-height: 1.75; color: rgba(220,228,245,.85);
+      margin-bottom: 36px; max-width: 620px; margin-left: auto; margin-right: auto;
     }
     .hero-btns { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
     .btn-hero {
@@ -132,40 +103,27 @@
     }
     .btn-hero.primary { background: var(--orange); color: #fff; transition: background .15s; }
     .btn-hero.primary:hover { background: var(--orange-d); }
-    .btn-hero.outline {
-      background: transparent; color: #fff;
-      border: 2px solid rgba(255,255,255,.45);
-      transition: border-color .15s;
-    }
+    .btn-hero.outline { background: transparent; color: #fff; border: 2px solid rgba(255,255,255,.45); transition: border-color .15s; }
     .btn-hero.outline:hover { border-color: rgba(255,255,255,.85); }
 
     /* ── STATS BAR ── */
-    .stats-bar {
-      background: #1b2030; padding: 0;
-      display: flex;
-    }
+    .stats-bar { background: #1b2030; }
     .stats-bar-inner {
-      max-width: 1280px; margin: 0 auto; width: 100%;
-      display: flex;
+      max-width: 1280px; margin: 0 auto; display: flex;
     }
     .stat-item {
       flex: 1; padding: 22px 32px; text-align: center;
       border-right: 1px solid rgba(255,255,255,.07);
     }
     .stat-item:last-child { border-right: none; }
-    .stat-num {
-      font-family: 'Montserrat', sans-serif;
-      font-size: 28px; font-weight: 900; color: var(--orange); line-height: 1;
-    }
+    .stat-num { font-family: 'Montserrat', sans-serif; font-size: 28px; font-weight: 900; color: var(--orange); line-height: 1; }
     .stat-label { font-size: 10.5px; color: #7888a4; margin-top: 5px; text-transform: uppercase; letter-spacing: .1em; font-weight: 600; }
 
     /* ── SHARED SECTION ── */
-    .sec {
-      max-width: 1280px; margin: 0 auto;
-      padding: 72px 40px;
-    }
-    .sec-wrap { background: var(--bg2); }
-    .sec-wrap-dark { background: var(--nav); }
+    .sec { max-width: 1280px; margin: 0 auto; padding: 72px 40px; }
+    .sec-wrap-white { background: var(--bg); }
+    .sec-wrap-gray  { background: var(--bg2); }
+    .sec-wrap-dark  { background: var(--nav); }
     .sec-label {
       font-family: 'Montserrat', sans-serif;
       font-size: 10.5px; font-weight: 700; letter-spacing: .18em;
@@ -173,8 +131,8 @@
     }
     .sec-h2 {
       font-family: 'Montserrat', sans-serif;
-      font-size: clamp(24px, 3.5vw, 38px);
-      font-weight: 900; text-transform: uppercase; letter-spacing: .03em;
+      font-size: clamp(24px, 3.5vw, 38px); font-weight: 900;
+      text-transform: uppercase; letter-spacing: .03em;
       color: var(--text); line-height: 1.08; margin-bottom: 14px;
     }
     .sec-h2.light { color: #fff; }
@@ -183,22 +141,117 @@
     .sec-head { margin-bottom: 48px; }
     .divider { height: 1px; background: var(--border); }
 
-    /* ── PRODUCT GRID ── */
-    #products { background: var(--bg); }
+    /* ── ABOUT TABS ── */
+    #about { background: var(--bg); }
+    .tab-bar {
+      display: flex; gap: 0; border-bottom: 2px solid var(--border);
+      margin-bottom: 48px; overflow-x: auto;
+    }
+    .tab-btn {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 12px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase;
+      padding: 12px 24px; border: none; background: none; cursor: pointer;
+      color: var(--muted); border-bottom: 3px solid transparent; margin-bottom: -2px;
+      transition: color .15s, border-color .15s; white-space: nowrap;
+    }
+    .tab-btn:hover { color: var(--text); }
+    .tab-btn.active { color: var(--orange); border-bottom-color: var(--orange); }
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
+
+    /* Mission tab */
+    .mission-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center; }
+    @media (max-width: 768px) { .mission-grid { grid-template-columns: 1fr; gap: 36px; } }
+    .mission-quote {
+      font-family: 'Montserrat', sans-serif;
+      font-size: clamp(18px, 2.5vw, 26px); font-weight: 800;
+      line-height: 1.35; color: var(--text);
+      border-left: 4px solid var(--orange); padding-left: 24px;
+      margin-bottom: 24px;
+    }
+    .mission-body { font-size: 15px; color: var(--muted); line-height: 1.8; }
+    .mission-img {
+      width: 100%; border-radius: 8px; object-fit: cover;
+      height: 380px; background: var(--bg2);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .mission-img img { width: 100%; height: 100%; object-fit: cover; border-radius: 8px; }
+
+    /* History tab */
+    .timeline { display: flex; flex-direction: column; gap: 0; max-width: 720px; }
+    .timeline-item { display: flex; gap: 28px; padding-bottom: 36px; position: relative; }
+    .timeline-item:last-child { padding-bottom: 0; }
+    .timeline-left { display: flex; flex-direction: column; align-items: center; flex-shrink: 0; }
+    .timeline-year {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 15px; font-weight: 900; color: var(--orange); width: 52px; text-align: center;
+    }
+    .timeline-dot {
+      width: 10px; height: 10px; border-radius: 50%;
+      background: var(--orange); margin: 8px 0; flex-shrink: 0;
+    }
+    .timeline-line { flex: 1; width: 2px; background: var(--border); }
+    .timeline-item:last-child .timeline-line { display: none; }
+    .timeline-title { font-family: 'Montserrat', sans-serif; font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: 6px; }
+    .timeline-desc { font-size: 13.5px; color: var(--muted); line-height: 1.7; }
+
+    /* Operations tab */
+    .ops-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+    @media (max-width: 700px) { .ops-grid { grid-template-columns: 1fr; } }
+    .ops-card {
+      border: 1px solid var(--border); border-radius: 6px; padding: 28px 24px;
+      transition: box-shadow .2s;
+    }
+    .ops-card:hover { box-shadow: 0 4px 18px rgba(0,0,0,.07); }
+    .ops-region {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 10px; font-weight: 700; letter-spacing: .14em;
+      text-transform: uppercase; color: var(--orange); margin-bottom: 8px;
+    }
+    .ops-title { font-family: 'Montserrat', sans-serif; font-size: 16px; font-weight: 800; color: var(--text); margin-bottom: 10px; }
+    .ops-desc { font-size: 13px; color: var(--muted); line-height: 1.65; }
+
+    /* Team tab */
+    .team-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; max-width: 800px; }
+    @media (max-width: 600px) { .team-grid { grid-template-columns: 1fr; } }
+    .person-card {
+      border: 1px solid var(--border); border-radius: 8px; padding: 28px 26px;
+      display: flex; gap: 20px; align-items: flex-start;
+      transition: box-shadow .2s;
+    }
+    .person-card:hover { box-shadow: 0 4px 18px rgba(0,0,0,.07); }
+    .person-av {
+      width: 54px; height: 54px; border-radius: 50%; flex-shrink: 0;
+      background: var(--orange); display: flex; align-items: center; justify-content: center;
+      font-family: 'Montserrat', sans-serif; font-weight: 900; font-size: 20px; color: #fff;
+    }
+    .person-name { font-family: 'Montserrat', sans-serif; font-size: 14.5px; font-weight: 800; color: var(--text); margin-bottom: 3px; }
+    .person-title { font-size: 11.5px; font-weight: 700; color: var(--orange); margin-bottom: 10px; }
+    .person-bio { font-size: 12.5px; color: var(--muted); line-height: 1.65; }
+    .person-contacts { margin-top: 10px; display: flex; flex-direction: column; gap: 3px; }
+    .person-contacts a { font-size: 12px; color: var(--orange); }
+    .person-contacts a:hover { text-decoration: underline; }
+
+    /* Investors tab */
+    .investor-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; max-width: 640px; }
+    .investor-card {
+      border: 1px solid var(--border); border-radius: 8px; padding: 28px 26px;
+      text-align: center;
+    }
+    .investor-name { font-family: 'Montserrat', sans-serif; font-size: 16px; font-weight: 800; color: var(--text); margin-bottom: 8px; }
+    .investor-desc { font-size: 13px; color: var(--muted); line-height: 1.65; }
+
+    /* ── PRODUCTS ── */
+    #products { background: var(--bg2); }
     .prod-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 0;
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      overflow: hidden;
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 0; border: 1px solid var(--border); border-radius: 6px; overflow: hidden;
     }
     .prod-card {
       display: flex; flex-direction: column;
-      border-right: 1px solid var(--border);
-      transition: background .15s;
+      border-right: 1px solid var(--border); border-bottom: 1px solid var(--border);
+      background: var(--bg); transition: background .15s;
     }
-    .prod-card:last-child { border-right: none; }
     .prod-card:hover { background: #fafbfc; }
     .prod-img-wrap {
       background: #f7f8fa; padding: 28px 20px 0;
@@ -211,28 +264,13 @@
       filter: drop-shadow(0 6px 14px rgba(0,0,0,.13));
     }
     .prod-body {
-      padding: 20px 20px 24px;
-      flex: 1; display: flex; flex-direction: column;
+      padding: 20px 20px 24px; flex: 1; display: flex; flex-direction: column;
       border-top: 1px solid var(--border);
     }
-    .prod-grade {
-      font-size: 9.5px; font-weight: 700; letter-spacing: .13em;
-      text-transform: uppercase; color: var(--muted); margin-bottom: 5px;
-    }
-    .prod-name {
-      font-family: 'Montserrat', sans-serif;
-      font-size: 17px; font-weight: 800; color: var(--text);
-      margin-bottom: 9px; letter-spacing: -.01em;
-    }
-    .prod-desc {
-      font-size: 12.5px; color: var(--muted); line-height: 1.65;
-      flex: 1; margin-bottom: 16px;
-    }
-    .prod-specs {
-      display: flex; flex-direction: column; gap: 4px;
-      margin-bottom: 18px; padding: 10px 12px;
-      background: var(--bg2); border-radius: var(--radius);
-    }
+    .prod-grade { font-size: 9.5px; font-weight: 700; letter-spacing: .13em; text-transform: uppercase; color: var(--muted); margin-bottom: 5px; }
+    .prod-name { font-family: 'Montserrat', sans-serif; font-size: 17px; font-weight: 800; color: var(--text); margin-bottom: 9px; }
+    .prod-desc { font-size: 12.5px; color: var(--muted); line-height: 1.65; flex: 1; margin-bottom: 16px; }
+    .prod-specs { display: flex; flex-direction: column; gap: 4px; margin-bottom: 18px; padding: 10px 12px; background: var(--bg2); border-radius: var(--radius); }
     .spec-row { display: flex; justify-content: space-between; font-size: 11.5px; }
     .spec-k { color: var(--muted); }
     .spec-v { font-weight: 700; color: var(--text); }
@@ -241,29 +279,20 @@
       background: var(--orange); color: #fff;
       font-family: 'Montserrat', sans-serif;
       font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase;
-      padding: 11px 16px; border-radius: var(--radius);
-      border: none; cursor: pointer; transition: background .15s;
+      padding: 11px 16px; border-radius: var(--radius); border: none; cursor: pointer; transition: background .15s;
     }
     .btn-see-more:hover { background: var(--orange-d); }
-
-    /* custom card */
     .prod-card.custom {
       align-items: center; justify-content: center; text-align: center;
-      padding: 40px 24px;
-      background: #fafbfc;
-      border-right: none;
+      padding: 40px 24px; border-right: none; border-bottom: none;
     }
     .custom-icon {
       width: 56px; height: 56px; border-radius: 50%;
       background: rgba(224,120,32,.1); border: 2px solid rgba(224,120,32,.25);
-      display: flex; align-items: center; justify-content: center;
-      margin: 0 auto 18px;
+      display: flex; align-items: center; justify-content: center; margin: 0 auto 18px;
     }
     .custom-icon svg { width: 26px; height: 26px; stroke: var(--orange); fill: none; stroke-width: 1.8; }
-    .custom-name {
-      font-family: 'Montserrat', sans-serif;
-      font-size: 17px; font-weight: 800; color: var(--text); margin-bottom: 10px;
-    }
+    .custom-name { font-family: 'Montserrat', sans-serif; font-size: 17px; font-weight: 800; color: var(--text); margin-bottom: 10px; }
     .custom-desc { font-size: 12.5px; color: var(--muted); line-height: 1.65; margin-bottom: 20px; }
     .btn-custom {
       display: inline-block; padding: 11px 22px;
@@ -274,46 +303,20 @@
     }
     .btn-custom:hover { background: var(--orange); color: #fff; }
 
-    @media (max-width: 900px) {
-      .prod-grid { grid-template-columns: repeat(2, 1fr); }
-      .prod-card { border-bottom: 1px solid var(--border); }
-    }
-    @media (max-width: 560px) {
-      .prod-grid { grid-template-columns: 1fr; }
-    }
+    @media (max-width: 900px) { .prod-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 560px) { .prod-grid { grid-template-columns: 1fr; } }
 
     /* ── LUNAR SECTION (dark) ── */
-    .lunar-inner {
-      display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: start;
-    }
+    .lunar-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: start; }
     @media (max-width: 800px) { .lunar-inner { grid-template-columns: 1fr; gap: 40px; } }
-
-    .lunar-facts { display: flex; flex-direction: column; gap: 0; }
-    .lunar-fact {
-      padding: 22px 0; border-bottom: 1px solid rgba(255,255,255,.06);
-      display: flex; gap: 18px; align-items: flex-start;
-    }
+    .lunar-facts { display: flex; flex-direction: column; }
+    .lunar-fact { padding: 22px 0; border-bottom: 1px solid rgba(255,255,255,.06); display: flex; gap: 18px; }
     .lunar-fact:first-child { padding-top: 0; }
-    .lunar-fact-num {
-      font-family: 'Montserrat', sans-serif;
-      font-size: 13px; font-weight: 900; color: var(--orange);
-      flex-shrink: 0; margin-top: 2px; min-width: 24px;
-    }
-    .lunar-fact-title {
-      font-family: 'Montserrat', sans-serif;
-      font-size: 13.5px; font-weight: 700; color: #fff; margin-bottom: 5px;
-    }
+    .lunar-fact-num { font-family: 'Montserrat', sans-serif; font-size: 13px; font-weight: 900; color: var(--orange); flex-shrink: 0; margin-top: 2px; min-width: 24px; }
+    .lunar-fact-title { font-family: 'Montserrat', sans-serif; font-size: 13.5px; font-weight: 700; color: #fff; margin-bottom: 5px; }
     .lunar-fact-desc { font-size: 13px; color: #8090a8; line-height: 1.65; }
-
-    .comp-panel {
-      background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.08);
-      border-radius: 8px; padding: 28px 26px;
-    }
-    .comp-title {
-      font-family: 'Montserrat', sans-serif;
-      font-size: 10.5px; font-weight: 700; text-transform: uppercase;
-      letter-spacing: .14em; color: #5a6580; margin-bottom: 24px;
-    }
+    .comp-panel { background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.08); border-radius: 8px; padding: 28px 26px; }
+    .comp-title { font-family: 'Montserrat', sans-serif; font-size: 10.5px; font-weight: 700; text-transform: uppercase; letter-spacing: .14em; color: #5a6580; margin-bottom: 24px; }
     .comp-row { margin-bottom: 18px; }
     .comp-row:last-child { margin-bottom: 0; }
     .comp-lbl { display: flex; justify-content: space-between; margin-bottom: 7px; }
@@ -323,118 +326,65 @@
     .comp-fill { height: 100%; border-radius: 3px; background: linear-gradient(90deg, var(--orange), #f0a050); }
 
     /* ── APPLICATIONS ── */
-    .apps-grid {
-      display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px;
-    }
+    .apps-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
     @media (max-width: 800px) { .apps-grid { grid-template-columns: repeat(2, 1fr); } }
     @media (max-width: 480px) { .apps-grid { grid-template-columns: 1fr; } }
-    .app-card {
-      border: 1px solid var(--border); border-radius: 6px; padding: 26px 24px;
-      transition: box-shadow .2s, border-color .2s;
-    }
-    .app-card:hover { box-shadow: 0 4px 18px rgba(0,0,0,.07); border-color: #c4c8d4; }
-    .app-num {
-      font-family: 'Montserrat', sans-serif;
-      font-size: 11px; font-weight: 800; color: var(--orange);
-      letter-spacing: .1em; margin-bottom: 10px;
-    }
-    .app-title {
-      font-family: 'Montserrat', sans-serif;
-      font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: 8px;
-    }
+    .app-card { border: 1px solid var(--border); border-radius: 6px; padding: 26px 24px; transition: box-shadow .2s; }
+    .app-card:hover { box-shadow: 0 4px 18px rgba(0,0,0,.07); }
+    .app-num { font-family: 'Montserrat', sans-serif; font-size: 11px; font-weight: 800; color: var(--orange); letter-spacing: .1em; margin-bottom: 10px; }
+    .app-title { font-family: 'Montserrat', sans-serif; font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: 8px; }
     .app-desc { font-size: 13px; color: var(--muted); line-height: 1.65; }
 
     /* ── CONTACT ── */
     .contact-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: start; }
     @media (max-width: 768px) { .contact-inner { grid-template-columns: 1fr; gap: 40px; } }
-
     .team-cards { display: flex; flex-direction: column; gap: 12px; }
-    .team-card {
-      background: var(--bg); border: 1px solid var(--border); border-radius: 6px;
-      padding: 18px 20px; display: flex; align-items: center; gap: 16px;
-    }
-    .team-av {
-      width: 44px; height: 44px; border-radius: 50%; flex-shrink: 0;
-      background: var(--orange); display: flex; align-items: center; justify-content: center;
-      font-family: 'Montserrat', sans-serif; font-weight: 800; font-size: 17px; color: #fff;
-    }
+    .team-card { background: var(--bg); border: 1px solid var(--border); border-radius: 6px; padding: 18px 20px; display: flex; align-items: center; gap: 16px; }
+    .team-av { width: 44px; height: 44px; border-radius: 50%; flex-shrink: 0; background: var(--orange); display: flex; align-items: center; justify-content: center; font-family: 'Montserrat', sans-serif; font-weight: 800; font-size: 17px; color: #fff; }
     .team-name { font-family: 'Montserrat', sans-serif; font-size: 13.5px; font-weight: 700; color: var(--text); }
     .team-role { font-size: 11.5px; color: var(--muted); margin-top: 2px; }
     .team-contacts { margin-top: 5px; display: flex; flex-direction: column; gap: 2px; }
     .team-contacts a { font-size: 12px; color: var(--orange); }
     .team-contacts a:hover { text-decoration: underline; }
-    .addr-card {
-      background: var(--bg); border: 1px solid var(--border); border-radius: 6px;
-      padding: 16px 20px; display: flex; gap: 14px; align-items: flex-start;
-    }
-    .addr-pin {
-      width: 32px; height: 32px; background: var(--bg2); border-radius: 50%;
-      display: flex; align-items: center; justify-content: center;
-      flex-shrink: 0; margin-top: 1px;
-    }
+    .addr-card { background: var(--bg); border: 1px solid var(--border); border-radius: 6px; padding: 16px 20px; display: flex; gap: 14px; }
+    .addr-pin { width: 32px; height: 32px; background: var(--bg2); border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; }
     .addr-pin svg { width: 14px; height: 14px; stroke: var(--orange); fill: none; stroke-width: 2; }
     .addr-name { font-family: 'Montserrat', sans-serif; font-size: 13px; font-weight: 700; color: var(--text); margin-bottom: 3px; }
     .addr-text { font-size: 12.5px; color: var(--muted); line-height: 1.6; }
-
     .contact-form { background: var(--bg); border: 1px solid var(--border); border-radius: 6px; padding: 30px; }
     .form-heading { font-family: 'Montserrat', sans-serif; font-size: 17px; font-weight: 800; color: var(--text); margin-bottom: 22px; }
     .fg { margin-bottom: 14px; }
     .fl { font-size: 10.5px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: .09em; display: block; margin-bottom: 5px; }
-    .fi, .fs, .ft {
-      width: 100%; background: var(--bg2); border: 1px solid var(--border);
-      color: var(--text); font-family: 'Open Sans', sans-serif; font-size: 13.5px;
-      padding: 10px 13px; border-radius: var(--radius); outline: none;
-      transition: border-color .15s;
-    }
+    .fi, .fs, .ft { width: 100%; background: var(--bg2); border: 1px solid var(--border); color: var(--text); font-family: 'Open Sans', sans-serif; font-size: 13.5px; padding: 10px 13px; border-radius: var(--radius); outline: none; transition: border-color .15s; }
     .fi:focus, .fs:focus, .ft:focus { border-color: var(--orange); }
     .fi::placeholder, .ft::placeholder { color: #b0b5c4; }
     .fs { appearance: none; cursor: pointer; }
     .ft { min-height: 90px; resize: vertical; line-height: 1.6; }
     .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-    @media (max-width: 420px) { .form-row { grid-template-columns: 1fr; } }
-    .btn-form {
-      width: 100%; background: var(--orange); color: #fff;
-      font-family: 'Montserrat', sans-serif;
-      font-size: 11.5px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase;
-      padding: 13px; border-radius: var(--radius); border: none; cursor: pointer;
-      transition: background .15s; margin-top: 4px;
-    }
+    .btn-form { width: 100%; background: var(--orange); color: #fff; font-family: 'Montserrat', sans-serif; font-size: 11.5px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; padding: 13px; border-radius: var(--radius); border: none; cursor: pointer; transition: background .15s; margin-top: 4px; }
     .btn-form:hover { background: var(--orange-d); }
 
     /* ── FOOTER ── */
     .footer-wrap { background: #111520; border-top: 1px solid rgba(255,255,255,.05); }
-    .footer-inner {
-      max-width: 1280px; margin: 0 auto;
-      padding: 48px 40px 32px;
-    }
+    .footer-inner { max-width: 1280px; margin: 0 auto; padding: 48px 40px 32px; }
     .footer-cols { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 40px; margin-bottom: 40px; }
     @media (max-width: 768px) { .footer-cols { grid-template-columns: 1fr 1fr; gap: 28px; } }
-    .footer-brand .nav-logo-text { font-size: 14px; }
-    .footer-brand p { font-size: 12.5px; color: #5a6580; line-height: 1.7; margin-top: 12px; max-width: 240px; }
-    .footer-col-title {
-      font-family: 'Montserrat', sans-serif;
-      font-size: 10.5px; font-weight: 700; letter-spacing: .12em;
-      text-transform: uppercase; color: #8090a8; margin-bottom: 14px;
-    }
+    .footer-logo img { height: 36px; width: auto; margin-bottom: 14px; display: block; }
+    .footer-brand-desc { font-size: 12.5px; color: #5a6580; line-height: 1.7; max-width: 240px; }
+    .footer-col-title { font-family: 'Montserrat', sans-serif; font-size: 10.5px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: #8090a8; margin-bottom: 14px; }
     .footer-links-list { display: flex; flex-direction: column; gap: 8px; }
     .footer-links-list a { font-size: 12.5px; color: #5a6580; transition: color .15s; }
     .footer-links-list a:hover { color: #c0c8d8; }
-    .footer-bottom {
-      border-top: 1px solid rgba(255,255,255,.05);
-      padding-top: 20px;
-      display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px;
-    }
+    .footer-bottom { border-top: 1px solid rgba(255,255,255,.05); padding-top: 20px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
     .footer-copy { font-size: 11.5px; color: #404858; }
     .footer-legal { display: flex; gap: 18px; }
     .footer-legal a { font-size: 11.5px; color: #404858; }
     .footer-legal a:hover { color: #8090a8; }
 
     @media (max-width: 700px) {
-      .nav-inner { padding: 0 20px; }
-      .topbar { padding: 6px 20px; }
+      .nav-inner, .topbar { padding-left: 20px; padding-right: 20px; }
       .nav-menu { display: none; }
       .sec { padding: 52px 20px; }
-      .stats-bar-inner { flex-wrap: wrap; }
       .stat-item { min-width: 50%; border-bottom: 1px solid rgba(255,255,255,.07); }
       .hero { height: 500px; }
       .footer-inner { padding: 40px 20px 24px; }
@@ -445,9 +395,9 @@
 
 <!-- TOP BAR -->
 <div class="topbar">
-  <a href="#contact">bent@lumina.gl</a>
+  <a href="mailto:bent@lumina.gl">bent@lumina.gl</a>
   <span class="topbar-sep">|</span>
-  <a href="#contact">+299 49 95 99</a>
+  <a href="tel:+299499599">+299 49 95 99</a>
   <span class="topbar-sep">|</span>
   <a href="#contact">Contact Sales</a>
 </div>
@@ -456,21 +406,14 @@
 <nav>
   <div class="nav-inner">
     <a class="nav-logo" href="#">
-      <div class="nav-logo-box">SRT</div>
-      <div>
-        <div class="nav-logo-text">Space Resource Technologies</div>
-        <div class="nav-logo-sub">Space Materials Division</div>
-      </div>
+      <img src="images/lumina-logo.webp" alt="Lumina Sustainable Materials">
     </a>
     <div class="nav-menu">
-      <div class="nav-item"><a class="nav-link" href="#">Home</a></div>
-      <div class="nav-item"><a class="nav-link" href="#">About</a></div>
-      <div class="nav-item"><a class="nav-link active" href="#products">Anorthosite
-        <svg width="10" height="10" viewBox="0 0 10 10" fill="currentColor"><path d="M2 3.5L5 6.5L8 3.5"/></svg>
-      </a></div>
-      <div class="nav-item"><a class="nav-link" href="#applications">Applications</a></div>
-      <div class="nav-item"><a class="nav-link" href="#">Resources</a></div>
-      <div class="nav-item"><a class="nav-link" href="#contact">Contact</a></div>
+      <a class="nav-link active" href="#about">About</a>
+      <a class="nav-link" href="#products">Products</a>
+      <a class="nav-link" href="#lunar">Lunar Research</a>
+      <a class="nav-link" href="#applications">Applications</a>
+      <a class="nav-link" href="#contact">Contact</a>
     </div>
     <a class="nav-cta" href="#contact">Request a Sample</a>
   </div>
@@ -481,7 +424,8 @@
   <div class="hero-img"></div>
   <div class="hero-overlay"></div>
   <div class="hero-content">
-    <span class="hero-eyebrow">Space Materials Division &mdash; Lunar Analog Research</span>
+    <img class="hero-logo" src="images/lumina-logo.webp" alt="Lumina Sustainable Materials">
+    <span class="hero-eyebrow">Lunar Analog Research &mdash; Space Materials</span>
     <h1 class="hero-h1">The World&rsquo;s Closest<br>Terrestrial Analog to<br>Lunar Highland Regolith</h1>
     <p class="hero-sub">High-purity anorthosite sourced from Greenland&rsquo;s White Mountain deposit &mdash; supporting ISRU research, simulant production, and lunar science worldwide.</p>
     <div class="hero-btns">
@@ -494,27 +438,191 @@
 <!-- STATS BAR -->
 <div class="stats-bar">
   <div class="stats-bar-inner">
-    <div class="stat-item">
-      <div class="stat-num">&ge;90%</div>
-      <div class="stat-label">Plagioclase Feldspar</div>
+    <div class="stat-item"><div class="stat-num">&ge;90%</div><div class="stat-label">Plagioclase Feldspar</div></div>
+    <div class="stat-item"><div class="stat-num">&lt;1%</div><div class="stat-label">Free Quartz</div></div>
+    <div class="stat-item"><div class="stat-num">5</div><div class="stat-label">Product Grades</div></div>
+    <div class="stat-item"><div class="stat-num">0</div><div class="stat-label">Toxic By-Products</div></div>
+  </div>
+</div>
+
+<!-- ABOUT (TABS) -->
+<div id="about" class="sec-wrap-white">
+  <div class="sec">
+    <div class="sec-head">
+      <div class="sec-label">About Lumina</div>
+      <h2 class="sec-h2">Pioneering Sustainable Materials</h2>
+      <p class="sec-sub">A pioneering material science company addressing today&rsquo;s significant manufacturing challenges with unparalleled sustainability.</p>
     </div>
-    <div class="stat-item">
-      <div class="stat-num">&lt;1%</div>
-      <div class="stat-label">Free Quartz</div>
+    <div class="tab-bar">
+      <button class="tab-btn active" onclick="switchTab(event,'mission')">Mission</button>
+      <button class="tab-btn" onclick="switchTab(event,'history')">History</button>
+      <button class="tab-btn" onclick="switchTab(event,'operations')">Operations</button>
+      <button class="tab-btn" onclick="switchTab(event,'team')">Leadership</button>
+      <button class="tab-btn" onclick="switchTab(event,'investors')">Investors</button>
     </div>
-    <div class="stat-item">
-      <div class="stat-num">5</div>
-      <div class="stat-label">Product Grades</div>
+
+    <!-- MISSION -->
+    <div class="tab-panel active" id="tab-mission">
+      <div class="mission-grid">
+        <div>
+          <div class="mission-quote">"We are a pioneering material science company addressing today&rsquo;s significant manufacturing challenges with unparalleled sustainability."</div>
+          <p class="mission-body">
+            Lumina crafts specialized products through tailored chemistry and processing solutions, operating primary mining facilities 80 km west of Kangerlussuaq on Greenland&rsquo;s west coast.
+            <br><br>
+            Our anorthosite &mdash; marketed under the Greenspar brand &mdash; is the only commercially available high-purity anorthosite product in the world, offering a sustainable alternative to conventional industrial minerals across e-glass, coatings, polymers, friction materials, and space research.
+            <br><br>
+            With no toxic by-products and an exceptionally low environmental footprint, Lumina is uniquely positioned at the intersection of industrial materials science and planetary exploration.
+          </p>
+        </div>
+        <div class="mission-img">
+          <img src="https://images.squarespace-cdn.com/content/v1/68235d218bb2330e46b287e0/dji_fly_20241008_110738_140_1728390257891_photo_optimized.jpg?format=2500w" alt="Lumina mining operations, Greenland" onerror="this.style.display='none'">
+        </div>
+      </div>
     </div>
-    <div class="stat-item">
-      <div class="stat-num">0</div>
-      <div class="stat-label">Toxic By-Products</div>
+
+    <!-- HISTORY -->
+    <div class="tab-panel" id="tab-history">
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="timeline-left">
+            <div class="timeline-year">2013</div>
+            <div class="timeline-dot"></div>
+            <div class="timeline-line"></div>
+          </div>
+          <div>
+            <div class="timeline-title">Exploration Begins</div>
+            <p class="timeline-desc">Lumina&rsquo;s journey initiated with exploration activities at the White Mountain anorthosite deposit, located 80 km west of Kangerlussuaq on Greenland&rsquo;s west coast.</p>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-left">
+            <div class="timeline-year">2017</div>
+            <div class="timeline-dot"></div>
+            <div class="timeline-line"></div>
+          </div>
+          <div>
+            <div class="timeline-title">Construction at Qaqortorsuaq</div>
+            <p class="timeline-desc">Construction commenced at the Qaqortorsuaq site in Greenland, establishing the primary mining infrastructure and processing facilities.</p>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-left">
+            <div class="timeline-year">2019</div>
+            <div class="timeline-dot"></div>
+            <div class="timeline-line"></div>
+          </div>
+          <div>
+            <div class="timeline-title">First Mineral Shipment</div>
+            <p class="timeline-desc">First mineral shipment successfully completed, marking Greenland&rsquo;s entry into the global specialty minerals market. Director of Operations Peter Madsen&rsquo;s fourth mining venture in Greenland.</p>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-left">
+            <div class="timeline-year">Now</div>
+            <div class="timeline-dot"></div>
+            <div class="timeline-line"></div>
+          </div>
+          <div>
+            <div class="timeline-title">Global Supply Chain</div>
+            <p class="timeline-desc">Lumina operates a fully vertically integrated supply chain spanning three continents, with mining in Greenland, advanced processing in Jeffersonville, Indiana (USA), and operations in Mexico and Europe.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- OPERATIONS -->
+    <div class="tab-panel" id="tab-operations">
+      <div class="ops-grid">
+        <div class="ops-card">
+          <div class="ops-region">Greenland</div>
+          <div class="ops-title">Mining &amp; Exploration</div>
+          <p class="ops-desc">Primary mining operations at the White Mountain anorthosite deposit, 80 km west of Kangerlussuaq. Run-of-mine ore extraction, site logistics, and ongoing exploration of the deposit&rsquo;s full extent.</p>
+        </div>
+        <div class="ops-card">
+          <div class="ops-region">United States</div>
+          <div class="ops-title">Advanced Processing</div>
+          <p class="ops-desc">Advanced mineral processing facility in Jeffersonville, Indiana. Responsible for milling, classification, and quality control for the full Greenspar product line shipped to North American customers.</p>
+        </div>
+        <div class="ops-card">
+          <div class="ops-region">Mexico</div>
+          <div class="ops-title">Processing Capabilities</div>
+          <p class="ops-desc">Processing capabilities serving Latin American industrial markets, enabling shorter lead times and reduced logistics costs for customers in the region.</p>
+        </div>
+        <div class="ops-card">
+          <div class="ops-region">Europe</div>
+          <div class="ops-title">Infrastructure Development</div>
+          <p class="ops-desc">Ongoing infrastructure development to support European industrial customers, with a focus on e-glass fiber, coatings, and specialty mineral markets.</p>
+        </div>
+        <div class="ops-card">
+          <div class="ops-region">Greenland Community</div>
+          <div class="ops-title">Local Partnerships</div>
+          <p class="ops-desc">Lumina is Greenland&rsquo;s sole mining operation with strong community ties &mdash; committed to local employment, safety standards, and long-term deposit stewardship under Greenlandic environmental regulations.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- TEAM -->
+    <div class="tab-panel" id="tab-team">
+      <div class="team-grid">
+        <div class="person-card">
+          <div class="person-av">B</div>
+          <div>
+            <div class="person-name">Bent Olsvig Jensen</div>
+            <div class="person-title">Managing Director, Greenland</div>
+            <p class="person-bio">Background spans military service and the fishing industry. Previously managed Greenland&rsquo;s ruby mine project. Chairs the Greenland Business Association&rsquo;s Industry Committee for Mineral Extractors.</p>
+            <div class="person-contacts">
+              <a href="tel:+299499599">+299 49 95 99</a>
+              <a href="mailto:bent@lumina.gl">bent@lumina.gl</a>
+            </div>
+          </div>
+        </div>
+        <div class="person-card">
+          <div class="person-av" style="background:#2563eb">P</div>
+          <div>
+            <div class="person-name">Peter Madsen</div>
+            <div class="person-title">Director of Operations</div>
+            <p class="person-bio">Manages all internal Greenland mining operations with 25+ years of experience. Oversees drilling, blasting, hauling, HSE, logistics, and budgeting. Greenland resident since 1995.</p>
+            <div class="person-contacts">
+              <a href="tel:+299493713">+299 49 37 13</a>
+              <a href="mailto:peter@lumina.gl">peter@lumina.gl</a>
+            </div>
+          </div>
+        </div>
+        <div class="person-card">
+          <div class="person-av" style="background:#16a34a">G</div>
+          <div>
+            <div class="person-name">Gerth Jacobsen</div>
+            <div class="person-title">Head of Administration</div>
+            <p class="person-bio">Responsible for administrative operations, compliance, and regulatory affairs across Lumina&rsquo;s Greenland activities.</p>
+            <div class="person-contacts">
+              <a href="tel:+299843217">+299 84 32 17</a>
+              <a href="mailto:gerth@lumina.gl">gerth@lumina.gl</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- INVESTORS -->
+    <div class="tab-panel" id="tab-investors">
+      <div class="investor-grid">
+        <div class="investor-card">
+          <div class="investor-name">Cordiant Capital</div>
+          <p class="investor-desc">A global alternative investment manager specializing in infrastructure and natural resources, with a focus on sustainable, long-term value creation.</p>
+        </div>
+        <div class="investor-card">
+          <div class="investor-name">Apex Asset Management</div>
+          <p class="investor-desc">A specialist asset manager backing innovative materials companies with strong sustainability credentials and defensible resource positions.</p>
+        </div>
+      </div>
     </div>
   </div>
 </div>
 
+<div class="divider"></div>
+
 <!-- PRODUCTS -->
-<div id="products">
+<div id="products" class="sec-wrap-gray">
   <div class="sec">
     <div class="sec-head">
       <div class="sec-label">Product Catalog</div>
@@ -522,12 +630,8 @@
       <p class="sec-sub">From run-of-mine lump ore to ultra-fine milled powder &mdash; five grades for space research, ISRU simulation, and advanced industrial applications.</p>
     </div>
     <div class="prod-grid">
-
-      <!-- AnoRoq -->
       <div class="prod-card">
-        <div class="prod-img-wrap">
-          <img src="images/anoroq.png" alt="AnoRoq lump ore">
-        </div>
+        <div class="prod-img-wrap"><img src="images/anoroq.png" alt="AnoRoq lump ore"></div>
         <div class="prod-body">
           <div class="prod-grade">High-Purity Anorthosite</div>
           <div class="prod-name">AnoRoq</div>
@@ -540,12 +644,8 @@
           <a class="btn-see-more" href="#contact">Contact Sales</a>
         </div>
       </div>
-
-      <!-- Greenspar 2000 -->
       <div class="prod-card">
-        <div class="prod-img-wrap">
-          <img src="images/greenspar-2000.png" alt="Greenspar 2000 sand">
-        </div>
+        <div class="prod-img-wrap"><img src="images/greenspar-2000.png" alt="Greenspar 2000"></div>
         <div class="prod-body">
           <div class="prod-grade">High-Purity Anorthosite</div>
           <div class="prod-name">Greenspar 2000</div>
@@ -558,12 +658,8 @@
           <a class="btn-see-more" href="#contact">See More</a>
         </div>
       </div>
-
-      <!-- Greenspar 60 -->
       <div class="prod-card">
-        <div class="prod-img-wrap">
-          <img src="images/greenspar-60.png" alt="Greenspar 60 powder">
-        </div>
+        <div class="prod-img-wrap"><img src="images/greenspar-60.png" alt="Greenspar 60"></div>
         <div class="prod-body">
           <div class="prod-grade">High-Purity Anorthosite</div>
           <div class="prod-name">Greenspar 60</div>
@@ -576,16 +672,12 @@
           <a class="btn-see-more" href="#contact">See More</a>
         </div>
       </div>
-
-      <!-- Greenspar 45 -->
       <div class="prod-card">
-        <div class="prod-img-wrap">
-          <img src="images/greenspar-45.png" alt="Greenspar 45 powder">
-        </div>
+        <div class="prod-img-wrap"><img src="images/greenspar-45.png" alt="Greenspar 45"></div>
         <div class="prod-body">
           <div class="prod-grade">High-Purity Anorthosite</div>
           <div class="prod-name">Greenspar 45</div>
-          <p class="prod-desc">45 &micro;m milled powder. Tighter particle sizing than GS-60, same high-whiteness low-quartz specification for precision applications.</p>
+          <p class="prod-desc">45 &micro;m milled powder. Tighter particle sizing than GS-60 with the same high-whiteness, low-quartz specification.</p>
           <div class="prod-specs">
             <div class="spec-row"><span class="spec-k">Form</span><span class="spec-v">Milled powder</span></div>
             <div class="spec-row"><span class="spec-k">Top cut</span><span class="spec-v">45 &micro;m</span></div>
@@ -594,16 +686,12 @@
           <a class="btn-see-more" href="#contact">See More</a>
         </div>
       </div>
-
-      <!-- Greenspar 15 -->
       <div class="prod-card">
-        <div class="prod-img-wrap">
-          <img src="images/greenspar-15.png" alt="Greenspar 15 ultra-fine powder">
-        </div>
+        <div class="prod-img-wrap"><img src="images/greenspar-15.png" alt="Greenspar 15"></div>
         <div class="prod-body">
           <div class="prod-grade">High-Purity Anorthosite</div>
           <div class="prod-name">Greenspar 15</div>
-          <p class="prod-desc">15 &micro;m ultra-fine milled powder. Finest grade &mdash; engineered for specialized coatings, advanced polymers, and lunar dust simulant research.</p>
+          <p class="prod-desc">15 &micro;m ultra-fine milled powder. Finest grade &mdash; for specialized coatings, advanced polymers, and lunar dust simulant research.</p>
           <div class="prod-specs">
             <div class="spec-row"><span class="spec-k">Form</span><span class="spec-v">Ultra-fine powder</span></div>
             <div class="spec-row"><span class="spec-k">Top cut</span><span class="spec-v">15 &micro;m</span></div>
@@ -612,88 +700,43 @@
           <a class="btn-see-more" href="#contact">See More</a>
         </div>
       </div>
-
-      <!-- Custom -->
       <div class="prod-card custom">
         <div class="custom-icon">
           <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
         </div>
         <div class="custom-name">Custom Grade</div>
-        <p class="custom-desc">Need a mission-specific particle size, custom blend, or tailored composition? We engineer solutions in collaboration with research teams.</p>
+        <p class="custom-desc">Need a mission-specific particle size or tailored composition? We engineer solutions in collaboration with your research team.</p>
         <a class="btn-custom" href="#contact">Start a Conversation</a>
       </div>
-
     </div>
   </div>
 </div>
 
 <div class="divider"></div>
 
-<!-- LUNAR CONNECTION (dark) -->
+<!-- LUNAR CONNECTION -->
 <div class="sec-wrap-dark" id="lunar">
   <div class="sec">
     <div class="sec-head">
-      <div class="sec-label">The Lunar Connection</div>
-      <h2 class="sec-h2 light">Why Anorthosite for<br>Moon Research?</h2>
+      <div class="sec-label">Lunar Research</div>
+      <h2 class="sec-h2 light">Why Anorthosite for Moon Research?</h2>
       <p class="sec-sub light">Greenland&rsquo;s White Mountain deposit yields the most mineralogically accurate terrestrial analog to lunar highland regolith available on Earth.</p>
     </div>
     <div class="lunar-inner">
       <div class="lunar-facts">
-        <div class="lunar-fact">
-          <div class="lunar-fact-num">01</div>
-          <div>
-            <div class="lunar-fact-title">Same Mineralogy as Lunar Highlands</div>
-            <p class="lunar-fact-desc">Dominated by plagioclase feldspar &mdash; the mineral that constitutes over 90% of the lunar highland crust. The most geologically accurate simulant feedstock available on Earth.</p>
-          </div>
-        </div>
-        <div class="lunar-fact">
-          <div class="lunar-fact-num">02</div>
-          <div>
-            <div class="lunar-fact-title">Zero Toxic By-Products</div>
-            <p class="lunar-fact-desc">Unlike many industrial minerals, anorthosite processing generates no hazardous waste streams, making it safe for closed-loop ISRU system testing and long-term lab use.</p>
-          </div>
-        </div>
-        <div class="lunar-fact">
-          <div class="lunar-fact-num">03</div>
-          <div>
-            <div class="lunar-fact-title">Low Iron Content</div>
-            <p class="lunar-fact-desc">Exceptionally low Fe&#8322;O&#8323; levels accurately reflect the iron-poor anorthositic composition of the lunar highlands &mdash; critical for optical and thermal property matching.</p>
-          </div>
-        </div>
-        <div class="lunar-fact">
-          <div class="lunar-fact-num">04</div>
-          <div>
-            <div class="lunar-fact-title">Sustainably Sourced</div>
-            <p class="lunar-fact-desc">Mined from the White Mountain deposit in Nuuk, Greenland under strict environmental standards with minimal ecological impact and long-term deposit stewardship.</p>
-          </div>
-        </div>
+        <div class="lunar-fact"><div class="lunar-fact-num">01</div><div><div class="lunar-fact-title">Same Mineralogy as Lunar Highlands</div><p class="lunar-fact-desc">Dominated by plagioclase feldspar &mdash; the mineral that constitutes over 90% of the lunar highland crust. The most geologically accurate simulant feedstock on Earth.</p></div></div>
+        <div class="lunar-fact"><div class="lunar-fact-num">02</div><div><div class="lunar-fact-title">Zero Toxic By-Products</div><p class="lunar-fact-desc">Processing generates no hazardous waste streams, making it safe for closed-loop ISRU system testing and long-term lab use.</p></div></div>
+        <div class="lunar-fact"><div class="lunar-fact-num">03</div><div><div class="lunar-fact-title">Low Iron Content</div><p class="lunar-fact-desc">Exceptionally low Fe&#8322;O&#8323; levels accurately reflect the iron-poor anorthositic composition of the lunar highlands &mdash; critical for optical and thermal property matching.</p></div></div>
+        <div class="lunar-fact"><div class="lunar-fact-num">04</div><div><div class="lunar-fact-title">Sustainably Sourced</div><p class="lunar-fact-desc">Mined in Nuuk, Greenland under strict environmental standards with minimal ecological impact and long-term deposit stewardship.</p></div></div>
       </div>
       <div class="comp-panel">
         <div class="comp-title">Mineral Composition</div>
-        <div class="comp-row">
-          <div class="comp-lbl"><span class="comp-mineral">Plagioclase Feldspar</span><span class="comp-pct">&ge; 90%</span></div>
-          <div class="comp-track"><div class="comp-fill" style="width:90%"></div></div>
-        </div>
-        <div class="comp-row">
-          <div class="comp-lbl"><span class="comp-mineral">Aluminum Oxide (Al&#8322;O&#8323;)</span><span class="comp-pct">~27%</span></div>
-          <div class="comp-track"><div class="comp-fill" style="width:74%"></div></div>
-        </div>
-        <div class="comp-row">
-          <div class="comp-lbl"><span class="comp-mineral">Silicon Dioxide (SiO&#8322;)</span><span class="comp-pct">~50%</span></div>
-          <div class="comp-track"><div class="comp-fill" style="width:58%"></div></div>
-        </div>
-        <div class="comp-row">
-          <div class="comp-lbl"><span class="comp-mineral">Calcium Oxide (CaO)</span><span class="comp-pct">~14%</span></div>
-          <div class="comp-track"><div class="comp-fill" style="width:46%"></div></div>
-        </div>
-        <div class="comp-row">
-          <div class="comp-lbl"><span class="comp-mineral">Free Quartz (SiO&#8322;)</span><span class="comp-pct">&lt; 1%</span></div>
-          <div class="comp-track"><div class="comp-fill" style="width:3%"></div></div>
-        </div>
-        <div class="comp-row">
-          <div class="comp-lbl"><span class="comp-mineral">Iron Oxide (Fe&#8322;O&#8323;)</span><span class="comp-pct">&lt; 0.5%</span></div>
-          <div class="comp-track"><div class="comp-fill" style="width:2%"></div></div>
-        </div>
+        <div class="comp-row"><div class="comp-lbl"><span class="comp-mineral">Plagioclase Feldspar</span><span class="comp-pct">&ge; 90%</span></div><div class="comp-track"><div class="comp-fill" style="width:90%"></div></div></div>
+        <div class="comp-row"><div class="comp-lbl"><span class="comp-mineral">Aluminum Oxide (Al&#8322;O&#8323;)</span><span class="comp-pct">~27%</span></div><div class="comp-track"><div class="comp-fill" style="width:74%"></div></div></div>
+        <div class="comp-row"><div class="comp-lbl"><span class="comp-mineral">Silicon Dioxide (SiO&#8322;)</span><span class="comp-pct">~50%</span></div><div class="comp-track"><div class="comp-fill" style="width:58%"></div></div></div>
+        <div class="comp-row"><div class="comp-lbl"><span class="comp-mineral">Calcium Oxide (CaO)</span><span class="comp-pct">~14%</span></div><div class="comp-track"><div class="comp-fill" style="width:46%"></div></div></div>
+        <div class="comp-row"><div class="comp-lbl"><span class="comp-mineral">Free Quartz (SiO&#8322;)</span><span class="comp-pct">&lt; 1%</span></div><div class="comp-track"><div class="comp-fill" style="width:3%"></div></div></div>
+        <div class="comp-row"><div class="comp-lbl"><span class="comp-mineral">Iron Oxide (Fe&#8322;O&#8323;)</span><span class="comp-pct">&lt; 0.5%</span></div><div class="comp-track"><div class="comp-fill" style="width:2%"></div></div></div>
       </div>
     </div>
   </div>
@@ -702,7 +745,7 @@
 <div class="divider"></div>
 
 <!-- APPLICATIONS -->
-<div id="applications">
+<div id="applications" class="sec-wrap-white">
   <div class="sec">
     <div class="sec-head">
       <div class="sec-label">Applications</div>
@@ -710,36 +753,12 @@
       <p class="sec-sub">Anorthosite&rsquo;s unique chemistry &mdash; high aluminum, low silica, zero toxic by-products &mdash; serves both space science and advanced terrestrial industry.</p>
     </div>
     <div class="apps-grid">
-      <div class="app-card">
-        <div class="app-num">01</div>
-        <div class="app-title">Lunar Studies &amp; ISRU</div>
-        <p class="app-desc">Premier terrestrial feedstock for lunar highland simulants &mdash; used in ISRU experiments, planetary surface research, and astronaut training scenarios.</p>
-      </div>
-      <div class="app-card">
-        <div class="app-num">02</div>
-        <div class="app-title">E-Glass Fiber</div>
-        <p class="app-desc">Delivers superior electrical insulation with a reduced environmental footprint for aerospace, automotive, and construction sectors.</p>
-      </div>
-      <div class="app-card">
-        <div class="app-num">03</div>
-        <div class="app-title">Paints &amp; Coatings</div>
-        <p class="app-desc">Reduces VOC emissions while improving coating durability and performance across architectural and industrial applications.</p>
-      </div>
-      <div class="app-card">
-        <div class="app-num">04</div>
-        <div class="app-title">Friction Materials</div>
-        <p class="app-desc">Strengthens phenolic friction resins in high-performance brake systems for automotive and aerospace applications.</p>
-      </div>
-      <div class="app-card">
-        <div class="app-num">05</div>
-        <div class="app-title">Polymers &amp; Plastics</div>
-        <p class="app-desc">Enhances anti-block properties, UV stability, flame resistance, and structural toughness in polymer compounds.</p>
-      </div>
-      <div class="app-card">
-        <div class="app-num">06</div>
-        <div class="app-title">Mineral Wool</div>
-        <p class="app-desc">High aluminum and calcium content makes Greenspar an ideal raw material for mineral wool and thermal insulation manufacturing.</p>
-      </div>
+      <div class="app-card"><div class="app-num">01</div><div class="app-title">Lunar Studies &amp; ISRU</div><p class="app-desc">Premier terrestrial feedstock for lunar highland simulants &mdash; used in ISRU experiments, planetary surface research, and astronaut training scenarios.</p></div>
+      <div class="app-card"><div class="app-num">02</div><div class="app-title">E-Glass Fiber</div><p class="app-desc">Delivers superior electrical insulation with a reduced environmental footprint for aerospace, automotive, and construction sectors.</p></div>
+      <div class="app-card"><div class="app-num">03</div><div class="app-title">Paints &amp; Coatings</div><p class="app-desc">Reduces VOC emissions while improving coating durability and performance across architectural and industrial applications.</p></div>
+      <div class="app-card"><div class="app-num">04</div><div class="app-title">Friction Materials</div><p class="app-desc">Strengthens phenolic friction resins in high-performance brake systems for automotive and aerospace applications.</p></div>
+      <div class="app-card"><div class="app-num">05</div><div class="app-title">Polymers &amp; Plastics</div><p class="app-desc">Enhances anti-block properties, UV stability, flame resistance, and structural toughness in polymer compounds.</p></div>
+      <div class="app-card"><div class="app-num">06</div><div class="app-title">Mineral Wool</div><p class="app-desc">High aluminum and calcium content makes Greenspar an ideal raw material for mineral wool and thermal insulation manufacturing.</p></div>
     </div>
   </div>
 </div>
@@ -747,7 +766,7 @@
 <div class="divider"></div>
 
 <!-- CONTACT -->
-<div class="sec-wrap" id="contact">
+<div class="sec-wrap-gray" id="contact">
   <div class="sec">
     <div class="sec-head">
       <div class="sec-label">Get in Touch</div>
@@ -756,48 +775,10 @@
     </div>
     <div class="contact-inner">
       <div class="team-cards">
-        <div class="team-card">
-          <div class="team-av">B</div>
-          <div>
-            <div class="team-name">Bent Olsvig Jensen</div>
-            <div class="team-role">Head of Sales</div>
-            <div class="team-contacts">
-              <a href="tel:+299499599">+299 49 95 99</a>
-              <a href="mailto:bent@lumina.gl">bent@lumina.gl</a>
-            </div>
-          </div>
-        </div>
-        <div class="team-card">
-          <div class="team-av" style="background:#2563eb">P</div>
-          <div>
-            <div class="team-name">Peter Madsen</div>
-            <div class="team-role">Director of Operations</div>
-            <div class="team-contacts">
-              <a href="tel:+299493713">+299 49 37 13</a>
-              <a href="mailto:peter@lumina.gl">peter@lumina.gl</a>
-            </div>
-          </div>
-        </div>
-        <div class="team-card">
-          <div class="team-av" style="background:#16a34a">G</div>
-          <div>
-            <div class="team-name">Gerth Jacobsen</div>
-            <div class="team-role">Head of Administration</div>
-            <div class="team-contacts">
-              <a href="tel:+299843217">+299 84 32 17</a>
-              <a href="mailto:gerth@lumina.gl">gerth@lumina.gl</a>
-            </div>
-          </div>
-        </div>
-        <div class="addr-card">
-          <div class="addr-pin">
-            <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
-          </div>
-          <div>
-            <div class="addr-name">Headquarters &mdash; Lumina Greenland</div>
-            <div class="addr-text">Issortarfimmut 2, PO Box 540<br>3900 Nuuk, Greenland</div>
-          </div>
-        </div>
+        <div class="team-card"><div class="team-av">B</div><div><div class="team-name">Bent Olsvig Jensen</div><div class="team-role">Managing Director, Greenland</div><div class="team-contacts"><a href="tel:+299499599">+299 49 95 99</a><a href="mailto:bent@lumina.gl">bent@lumina.gl</a></div></div></div>
+        <div class="team-card"><div class="team-av" style="background:#2563eb">P</div><div><div class="team-name">Peter Madsen</div><div class="team-role">Director of Operations</div><div class="team-contacts"><a href="tel:+299493713">+299 49 37 13</a><a href="mailto:peter@lumina.gl">peter@lumina.gl</a></div></div></div>
+        <div class="team-card"><div class="team-av" style="background:#16a34a">G</div><div><div class="team-name">Gerth Jacobsen</div><div class="team-role">Head of Administration</div><div class="team-contacts"><a href="tel:+299843217">+299 84 32 17</a><a href="mailto:gerth@lumina.gl">gerth@lumina.gl</a></div></div></div>
+        <div class="addr-card"><div class="addr-pin"><svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg></div><div><div class="addr-name">Headquarters &mdash; Nuuk, Greenland</div><div class="addr-text">Issortarfimmut 2, PO Box 540<br>3900 Nuuk, Greenland</div></div></div>
       </div>
       <div class="contact-form">
         <div class="form-heading">Request Information</div>
@@ -807,8 +788,7 @@
         </div>
         <div class="fg"><label class="fl">Institution / Company</label><input class="fi" type="text" placeholder="NASA, ESA, University..."></div>
         <div class="fg"><label class="fl">Email</label><input class="fi" type="email" placeholder="jane@institution.edu"></div>
-        <div class="fg">
-          <label class="fl">Product of Interest</label>
+        <div class="fg"><label class="fl">Product of Interest</label>
           <select class="fs">
             <option value="">Select a product...</option>
             <option>AnoRoq (Run-of-mine ore)</option>
@@ -830,15 +810,9 @@
 <div class="footer-wrap">
   <div class="footer-inner">
     <div class="footer-cols">
-      <div class="footer-brand">
-        <div class="nav-logo">
-          <div class="nav-logo-box">SRT</div>
-          <div>
-            <div class="nav-logo-text">Space Resource Technologies</div>
-            <div class="nav-logo-sub">Space Materials Division</div>
-          </div>
-        </div>
-        <p>High-fidelity regolith simulants and lunar analog materials for space research, ISRU development, and planetary science.</p>
+      <div class="footer-logo">
+        <img src="images/lumina-logo.webp" alt="Lumina Sustainable Materials">
+        <p class="footer-brand-desc">Pioneering sustainable anorthosite materials for advanced industry and space research. Sourced from Greenland&rsquo;s White Mountain deposit.</p>
       </div>
       <div>
         <div class="footer-col-title">Products</div>
@@ -854,8 +828,8 @@
       <div>
         <div class="footer-col-title">Applications</div>
         <div class="footer-links-list">
-          <a href="#applications">Lunar Studies</a>
-          <a href="#applications">ISRU Research</a>
+          <a href="#applications">Lunar Research</a>
+          <a href="#applications">ISRU</a>
           <a href="#applications">E-Glass Fiber</a>
           <a href="#applications">Coatings</a>
           <a href="#applications">Polymers</a>
@@ -864,23 +838,28 @@
       <div>
         <div class="footer-col-title">Company</div>
         <div class="footer-links-list">
-          <a href="#">About SRT</a>
-          <a href="#">Resources</a>
-          <a href="#">Research Database</a>
+          <a href="#about">About</a>
+          <a href="#about">Leadership</a>
+          <a href="#about">History</a>
           <a href="#contact">Contact</a>
-          <a href="#">Careers</a>
         </div>
       </div>
     </div>
     <div class="footer-bottom">
-      <div class="footer-copy">&copy; 2026 Space Resource Technologies &middot; Anorthosite sourced from Lumina Greenland</div>
-      <div class="footer-legal">
-        <a href="#">Privacy Policy</a>
-        <a href="#">Terms of Use</a>
-      </div>
+      <div class="footer-copy">&copy; 2026 Lumina Greenland ApS. All rights reserved.</div>
+      <div class="footer-legal"><a href="#">Privacy Policy</a><a href="#">Terms of Use</a></div>
     </div>
   </div>
 </div>
+
+<script>
+  function switchTab(e, id) {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    e.currentTarget.classList.add('active');
+    document.getElementById('tab-' + id).classList.add('active');
+  }
+</script>
 
 </body>
 </html>
