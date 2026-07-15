@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About — Lumina Greenland</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&family=Open+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .tab-bar { display:flex; gap:0; border-bottom:2px solid var(--border); margin-bottom:48px; overflow-x:auto; }
+    .tab-btn { font-family:'Montserrat',sans-serif; font-size:12px; font-weight:700; letter-spacing:.06em; text-transform:uppercase; padding:13px 24px; border:none; background:none; cursor:pointer; color:var(--muted); border-bottom:3px solid transparent; margin-bottom:-2px; transition:color .15s,border-color .15s; white-space:nowrap; }
+    .tab-btn:hover { color:var(--text); }
+    .tab-btn.active { color:var(--orange); border-bottom-color:var(--orange); }
+    .tab-panel { display:none; }
+    .tab-panel.active { display:block; }
+
+    /* MISSION */
+    .mission-grid { display:grid; grid-template-columns:1fr 1fr; gap:64px; align-items:center; }
+    @media(max-width:768px){ .mission-grid{grid-template-columns:1fr; gap:36px;} }
+    .mission-quote { font-family:'Montserrat',sans-serif; font-size:clamp(17px,2.2vw,24px); font-weight:800; line-height:1.35; color:var(--text); border-left:4px solid var(--orange); padding-left:22px; margin-bottom:22px; }
+    .mission-body { font-size:15px; color:var(--muted); line-height:1.8; }
+    .mission-img { width:100%; height:380px; object-fit:cover; border-radius:8px; border:1px solid var(--border); }
+
+    /* HISTORY TIMELINE */
+    .timeline { display:flex; flex-direction:column; max-width:720px; }
+    .tl-item { display:flex; gap:28px; padding-bottom:36px; }
+    .tl-item:last-child { padding-bottom:0; }
+    .tl-left { display:flex; flex-direction:column; align-items:center; flex-shrink:0; }
+    .tl-year { font-family:'Montserrat',sans-serif; font-size:15px; font-weight:900; color:var(--orange); width:54px; text-align:center; }
+    .tl-dot { width:10px; height:10px; border-radius:50%; background:var(--orange); margin:8px 0; }
+    .tl-line { flex:1; width:2px; background:var(--border); }
+    .tl-item:last-child .tl-line { display:none; }
+    .tl-title { font-family:'Montserrat',sans-serif; font-size:14px; font-weight:800; color:var(--text); margin-bottom:6px; }
+    .tl-desc { font-size:13.5px; color:var(--muted); line-height:1.7; }
+
+    /* OPERATIONS */
+    .ops-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:22px; }
+    @media(max-width:700px){ .ops-grid{grid-template-columns:1fr;} }
+    .ops-card { border:1px solid var(--border); border-radius:6px; padding:26px 22px; transition:box-shadow .2s; }
+    .ops-card:hover { box-shadow:0 4px 18px rgba(0,0,0,.07); }
+    .ops-region { font-family:'Montserrat',sans-serif; font-size:10px; font-weight:700; letter-spacing:.14em; text-transform:uppercase; color:var(--orange); margin-bottom:8px; }
+    .ops-title { font-family:'Montserrat',sans-serif; font-size:16px; font-weight:800; color:var(--text); margin-bottom:10px; }
+    .ops-desc { font-size:13px; color:var(--muted); line-height:1.65; }
+
+    /* TEAM */
+    .team-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:22px; max-width:820px; }
+    @media(max-width:600px){ .team-grid{grid-template-columns:1fr;} }
+    .person-card { border:1px solid var(--border); border-radius:8px; padding:26px 24px; display:flex; gap:18px; transition:box-shadow .2s; }
+    .person-card:hover { box-shadow:0 4px 18px rgba(0,0,0,.07); }
+    .person-av { width:54px; height:54px; border-radius:50%; flex-shrink:0; background:var(--orange); display:flex; align-items:center; justify-content:center; font-family:'Montserrat',sans-serif; font-weight:900; font-size:20px; color:#fff; }
+    .person-name { font-family:'Montserrat',sans-serif; font-size:14.5px; font-weight:800; color:var(--text); margin-bottom:2px; }
+    .person-title { font-size:11.5px; font-weight:700; color:var(--orange); margin-bottom:10px; }
+    .person-bio { font-size:12.5px; color:var(--muted); line-height:1.65; }
+    .person-contacts { margin-top:10px; display:flex; flex-direction:column; gap:3px; }
+    .person-contacts a { font-size:12px; color:var(--orange); }
+    .person-contacts a:hover { text-decoration:underline; }
+
+    /* INVESTORS */
+    .investor-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:22px; max-width:640px; }
+    .investor-card { border:1px solid var(--border); border-radius:8px; padding:28px 24px; }
+    .investor-name { font-family:'Montserrat',sans-serif; font-size:17px; font-weight:800; color:var(--text); margin-bottom:10px; }
+    .investor-desc { font-size:13px; color:var(--muted); line-height:1.65; }
+  </style>
+</head>
+<body>
+<div class="topbar">
+  <a href="mailto:bent@lumina.gl">bent@lumina.gl</a><span class="topbar-sep">|</span>
+  <a href="tel:+299499599">+299 49 95 99</a><span class="topbar-sep">|</span>
+  <a href="contact.html">Contact</a>
+</div>
+<nav>
+  <div class="nav-inner">
+    <a class="nav-logo" href="index.html"><img src="../images/lumina-logo.webp" alt="Lumina"></a>
+    <div class="nav-menu">
+      <a class="nav-link" href="index.html">Home</a>
+      <a class="nav-link active" href="about.html">About</a>
+      <a class="nav-link" href="products.html">Products</a>
+      <a class="nav-link" href="lunar.html">Lunar Research</a>
+      <a class="nav-link" href="applications.html">Applications</a>
+      <a class="nav-link" href="contact.html">Contact</a>
+    </div>
+    <div class="nav-right">
+      <a class="nav-cart" href="checkout.html" title="Cart">
+        <svg viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+        <span class="cart-badge" id="cart-badge">0</span>
+      </a>
+    </div>
+  </div>
+</nav>
+
+<div class="page-hero">
+  <div class="page-hero-inner">
+    <div class="page-hero-eyebrow">Who We Are</div>
+    <div class="page-hero-title">About Lumina</div>
+    <div class="page-hero-sub">A pioneering material science company addressing today&rsquo;s significant manufacturing challenges with unparalleled sustainability.</div>
+  </div>
+</div>
+
+<div class="wrap-white">
+  <div class="sec">
+    <div class="tab-bar">
+      <button class="tab-btn active" onclick="switchTab(event,'mission')">Mission</button>
+      <button class="tab-btn" onclick="switchTab(event,'history')">History</button>
+      <button class="tab-btn" onclick="switchTab(event,'operations')">Operations</button>
+      <button class="tab-btn" onclick="switchTab(event,'team')">Leadership</button>
+      <button class="tab-btn" onclick="switchTab(event,'investors')">Investors</button>
+    </div>
+
+    <div class="tab-panel active" id="tab-mission">
+      <div class="mission-grid">
+        <div>
+          <div class="mission-quote">&ldquo;We are a pioneering material science company addressing today&rsquo;s significant manufacturing challenges with unparalleled sustainability.&rdquo;</div>
+          <p class="mission-body">Lumina crafts specialized products through tailored chemistry and processing solutions, operating primary mining facilities 80 km west of Kangerlussuaq on Greenland&rsquo;s west coast.<br><br>Our anorthosite &mdash; marketed under the Greenspar brand &mdash; is the only commercially available high-purity anorthosite product in the world, offering a sustainable alternative to conventional industrial minerals across e-glass, coatings, polymers, friction materials, and space research.<br><br>With no toxic by-products and an exceptionally low environmental footprint, Lumina is uniquely positioned at the intersection of industrial materials science and planetary exploration.</p>
+        </div>
+        <img class="mission-img" src="https://images.squarespace-cdn.com/content/v1/68235d218bb2330e46b287e0/dji_fly_20241008_110738_140_1728390257891_photo_optimized.jpg?format=2500w" alt="Lumina mining operations" onerror="this.style.background='var(--bg2)'">
+      </div>
+    </div>
+
+    <div class="tab-panel" id="tab-history">
+      <div class="timeline">
+        <div class="tl-item"><div class="tl-left"><div class="tl-year">2013</div><div class="tl-dot"></div><div class="tl-line"></div></div><div><div class="tl-title">Exploration Begins</div><p class="tl-desc">Lumina&rsquo;s journey initiated with exploration activities at the White Mountain anorthosite deposit, 80 km west of Kangerlussuaq on Greenland&rsquo;s west coast.</p></div></div>
+        <div class="tl-item"><div class="tl-left"><div class="tl-year">2017</div><div class="tl-dot"></div><div class="tl-line"></div></div><div><div class="tl-title">Construction at Qaqortorsuaq</div><p class="tl-desc">Construction commenced at the Qaqortorsuaq site in Greenland, establishing the primary mining infrastructure and processing facilities for the Greenspar product line.</p></div></div>
+        <div class="tl-item"><div class="tl-left"><div class="tl-year">2019</div><div class="tl-dot"></div><div class="tl-line"></div></div><div><div class="tl-title">First Mineral Shipment</div><p class="tl-desc">First mineral shipment successfully completed, marking Greenland&rsquo;s entry into the global specialty minerals market. Director of Operations Peter Madsen&rsquo;s fourth mining venture in Greenland.</p></div></div>
+        <div class="tl-item"><div class="tl-left"><div class="tl-year">Today</div><div class="tl-dot"></div><div class="tl-line"></div></div><div><div class="tl-title">Global Supply Chain</div><p class="tl-desc">Lumina now operates a fully vertically integrated supply chain spanning three continents, with mining in Greenland, advanced processing in Jeffersonville, Indiana (USA), and operations in Mexico and Europe.</p></div></div>
+      </div>
+    </div>
+
+    <div class="tab-panel" id="tab-operations">
+      <div class="ops-grid">
+        <div class="ops-card"><div class="ops-region">Greenland</div><div class="ops-title">Mining &amp; Exploration</div><p class="ops-desc">Primary mining at the White Mountain anorthosite deposit, 80 km west of Kangerlussuaq. Run-of-mine ore extraction, site logistics, and ongoing exploration.</p></div>
+        <div class="ops-card"><div class="ops-region">United States</div><div class="ops-title">Advanced Processing</div><p class="ops-desc">Advanced mineral processing facility in Jeffersonville, Indiana. Milling, classification, and quality control for the full Greenspar product line shipped to North American customers.</p></div>
+        <div class="ops-card"><div class="ops-region">Mexico</div><div class="ops-title">Processing Capabilities</div><p class="ops-desc">Processing capabilities serving Latin American industrial markets, enabling shorter lead times and reduced logistics costs for customers in the region.</p></div>
+        <div class="ops-card"><div class="ops-region">Europe</div><div class="ops-title">Infrastructure Development</div><p class="ops-desc">Ongoing infrastructure development to support European industrial customers, with a focus on e-glass fiber, coatings, and specialty mineral markets.</p></div>
+        <div class="ops-card"><div class="ops-region">Community</div><div class="ops-title">Greenland Partnerships</div><p class="ops-desc">Lumina is Greenland&rsquo;s sole mining operation with strong community ties &mdash; committed to local employment, safety standards, and long-term deposit stewardship.</p></div>
+      </div>
+    </div>
+
+    <div class="tab-panel" id="tab-team">
+      <div class="team-grid">
+        <div class="person-card"><div class="person-av">B</div><div><div class="person-name">Bent Olsvig Jensen</div><div class="person-title">Managing Director, Greenland</div><p class="person-bio">Background spans military service and the fishing industry. Previously managed Greenland&rsquo;s ruby mine project. Chairs the Greenland Business Association&rsquo;s Industry Committee for Mineral Extractors.</p><div class="person-contacts"><a href="tel:+299499599">+299 49 95 99</a><a href="mailto:bent@lumina.gl">bent@lumina.gl</a></div></div></div>
+        <div class="person-card"><div class="person-av" style="background:#2563eb">P</div><div><div class="person-name">Peter Madsen</div><div class="person-title">Director of Operations</div><p class="person-bio">Manages all internal Greenland mining operations with 25+ years experience. Oversees drilling, blasting, hauling, HSE, logistics, and budgeting. Greenland resident since 1995.</p><div class="person-contacts"><a href="tel:+299493713">+299 49 37 13</a><a href="mailto:peter@lumina.gl">peter@lumina.gl</a></div></div></div>
+        <div class="person-card"><div class="person-av" style="background:#16a34a">G</div><div><div class="person-name">Gerth Jacobsen</div><div class="person-title">Head of Administration</div><p class="person-bio">Responsible for administrative operations, compliance, and regulatory affairs across Lumina&rsquo;s Greenland activities.</p><div class="person-contacts"><a href="tel:+299843217">+299 84 32 17</a><a href="mailto:gerth@lumina.gl">gerth@lumina.gl</a></div></div></div>
+      </div>
+    </div>
+
+    <div class="tab-panel" id="tab-investors">
+      <div class="investor-grid">
+        <div class="investor-card"><div class="investor-name">Cordiant Capital</div><p class="investor-desc">A global alternative investment manager specializing in infrastructure and natural resources, with a focus on sustainable, long-term value creation.</p></div>
+        <div class="investor-card"><div class="investor-name">Apex Asset Management</div><p class="investor-desc">A specialist asset manager backing innovative materials companies with strong sustainability credentials and defensible resource positions.</p></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="footer-wrap">
+  <div class="footer-inner">
+    <div class="footer-cols">
+      <div class="footer-logo"><img src="../images/lumina-logo.webp" alt="Lumina"><p class="footer-brand-desc">Pioneering sustainable anorthosite materials for advanced industry and space research.</p></div>
+      <div><div class="footer-col-title">Products</div><div class="footer-links-list"><a href="products.html">AnoRoq</a><a href="products.html">Greenspar 2000</a><a href="products.html">Greenspar 60</a><a href="products.html">Greenspar 45</a><a href="products.html">Greenspar 15</a></div></div>
+      <div><div class="footer-col-title">Company</div><div class="footer-links-list"><a href="about.html">Mission</a><a href="about.html">History</a><a href="about.html">Leadership</a><a href="contact.html">Contact</a></div></div>
+      <div><div class="footer-col-title">Research</div><div class="footer-links-list"><a href="lunar.html">Lunar Research</a><a href="applications.html">Applications</a></div></div>
+    </div>
+    <div class="footer-bottom">
+      <div class="footer-copy">&copy; 2026 Lumina Greenland ApS. All rights reserved.</div>
+      <div class="footer-legal"><a href="#">Privacy</a><a href="#">Terms</a></div>
+    </div>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+<script src="cart.js"></script>
+<script>
+function switchTab(e, id) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  e.currentTarget.classList.add('active');
+  document.getElementById('tab-' + id).classList.add('active');
+}
+</script>
+</body>
+</html>

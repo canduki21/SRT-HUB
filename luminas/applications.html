@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Applications — Lumina Greenland</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&family=Open+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .app-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:0; border:1px solid var(--border); border-radius:6px; overflow:hidden; }
+    .app-card { border-right:1px solid var(--border); border-bottom:1px solid var(--border); padding:36px 32px; transition:background .15s; }
+    .app-card:hover { background:#fafbfc; }
+    .app-num { font-family:'Montserrat',sans-serif; font-size:11px; font-weight:800; color:var(--orange); letter-spacing:.1em; margin-bottom:14px; }
+    .app-title { font-family:'Montserrat',sans-serif; font-size:18px; font-weight:800; color:var(--text); margin-bottom:12px; }
+    .app-desc { font-size:13.5px; color:var(--muted); line-height:1.75; margin-bottom:18px; }
+    .app-products { font-size:11.5px; font-weight:700; color:var(--orange); font-family:'Montserrat',sans-serif; letter-spacing:.04em; }
+    .app-products span { color:var(--muted); font-weight:400; }
+    @media(max-width:800px){ .app-grid{grid-template-columns:repeat(2,1fr);} }
+    @media(max-width:480px){ .app-grid{grid-template-columns:1fr;} }
+
+    .cta-band { background:var(--nav); padding:60px 40px; text-align:center; }
+    .cta-band-title { font-family:'Montserrat',sans-serif; font-size:clamp(22px,3vw,36px); font-weight:900; text-transform:uppercase; color:#fff; margin-bottom:14px; }
+    .cta-band-sub { font-size:15px; color:#8090a8; margin-bottom:30px; max-width:520px; margin-left:auto; margin-right:auto; }
+    .cta-btns { display:flex; gap:14px; justify-content:center; flex-wrap:wrap; }
+  </style>
+</head>
+<body>
+<div class="topbar">
+  <a href="mailto:bent@lumina.gl">bent@lumina.gl</a><span class="topbar-sep">|</span>
+  <a href="tel:+299499599">+299 49 95 99</a><span class="topbar-sep">|</span>
+  <a href="contact.html">Contact</a>
+</div>
+<nav>
+  <div class="nav-inner">
+    <a class="nav-logo" href="index.html"><img src="../images/lumina-logo.webp" alt="Lumina"></a>
+    <div class="nav-menu">
+      <a class="nav-link" href="index.html">Home</a>
+      <a class="nav-link" href="about.html">About</a>
+      <a class="nav-link" href="products.html">Products</a>
+      <a class="nav-link" href="lunar.html">Lunar Research</a>
+      <a class="nav-link active" href="applications.html">Applications</a>
+      <a class="nav-link" href="contact.html">Contact</a>
+    </div>
+    <div class="nav-right">
+      <a class="nav-cart" href="checkout.html" title="Cart">
+        <svg viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+        <span class="cart-badge" id="cart-badge">0</span>
+      </a>
+    </div>
+  </div>
+</nav>
+
+<div class="page-hero">
+  <div class="page-hero-inner">
+    <div class="page-hero-eyebrow">Use Cases</div>
+    <div class="page-hero-title">Applications</div>
+    <div class="page-hero-sub">Anorthosite&rsquo;s unique chemistry &mdash; high aluminum, low silica, zero toxic by-products &mdash; serves six distinct industrial and research sectors.</div>
+  </div>
+</div>
+
+<div class="wrap-white">
+  <div class="sec">
+    <div class="sec-head">
+      <div class="sec-label">Industries Served</div>
+      <h2 class="sec-h2">Versatile Across Sectors</h2>
+      <p class="sec-sub">From lunar highland simulant to e-glass reinforcement &mdash; Greenspar products power cutting-edge applications across space science and advanced manufacturing.</p>
+    </div>
+    <div class="app-grid">
+      <div class="app-card">
+        <div class="app-num">01</div>
+        <div class="app-title">Lunar Studies &amp; ISRU</div>
+        <p class="app-desc">Premier terrestrial feedstock for lunar highland simulants. Used in ISRU experiments, planetary surface research, spectral calibration, and astronaut training scenarios. Compositionally analogous to Apollo sample anorthosite from the lunar highlands.</p>
+        <div class="app-products">Recommended: <span>Greenspar 2000, Greenspar 60, Greenspar 15</span></div>
+      </div>
+      <div class="app-card">
+        <div class="app-num">02</div>
+        <div class="app-title">E-Glass Fiber</div>
+        <p class="app-desc">Greenspar delivers superior electrical insulation performance with a significantly reduced environmental footprint compared to conventional feldspar sources. Used by aerospace, automotive, and construction sectors requiring high-performance reinforcing glass fiber.</p>
+        <div class="app-products">Recommended: <span>Greenspar 2000</span></div>
+      </div>
+      <div class="app-card">
+        <div class="app-num">03</div>
+        <div class="app-title">Paints &amp; Coatings</div>
+        <p class="app-desc">Greenspar products reduce volatile organic compound (VOC) emissions while improving opacity, scrub resistance, and durability in architectural and industrial coatings. A sustainable alternative to conventional extender minerals with superior whiteness characteristics.</p>
+        <div class="app-products">Recommended: <span>Greenspar 60, Greenspar 45, Greenspar 15</span></div>
+      </div>
+      <div class="app-card">
+        <div class="app-num">04</div>
+        <div class="app-title">Friction Materials</div>
+        <p class="app-desc">Anorthosite strengthens phenolic friction resins in high-performance brake pads and clutch systems. Its hardness, low free silica content, and chemical inertness make it a preferred reinforcing filler for automotive and aerospace friction applications.</p>
+        <div class="app-products">Recommended: <span>Greenspar 60, Greenspar 45</span></div>
+      </div>
+      <div class="app-card">
+        <div class="app-num">05</div>
+        <div class="app-title">Polymers &amp; Plastics</div>
+        <p class="app-desc">Greenspar enhances anti-block properties, UV stability, flame resistance, and structural toughness in thermoplastic and thermoset polymer compounds. Its platelet morphology and high whiteness improve surface finish in blown film and packaging applications.</p>
+        <div class="app-products">Recommended: <span>Greenspar 45, Greenspar 15</span></div>
+      </div>
+      <div class="app-card">
+        <div class="app-num">06</div>
+        <div class="app-title">Mineral Wool</div>
+        <p class="app-desc">High aluminum and calcium content makes Greenspar an ideal raw material for stone wool and glass wool insulation manufacturing. Provides excellent thermal and acoustic performance with a lower environmental impact than competing mineral sources.</p>
+        <div class="app-products">Recommended: <span>AnoRoq, Greenspar 2000</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="cta-band">
+  <div class="cta-band-title">Find the Right Product for Your Application</div>
+  <p class="cta-band-sub">Five Greenspar grades cover every application from bulk feedstock to ultra-fine lunar dust analog. Need a custom specification? We can engineer it.</p>
+  <div class="cta-btns">
+    <a class="btn btn-primary" href="products.html">View All Products</a>
+    <a class="btn btn-ghost" href="contact.html">Discuss Your Requirements</a>
+  </div>
+</div>
+
+<div class="footer-wrap">
+  <div class="footer-inner">
+    <div class="footer-cols">
+      <div class="footer-logo"><img src="../images/lumina-logo.webp" alt="Lumina"><p class="footer-brand-desc">Pioneering sustainable anorthosite materials for advanced industry and space research.</p></div>
+      <div><div class="footer-col-title">Products</div><div class="footer-links-list"><a href="products.html">AnoRoq</a><a href="products.html">Greenspar 2000</a><a href="products.html">Greenspar 60</a><a href="products.html">Greenspar 45</a><a href="products.html">Greenspar 15</a></div></div>
+      <div><div class="footer-col-title">Company</div><div class="footer-links-list"><a href="about.html">About</a><a href="lunar.html">Lunar Research</a><a href="contact.html">Contact</a></div></div>
+      <div><div class="footer-col-title">Applications</div><div class="footer-links-list"><a href="applications.html">Lunar &amp; ISRU</a><a href="applications.html">E-Glass Fiber</a><a href="applications.html">Coatings</a><a href="applications.html">Polymers</a></div></div>
+    </div>
+    <div class="footer-bottom">
+      <div class="footer-copy">&copy; 2026 Lumina Greenland ApS. All rights reserved.</div>
+      <div class="footer-legal"><a href="#">Privacy</a><a href="#">Terms</a></div>
+    </div>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+<script src="cart.js"></script>
+</body>
+</html>

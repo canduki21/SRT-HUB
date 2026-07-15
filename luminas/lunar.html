@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lunar Research — Lumina Greenland</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&family=Open+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .lunar-hero { position:relative; height:420px; display:flex; align-items:center; overflow:hidden; }
+    .lunar-hero-img { position:absolute; inset:0; background:url('../images/moon.jpg') center 30%/cover no-repeat; }
+    .lunar-hero-overlay { position:absolute; inset:0; background:linear-gradient(90deg,rgba(10,12,22,.88) 0%,rgba(10,12,22,.45) 60%,rgba(10,12,22,.2) 100%); }
+    .lunar-hero-content { position:relative; z-index:2; max-width:1280px; margin:0 auto; padding:0 40px; }
+    .lunar-hero-eyebrow { font-family:'Montserrat',sans-serif; font-size:10.5px; font-weight:700; letter-spacing:.18em; text-transform:uppercase; color:var(--orange); margin-bottom:12px; }
+    .lunar-hero-title { font-family:'Montserrat',sans-serif; font-size:clamp(30px,5vw,56px); font-weight:900; text-transform:uppercase; letter-spacing:.03em; color:#fff; line-height:1.06; margin-bottom:16px; }
+    .lunar-hero-sub { font-size:16px; color:rgba(200,210,235,.85); line-height:1.7; max-width:500px; }
+
+    .two-col { display:grid; grid-template-columns:1fr 1fr; gap:64px; align-items:start; }
+    @media(max-width:800px){ .two-col{grid-template-columns:1fr; gap:40px;} }
+
+    .fact-list { display:flex; flex-direction:column; }
+    .fact-item { display:flex; gap:18px; padding:22px 0; border-bottom:1px solid var(--border); }
+    .fact-item:first-child { padding-top:0; }
+    .fact-num { font-family:'Montserrat',sans-serif; font-size:13px; font-weight:900; color:var(--orange); flex-shrink:0; min-width:26px; margin-top:2px; }
+    .fact-title { font-family:'Montserrat',sans-serif; font-size:14px; font-weight:800; color:var(--text); margin-bottom:6px; }
+    .fact-desc { font-size:13.5px; color:var(--muted); line-height:1.7; }
+
+    .comp-box { background:var(--bg2); border:1px solid var(--border); border-radius:8px; padding:28px 26px; position:sticky; top:88px; }
+    .comp-box-title { font-family:'Montserrat',sans-serif; font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.14em; color:var(--muted); margin-bottom:22px; }
+    .comp-row { margin-bottom:18px; }
+    .comp-row:last-child { margin-bottom:0; }
+    .comp-lbl { display:flex; justify-content:space-between; margin-bottom:7px; }
+    .comp-mineral { font-size:12.5px; color:var(--text); font-weight:600; }
+    .comp-pct { font-family:'Montserrat',sans-serif; font-size:12.5px; font-weight:800; color:var(--orange); }
+    .comp-track { height:6px; background:var(--border); border-radius:3px; }
+    .comp-fill { height:100%; border-radius:3px; background:linear-gradient(90deg,var(--orange),#f0a050); }
+
+    .cta-band { background:var(--nav); padding:60px 40px; text-align:center; }
+    .cta-band-title { font-family:'Montserrat',sans-serif; font-size:clamp(22px,3vw,36px); font-weight:900; text-transform:uppercase; color:#fff; margin-bottom:14px; }
+    .cta-band-sub { font-size:15px; color:#8090a8; margin-bottom:30px; max-width:520px; margin-left:auto; margin-right:auto; }
+    .cta-btns { display:flex; gap:14px; justify-content:center; flex-wrap:wrap; }
+  </style>
+</head>
+<body>
+<div class="topbar">
+  <a href="mailto:bent@lumina.gl">bent@lumina.gl</a><span class="topbar-sep">|</span>
+  <a href="tel:+299499599">+299 49 95 99</a><span class="topbar-sep">|</span>
+  <a href="contact.html">Contact</a>
+</div>
+<nav>
+  <div class="nav-inner">
+    <a class="nav-logo" href="index.html"><img src="../images/lumina-logo.webp" alt="Lumina"></a>
+    <div class="nav-menu">
+      <a class="nav-link" href="index.html">Home</a>
+      <a class="nav-link" href="about.html">About</a>
+      <a class="nav-link" href="products.html">Products</a>
+      <a class="nav-link active" href="lunar.html">Lunar Research</a>
+      <a class="nav-link" href="applications.html">Applications</a>
+      <a class="nav-link" href="contact.html">Contact</a>
+    </div>
+    <div class="nav-right">
+      <a class="nav-cart" href="checkout.html" title="Cart">
+        <svg viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+        <span class="cart-badge" id="cart-badge">0</span>
+      </a>
+    </div>
+  </div>
+</nav>
+
+<div class="lunar-hero">
+  <div class="lunar-hero-img"></div>
+  <div class="lunar-hero-overlay"></div>
+  <div class="lunar-hero-content">
+    <div class="lunar-hero-eyebrow">Space Materials Science</div>
+    <div class="lunar-hero-title">Lunar Highland<br>Research</div>
+    <p class="lunar-hero-sub">Greenland anorthosite &mdash; the world&rsquo;s closest terrestrial analog to the composition of the lunar highlands.</p>
+  </div>
+</div>
+
+<div class="wrap-white">
+  <div class="sec">
+    <div class="sec-head">
+      <div class="sec-label">Why Anorthosite</div>
+      <h2 class="sec-h2">The Connection Between<br>Greenland and the Moon</h2>
+      <p class="sec-sub">The lunar highlands are dominated by anorthosite &mdash; a rock composed almost entirely of plagioclase feldspar. Greenland&rsquo;s White Mountain deposit shares this rare geochemistry, making it the premier terrestrial source for lunar simulant feedstock.</p>
+    </div>
+    <div class="two-col">
+      <div class="fact-list">
+        <div class="fact-item"><div class="fact-num">01</div><div><div class="fact-title">Same Mineralogy as Lunar Highlands</div><p class="fact-desc">Dominated by plagioclase feldspar &mdash; the mineral that constitutes over 90% of the lunar highland crust. The most geologically accurate simulant feedstock available on Earth, validated by comparison with Apollo sample compositions.</p></div></div>
+        <div class="fact-item"><div class="fact-num">02</div><div><div class="fact-title">Accurate Iron-Poor Chemistry</div><p class="fact-desc">Exceptionally low Fe&#8322;O&#8323; levels accurately reflect the iron-poor anorthositic composition of the lunar highlands &mdash; critical for matching optical albedo, thermal properties, and spectral signatures used in remote sensing calibration.</p></div></div>
+        <div class="fact-item"><div class="fact-num">03</div><div><div class="fact-title">Zero Toxic By-Products</div><p class="fact-desc">Unlike many industrial minerals, anorthosite processing generates no hazardous waste streams, making it safe for closed-loop ISRU system testing, pressurized habitat simulations, and long-term laboratory environments.</p></div></div>
+        <div class="fact-item"><div class="fact-num">04</div><div><div class="fact-title">ISRU Feedstock Potential</div><p class="fact-desc">Anorthosite is a primary candidate for in-situ resource utilization on the Moon. Its high aluminum and calcium content enables potential oxygen extraction, metal refining, and construction material production in lunar surface scenarios.</p></div></div>
+        <div class="fact-item"><div class="fact-num">05</div><div><div class="fact-title">Consistent, Scalable Supply</div><p class="fact-desc">Unlike meteorite-derived analogs, Greenland anorthosite is available in industrial quantities &mdash; from gram-scale laboratory samples to multi-tonne research consignments &mdash; without supply constraints or export restrictions.</p></div></div>
+      </div>
+      <div class="comp-box">
+        <div class="comp-box-title">Mineral Composition</div>
+        <div class="comp-row"><div class="comp-lbl"><span class="comp-mineral">Plagioclase Feldspar</span><span class="comp-pct">&ge; 90%</span></div><div class="comp-track"><div class="comp-fill" style="width:90%"></div></div></div>
+        <div class="comp-row"><div class="comp-lbl"><span class="comp-mineral">Aluminum Oxide (Al&#8322;O&#8323;)</span><span class="comp-pct">~27%</span></div><div class="comp-track"><div class="comp-fill" style="width:74%"></div></div></div>
+        <div class="comp-row"><div class="comp-lbl"><span class="comp-mineral">Silicon Dioxide (SiO&#8322;)</span><span class="comp-pct">~50%</span></div><div class="comp-track"><div class="comp-fill" style="width:58%"></div></div></div>
+        <div class="comp-row"><div class="comp-lbl"><span class="comp-mineral">Calcium Oxide (CaO)</span><span class="comp-pct">~14%</span></div><div class="comp-track"><div class="comp-fill" style="width:46%"></div></div></div>
+        <div class="comp-row"><div class="comp-lbl"><span class="comp-mineral">Free Quartz (SiO&#8322;)</span><span class="comp-pct">&lt; 1%</span></div><div class="comp-track"><div class="comp-fill" style="width:3%"></div></div></div>
+        <div class="comp-row"><div class="comp-lbl"><span class="comp-mineral">Iron Oxide (Fe&#8322;O&#8323;)</span><span class="comp-pct">&lt; 0.5%</span></div><div class="comp-track"><div class="comp-fill" style="width:2%"></div></div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="cta-band">
+  <div class="cta-band-title">Ready to Order Lunar Analog Material?</div>
+  <p class="cta-band-sub">Greenspar products are available in five grades &mdash; from coarse sand to 15 &micro;m ultra-fine powder &mdash; for any research application.</p>
+  <div class="cta-btns">
+    <a class="btn btn-primary" href="products.html">Shop Products</a>
+    <a class="btn btn-ghost" href="contact.html">Custom Order</a>
+  </div>
+</div>
+
+<div class="footer-wrap">
+  <div class="footer-inner">
+    <div class="footer-cols">
+      <div class="footer-logo"><img src="../images/lumina-logo.webp" alt="Lumina"><p class="footer-brand-desc">Pioneering sustainable anorthosite materials for advanced industry and space research.</p></div>
+      <div><div class="footer-col-title">Products</div><div class="footer-links-list"><a href="products.html">AnoRoq</a><a href="products.html">Greenspar 2000</a><a href="products.html">Greenspar 60</a><a href="products.html">Greenspar 45</a><a href="products.html">Greenspar 15</a></div></div>
+      <div><div class="footer-col-title">Company</div><div class="footer-links-list"><a href="about.html">About</a><a href="applications.html">Applications</a><a href="contact.html">Contact</a></div></div>
+      <div><div class="footer-col-title">Research</div><div class="footer-links-list"><a href="lunar.html">Lunar Research</a><a href="products.html">ISRU Feedstock</a></div></div>
+    </div>
+    <div class="footer-bottom">
+      <div class="footer-copy">&copy; 2026 Lumina Greenland ApS. All rights reserved.</div>
+      <div class="footer-legal"><a href="#">Privacy</a><a href="#">Terms</a></div>
+    </div>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+<script src="cart.js"></script>
+</body>
+</html>

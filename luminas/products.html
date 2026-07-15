@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Products — Lumina Greenland</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&family=Open+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .prod-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:0; border:1px solid var(--border); border-radius:6px; overflow:hidden; }
+    .prod-card { display:flex; flex-direction:column; border-right:1px solid var(--border); border-bottom:1px solid var(--border); background:var(--bg); transition:background .15s; }
+    .prod-card:hover { background:#fafbfc; }
+    .prod-img-wrap { background:#f7f8fa; padding:28px 20px 0; display:flex; align-items:flex-end; justify-content:center; height:240px; overflow:hidden; }
+    .prod-img-wrap img { max-width:100%; max-height:210px; object-fit:contain; filter:drop-shadow(0 6px 14px rgba(0,0,0,.13)); }
+    .prod-body { padding:20px 22px 24px; flex:1; display:flex; flex-direction:column; border-top:1px solid var(--border); }
+    .prod-grade { font-size:9.5px; font-weight:700; letter-spacing:.13em; text-transform:uppercase; color:var(--muted); margin-bottom:5px; }
+    .prod-name { font-family:'Montserrat',sans-serif; font-size:19px; font-weight:800; color:var(--text); margin-bottom:6px; }
+    .prod-price { font-family:'Montserrat',sans-serif; font-size:17px; font-weight:800; color:var(--orange); margin-bottom:10px; }
+    .prod-price span { font-size:12px; font-weight:600; color:var(--muted); }
+    .prod-desc { font-size:13px; color:var(--muted); line-height:1.65; flex:1; margin-bottom:16px; }
+    .prod-specs { display:flex; flex-direction:column; gap:4px; margin-bottom:18px; padding:10px 12px; background:var(--bg2); border-radius:var(--radius); }
+    .spec-row { display:flex; justify-content:space-between; font-size:11.5px; }
+    .spec-k { color:var(--muted); }
+    .spec-v { font-weight:700; color:var(--text); }
+    .prod-qty-row { display:flex; align-items:center; gap:10px; margin-bottom:12px; }
+    .qty-label { font-size:11px; font-weight:700; color:var(--muted); text-transform:uppercase; letter-spacing:.08em; }
+    .qty-ctrl { display:flex; align-items:center; border:1px solid var(--border); border-radius:var(--radius); overflow:hidden; }
+    .qty-btn { width:32px; height:32px; border:none; background:var(--bg2); cursor:pointer; font-size:16px; font-weight:700; color:var(--text); display:flex; align-items:center; justify-content:center; transition:background .15s; }
+    .qty-btn:hover { background:var(--border); }
+    .qty-val { width:36px; text-align:center; font-family:'Montserrat',sans-serif; font-size:13px; font-weight:700; color:var(--text); background:var(--bg); border:none; outline:none; }
+    .btn-cart { display:block; width:100%; text-align:center; background:var(--orange); color:#fff; font-family:'Montserrat',sans-serif; font-size:11.5px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; padding:12px 16px; border-radius:var(--radius); border:none; cursor:pointer; transition:background .15s; }
+    .btn-cart:hover { background:var(--orange-d); }
+    .prod-card.custom { align-items:center; justify-content:center; text-align:center; padding:44px 28px; border-right:none; }
+    .custom-icon { width:58px; height:58px; border-radius:50%; background:rgba(224,120,32,.1); border:2px solid rgba(224,120,32,.25); display:flex; align-items:center; justify-content:center; margin:0 auto 18px; }
+    .custom-icon svg { width:26px; height:26px; stroke:var(--orange); fill:none; stroke-width:1.8; }
+    .custom-name { font-family:'Montserrat',sans-serif; font-size:18px; font-weight:800; color:var(--text); margin-bottom:10px; }
+    .custom-desc { font-size:13px; color:var(--muted); line-height:1.65; margin-bottom:22px; }
+    .btn-custom-outline { display:inline-block; padding:12px 24px; border:2px solid var(--orange); color:var(--orange); font-family:'Montserrat',sans-serif; font-size:11.5px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; border-radius:var(--radius); transition:background .15s,color .15s; }
+    .btn-custom-outline:hover { background:var(--orange); color:#fff; }
+    @media(max-width:900px){ .prod-grid{grid-template-columns:repeat(2,1fr);} }
+    @media(max-width:560px){ .prod-grid{grid-template-columns:1fr;} .prod-card.custom{border-right:none;} }
+
+    .view-cart-bar { background:var(--bg2); border-top:1px solid var(--border); padding:14px 40px; display:flex; align-items:center; justify-content:space-between; gap:14px; position:sticky; bottom:0; z-index:100; }
+    .view-cart-bar span { font-family:'Montserrat',sans-serif; font-size:13px; font-weight:700; color:var(--text); }
+    .view-cart-bar span em { color:var(--orange); font-style:normal; }
+  </style>
+</head>
+<body>
+<div class="topbar">
+  <a href="mailto:bent@lumina.gl">bent@lumina.gl</a><span class="topbar-sep">|</span>
+  <a href="tel:+299499599">+299 49 95 99</a><span class="topbar-sep">|</span>
+  <a href="contact.html">Contact</a>
+</div>
+<nav>
+  <div class="nav-inner">
+    <a class="nav-logo" href="index.html"><img src="../images/lumina-logo.webp" alt="Lumina"></a>
+    <div class="nav-menu">
+      <a class="nav-link" href="index.html">Home</a>
+      <a class="nav-link" href="about.html">About</a>
+      <a class="nav-link active" href="products.html">Products</a>
+      <a class="nav-link" href="lunar.html">Lunar Research</a>
+      <a class="nav-link" href="applications.html">Applications</a>
+      <a class="nav-link" href="contact.html">Contact</a>
+    </div>
+    <div class="nav-right">
+      <a class="nav-cart" href="checkout.html" title="Cart">
+        <svg viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+        <span class="cart-badge" id="cart-badge">0</span>
+      </a>
+    </div>
+  </div>
+</nav>
+
+<div class="page-hero">
+  <div class="page-hero-inner">
+    <div class="page-hero-eyebrow">Greenspar Product Line</div>
+    <div class="page-hero-title">Anorthosite Products</div>
+    <div class="page-hero-sub">From run-of-mine lump ore to ultra-fine milled powder &mdash; five grades engineered for space research and advanced industry.</div>
+  </div>
+</div>
+
+<div class="wrap-white">
+  <div class="sec">
+    <div class="prod-grid">
+
+      <!-- AnoRoq -->
+      <div class="prod-card">
+        <div class="prod-img-wrap"><img src="../images/anoroq.png" alt="AnoRoq"></div>
+        <div class="prod-body">
+          <div class="prod-grade">High-Purity Anorthosite</div>
+          <div class="prod-name">AnoRoq</div>
+          <div class="prod-price">$28.00 <span>/ kg</span></div>
+          <p class="prod-desc">Run-of-mine lump ore. High purity, very low quartz, low alkali &mdash; primary feedstock for all Greenspar products and bulk lunar analog studies.</p>
+          <div class="prod-specs">
+            <div class="spec-row"><span class="spec-k">Form</span><span class="spec-v">Lump ore</span></div>
+            <div class="spec-row"><span class="spec-k">Quartz</span><span class="spec-v">Very low</span></div>
+            <div class="spec-row"><span class="spec-k">Use</span><span class="spec-v">Feedstock / Bulk simulant</span></div>
+          </div>
+          <div class="prod-qty-row">
+            <span class="qty-label">Qty (kg)</span>
+            <div class="qty-ctrl">
+              <button class="qty-btn" onclick="changeQty('anoroq',-1)">&#8722;</button>
+              <input class="qty-val" id="qty-anoroq" value="1" type="number" min="1">
+              <button class="qty-btn" onclick="changeQty('anoroq',1)">+</button>
+            </div>
+          </div>
+          <button class="btn-cart" onclick="addToCart({id:'anoroq',name:'AnoRoq',price:28,img:'../images/anoroq.png'},'anoroq')">Add to Cart</button>
+        </div>
+      </div>
+
+      <!-- Greenspar 2000 -->
+      <div class="prod-card">
+        <div class="prod-img-wrap"><img src="../images/greenspar-2000.png" alt="Greenspar 2000"></div>
+        <div class="prod-body">
+          <div class="prod-grade">High-Purity Anorthosite</div>
+          <div class="prod-name">Greenspar 2000</div>
+          <div class="prod-price">$45.00 <span>/ kg</span></div>
+          <p class="prod-desc">Sand-like anorthosite product. High purity, low iron &mdash; ideal for fiberglass manufacturing and ISRU feedstock experiments.</p>
+          <div class="prod-specs">
+            <div class="spec-row"><span class="spec-k">Form</span><span class="spec-v">Coarse sand</span></div>
+            <div class="spec-row"><span class="spec-k">Top cut</span><span class="spec-v">~2000 &micro;m</span></div>
+            <div class="spec-row"><span class="spec-k">Use</span><span class="spec-v">Fiberglass / ISRU</span></div>
+          </div>
+          <div class="prod-qty-row">
+            <span class="qty-label">Qty (kg)</span>
+            <div class="qty-ctrl">
+              <button class="qty-btn" onclick="changeQty('gs2000',-1)">&#8722;</button>
+              <input class="qty-val" id="qty-gs2000" value="1" type="number" min="1">
+              <button class="qty-btn" onclick="changeQty('gs2000',1)">+</button>
+            </div>
+          </div>
+          <button class="btn-cart" onclick="addToCart({id:'gs2000',name:'Greenspar 2000',price:45,img:'../images/greenspar-2000.png'},'gs2000')">Add to Cart</button>
+        </div>
+      </div>
+
+      <!-- Greenspar 60 -->
+      <div class="prod-card">
+        <div class="prod-img-wrap"><img src="../images/greenspar-60.png" alt="Greenspar 60"></div>
+        <div class="prod-body">
+          <div class="prod-grade">High-Purity Anorthosite</div>
+          <div class="prod-name">Greenspar 60</div>
+          <div class="prod-price">$65.00 <span>/ kg</span></div>
+          <p class="prod-desc">60 &micro;m milled anorthosite powder. High whiteness, low quartz &mdash; for coatings, polymer applications, and simulant blending.</p>
+          <div class="prod-specs">
+            <div class="spec-row"><span class="spec-k">Form</span><span class="spec-v">Milled powder</span></div>
+            <div class="spec-row"><span class="spec-k">Top cut</span><span class="spec-v">60 &micro;m</span></div>
+            <div class="spec-row"><span class="spec-k">Use</span><span class="spec-v">Coatings / Polymers</span></div>
+          </div>
+          <div class="prod-qty-row">
+            <span class="qty-label">Qty (kg)</span>
+            <div class="qty-ctrl">
+              <button class="qty-btn" onclick="changeQty('gs60',-1)">&#8722;</button>
+              <input class="qty-val" id="qty-gs60" value="1" type="number" min="1">
+              <button class="qty-btn" onclick="changeQty('gs60',1)">+</button>
+            </div>
+          </div>
+          <button class="btn-cart" onclick="addToCart({id:'gs60',name:'Greenspar 60',price:65,img:'../images/greenspar-60.png'},'gs60')">Add to Cart</button>
+        </div>
+      </div>
+
+      <!-- Greenspar 45 -->
+      <div class="prod-card">
+        <div class="prod-img-wrap"><img src="../images/greenspar-45.png" alt="Greenspar 45"></div>
+        <div class="prod-body">
+          <div class="prod-grade">High-Purity Anorthosite</div>
+          <div class="prod-name">Greenspar 45</div>
+          <div class="prod-price">$75.00 <span>/ kg</span></div>
+          <p class="prod-desc">45 &micro;m milled powder. Tighter particle sizing than GS-60 with the same high-whiteness, low-quartz specification.</p>
+          <div class="prod-specs">
+            <div class="spec-row"><span class="spec-k">Form</span><span class="spec-v">Milled powder</span></div>
+            <div class="spec-row"><span class="spec-k">Top cut</span><span class="spec-v">45 &micro;m</span></div>
+            <div class="spec-row"><span class="spec-k">Use</span><span class="spec-v">Precision coatings</span></div>
+          </div>
+          <div class="prod-qty-row">
+            <span class="qty-label">Qty (kg)</span>
+            <div class="qty-ctrl">
+              <button class="qty-btn" onclick="changeQty('gs45',-1)">&#8722;</button>
+              <input class="qty-val" id="qty-gs45" value="1" type="number" min="1">
+              <button class="qty-btn" onclick="changeQty('gs45',1)">+</button>
+            </div>
+          </div>
+          <button class="btn-cart" onclick="addToCart({id:'gs45',name:'Greenspar 45',price:75,img:'../images/greenspar-45.png'},'gs45')">Add to Cart</button>
+        </div>
+      </div>
+
+      <!-- Greenspar 15 -->
+      <div class="prod-card">
+        <div class="prod-img-wrap"><img src="../images/greenspar-15.png" alt="Greenspar 15"></div>
+        <div class="prod-body">
+          <div class="prod-grade">High-Purity Anorthosite</div>
+          <div class="prod-name">Greenspar 15</div>
+          <div class="prod-price">$95.00 <span>/ kg</span></div>
+          <p class="prod-desc">15 &micro;m ultra-fine milled powder. Finest grade &mdash; for specialized coatings, advanced polymers, and lunar dust simulant research.</p>
+          <div class="prod-specs">
+            <div class="spec-row"><span class="spec-k">Form</span><span class="spec-v">Ultra-fine powder</span></div>
+            <div class="spec-row"><span class="spec-k">Top cut</span><span class="spec-v">15 &micro;m</span></div>
+            <div class="spec-row"><span class="spec-k">Use</span><span class="spec-v">Lunar dust analog</span></div>
+          </div>
+          <div class="prod-qty-row">
+            <span class="qty-label">Qty (kg)</span>
+            <div class="qty-ctrl">
+              <button class="qty-btn" onclick="changeQty('gs15',-1)">&#8722;</button>
+              <input class="qty-val" id="qty-gs15" value="1" type="number" min="1">
+              <button class="qty-btn" onclick="changeQty('gs15',1)">+</button>
+            </div>
+          </div>
+          <button class="btn-cart" onclick="addToCart({id:'gs15',name:'Greenspar 15',price:95,img:'../images/greenspar-15.png'},'gs15')">Add to Cart</button>
+        </div>
+      </div>
+
+      <!-- Custom -->
+      <div class="prod-card custom">
+        <div class="custom-icon"><svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg></div>
+        <div class="custom-name">Custom Grade</div>
+        <p class="custom-desc">Need a mission-specific particle size or tailored composition? We engineer solutions in direct collaboration with your research team.</p>
+        <a class="btn-custom-outline" href="contact.html">Start a Conversation</a>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div class="view-cart-bar" id="cart-bar" style="display:none">
+  <span>Cart: <em id="cart-bar-count">0</em> item(s) &mdash; <em id="cart-bar-total">$0.00</em></span>
+  <a href="checkout.html" class="btn btn-primary btn-sm">View Cart &amp; Checkout</a>
+</div>
+
+<div class="footer-wrap">
+  <div class="footer-inner">
+    <div class="footer-cols">
+      <div class="footer-logo"><img src="../images/lumina-logo.webp" alt="Lumina"><p class="footer-brand-desc">Pioneering sustainable anorthosite materials for advanced industry and space research.</p></div>
+      <div><div class="footer-col-title">Products</div><div class="footer-links-list"><a href="products.html">AnoRoq</a><a href="products.html">Greenspar 2000</a><a href="products.html">Greenspar 60</a><a href="products.html">Greenspar 45</a><a href="products.html">Greenspar 15</a></div></div>
+      <div><div class="footer-col-title">Company</div><div class="footer-links-list"><a href="about.html">About</a><a href="lunar.html">Lunar Research</a><a href="applications.html">Applications</a><a href="contact.html">Contact</a></div></div>
+      <div><div class="footer-col-title">Help</div><div class="footer-links-list"><a href="checkout.html">View Cart</a><a href="contact.html">Custom Orders</a></div></div>
+    </div>
+    <div class="footer-bottom">
+      <div class="footer-copy">&copy; 2026 Lumina Greenland ApS. All rights reserved.</div>
+      <div class="footer-legal"><a href="#">Privacy</a><a href="#">Terms</a></div>
+    </div>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+<script src="cart.js"></script>
+<script>
+function changeQty(id, delta) {
+  const el = document.getElementById('qty-' + id);
+  el.value = Math.max(1, parseInt(el.value || 1) + delta);
+}
+function addToCart(product, qtyId) {
+  const qty = parseInt(document.getElementById('qty-' + qtyId).value) || 1;
+  Cart.add({ ...product, qty });
+  showToast(product.name + ' added to cart');
+  updateCartBar();
+}
+function updateCartBar() {
+  const bar = document.getElementById('cart-bar');
+  const n = Cart.count();
+  if (n > 0) {
+    bar.style.display = 'flex';
+    document.getElementById('cart-bar-count').textContent = n;
+    document.getElementById('cart-bar-total').textContent = '$' + Cart.total().toFixed(2);
+  } else { bar.style.display = 'none'; }
+}
+document.addEventListener('DOMContentLoaded', updateCartBar);
+</script>
+</body>
+</html>
