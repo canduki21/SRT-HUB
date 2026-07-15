@@ -3,375 +3,399 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Luminas — Space Resource Technologies</title>
+  <title>Lunar Anorthosite — Space Resource Technologies</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Open+Sans:wght@400;500;600&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --black:   #070b12;
-      --dark:    #0d1525;
-      --card:    #111d2e;
-      --border:  rgba(255,255,255,.08);
-      --accent:  #3b7fff;
-      --accent2: #c87a41;
-      --text:    #e8edf5;
-      --muted:   #7a8aa8;
-      --white:   #ffffff;
+      --nav-bg:   #1a1f2e;
+      --nav-text: #d0d4e0;
+      --hero-bg:  #0b0e18;
+      --bg:       #ffffff;
+      --bg2:      #f4f5f7;
+      --border:   #e2e4e9;
+      --accent:   #e07820;
+      --accent-d: #c46310;
+      --text:     #1a1a2a;
+      --muted:    #5a5f72;
+      --white:    #ffffff;
+      --radius:   6px;
     }
 
-    body {
-      font-family: 'Inter', sans-serif;
-      background: var(--black);
-      color: var(--text);
-      min-height: 100vh;
-      overflow-x: hidden;
-    }
+    body { font-family: 'Open Sans', sans-serif; background: var(--bg); color: var(--text); }
 
-    /* ── NAV ── */
+    /* ─── NAV ─── */
     nav {
-      position: sticky; top: 0; z-index: 100;
-      background: rgba(7,11,18,.92);
-      backdrop-filter: blur(12px);
-      border-bottom: 1px solid var(--border);
-      padding: 0 40px;
+      background: var(--nav-bg); position: sticky; top: 0; z-index: 200;
+      padding: 0 40px; height: 62px;
       display: flex; align-items: center; justify-content: space-between;
-      height: 64px;
+      border-bottom: 1px solid rgba(255,255,255,.06);
     }
+    .nav-left { display: flex; align-items: center; gap: 28px; }
     .nav-logo {
-      display: flex; align-items: center; gap: 12px;
-      text-decoration: none;
+      display: flex; align-items: center; gap: 10px;
+      text-decoration: none; flex-shrink: 0;
     }
-    .nav-logo-mark {
-      width: 38px; height: 38px;
-      background: var(--accent);
-      border-radius: 6px;
+    .nav-logo-box {
+      width: 34px; height: 34px; background: var(--accent); border-radius: 4px;
       display: flex; align-items: center; justify-content: center;
-      font-family: 'Barlow Condensed', sans-serif;
-      font-weight: 800; font-size: 15px; color: #fff; letter-spacing: .5px;
+      font-family: 'Montserrat', sans-serif; font-weight: 800;
+      font-size: 13px; color: #fff; letter-spacing: .5px;
     }
-    .nav-logo-text {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-weight: 700; font-size: 17px; color: var(--white);
-      letter-spacing: .5px; line-height: 1.2;
+    .nav-logo-name {
+      font-family: 'Montserrat', sans-serif; font-weight: 700;
+      font-size: 13px; color: #fff; letter-spacing: .3px; line-height: 1.2;
     }
-    .nav-logo-sub { font-size: 10px; color: var(--muted); font-weight: 400; letter-spacing: .08em; text-transform: uppercase; }
-    .nav-links { display: flex; align-items: center; gap: 4px; }
-    .nav-link {
-      font-size: 13px; font-weight: 500; color: var(--muted);
-      text-decoration: none; padding: 8px 14px; border-radius: 6px;
-      transition: color .15s, background .15s;
+    .nav-logo-sub { font-size: 9px; color: var(--nav-text); font-weight: 400; letter-spacing: .06em; }
+    .nav-links { display: flex; gap: 2px; }
+    .nav-a {
+      font-size: 12.5px; font-weight: 600; color: var(--nav-text);
+      text-decoration: none; padding: 6px 12px; border-radius: 4px;
+      letter-spacing: .02em; transition: color .15s, background .15s;
     }
-    .nav-link:hover { color: var(--white); background: rgba(255,255,255,.06); }
-    .nav-link.active { color: var(--white); }
+    .nav-a:hover, .nav-a.active { color: #fff; background: rgba(255,255,255,.07); }
     .nav-cta {
-      background: var(--accent); color: #fff;
-      font-size: 13px; font-weight: 600;
-      padding: 8px 18px; border-radius: 6px;
-      text-decoration: none; transition: opacity .15s; margin-left: 8px;
+      background: var(--accent); color: #fff; font-family: 'Montserrat', sans-serif;
+      font-size: 12px; font-weight: 700; letter-spacing: .05em;
+      padding: 9px 20px; border-radius: var(--radius);
+      text-decoration: none; transition: background .15s;
     }
-    .nav-cta:hover { opacity: .85; }
+    .nav-cta:hover { background: var(--accent-d); }
 
-    /* ── HERO ── */
+    /* ─── HERO ─── */
     .hero {
-      position: relative;
-      min-height: 640px;
-      display: flex; align-items: center;
-      overflow: hidden;
-      padding: 80px 40px;
-    }
-    .hero-bg {
-      position: absolute; inset: 0;
+      position: relative; min-height: 600px;
+      display: flex; flex-direction: column; justify-content: center;
+      padding: 90px 40px 80px; overflow: hidden;
       background:
-        radial-gradient(ellipse 70% 60% at 60% 40%, rgba(59,127,255,.12) 0%, transparent 70%),
-        radial-gradient(ellipse 40% 40% at 80% 70%, rgba(200,122,65,.08) 0%, transparent 60%),
-        linear-gradient(180deg, #0d1525 0%, #070b12 100%);
+        radial-gradient(ellipse 80% 50% at 55% 45%, rgba(60,90,180,.18) 0%, transparent 65%),
+        radial-gradient(ellipse 40% 40% at 75% 65%, rgba(224,120,32,.12) 0%, transparent 55%),
+        #0b0e18;
     }
-    .hero-grid {
-      position: absolute; inset: 0; opacity: .06;
-      background-image: linear-gradient(var(--border) 1px, transparent 1px),
-                        linear-gradient(90deg, var(--border) 1px, transparent 1px);
-      background-size: 60px 60px;
+
+    /* starfield */
+    .hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background-image:
+        radial-gradient(1px 1px at 12% 18%, rgba(255,255,255,.7) 0%, transparent 100%),
+        radial-gradient(1px 1px at 27% 8%, rgba(255,255,255,.5) 0%, transparent 100%),
+        radial-gradient(1.5px 1.5px at 43% 31%, rgba(255,255,255,.6) 0%, transparent 100%),
+        radial-gradient(1px 1px at 58% 11%, rgba(255,255,255,.8) 0%, transparent 100%),
+        radial-gradient(1px 1px at 72% 24%, rgba(255,255,255,.4) 0%, transparent 100%),
+        radial-gradient(1.5px 1.5px at 85% 6%, rgba(255,255,255,.6) 0%, transparent 100%),
+        radial-gradient(1px 1px at 91% 38%, rgba(255,255,255,.5) 0%, transparent 100%),
+        radial-gradient(1px 1px at 6% 54%, rgba(255,255,255,.4) 0%, transparent 100%),
+        radial-gradient(1px 1px at 19% 67%, rgba(255,255,255,.6) 0%, transparent 100%),
+        radial-gradient(1.5px 1.5px at 35% 72%, rgba(255,255,255,.3) 0%, transparent 100%),
+        radial-gradient(1px 1px at 64% 58%, rgba(255,255,255,.5) 0%, transparent 100%),
+        radial-gradient(1px 1px at 78% 79%, rgba(255,255,255,.4) 0%, transparent 100%),
+        radial-gradient(1px 1px at 93% 61%, rgba(255,255,255,.6) 0%, transparent 100%),
+        radial-gradient(1.5px 1.5px at 50% 88%, rgba(255,255,255,.4) 0%, transparent 100%),
+        radial-gradient(1px 1px at 8% 92%, rgba(255,255,255,.5) 0%, transparent 100%);
+      pointer-events: none;
     }
-    .hero-content { position: relative; max-width: 760px; }
-    .hero-badge {
+
+    /* moon sphere */
+    .hero::after {
+      content: '';
+      position: absolute; right: -60px; top: 50%; transform: translateY(-50%);
+      width: 520px; height: 520px; border-radius: 50%;
+      background:
+        radial-gradient(circle at 35% 35%, #c8cad2 0%, #a0a4af 30%, #72767f 60%, #3c3f47 85%, #1e2028 100%);
+      box-shadow:
+        inset -40px -20px 80px rgba(0,0,0,.8),
+        inset 20px 20px 60px rgba(200,205,220,.15),
+        0 0 80px rgba(180,190,220,.08);
+      opacity: .55;
+      pointer-events: none;
+    }
+
+    .hero-content { position: relative; z-index: 2; max-width: 640px; }
+    .hero-eyebrow {
       display: inline-flex; align-items: center; gap: 8px;
-      background: rgba(59,127,255,.12); border: 1px solid rgba(59,127,255,.25);
-      border-radius: 999px; padding: 5px 14px;
-      font-size: 11px; font-weight: 700; color: #93bbff;
-      text-transform: uppercase; letter-spacing: .1em;
-      margin-bottom: 24px;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 10.5px; font-weight: 700; letter-spacing: .14em;
+      text-transform: uppercase; color: var(--accent);
+      background: rgba(224,120,32,.12); border: 1px solid rgba(224,120,32,.3);
+      padding: 5px 14px; border-radius: 999px; margin-bottom: 22px;
     }
-    .hero-badge::before {
-      content: ''; width: 6px; height: 6px; border-radius: 50%;
-      background: #3b7fff; display: block;
+    .hero-eyebrow::before { content: ''; width: 5px; height: 5px; border-radius: 50%; background: var(--accent); }
+    .hero-h1 {
+      font-family: 'Montserrat', sans-serif;
+      font-size: clamp(36px, 5.5vw, 64px);
+      font-weight: 800; line-height: 1.05;
+      color: #fff; margin-bottom: 20px; letter-spacing: -.01em;
     }
-    .hero-title {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: clamp(42px, 7vw, 80px);
-      font-weight: 800; line-height: 1.0;
-      text-transform: uppercase; letter-spacing: .02em;
-      color: var(--white); margin-bottom: 24px;
+    .hero-h1 em { font-style: normal; color: var(--accent); }
+    .hero-p {
+      font-size: 15.5px; line-height: 1.75; color: #9aa3b8;
+      max-width: 520px; margin-bottom: 34px;
     }
-    .hero-title span { color: var(--accent); }
-    .hero-sub {
-      font-size: 17px; line-height: 1.7; color: var(--muted);
-      max-width: 580px; margin-bottom: 36px;
-    }
-    .hero-actions { display: flex; gap: 14px; flex-wrap: wrap; }
-    .btn-primary {
+    .hero-btns { display: flex; gap: 14px; flex-wrap: wrap; }
+    .btn-hero-primary {
       background: var(--accent); color: #fff;
-      font-size: 14px; font-weight: 600;
-      padding: 13px 26px; border-radius: 8px;
-      text-decoration: none; transition: opacity .15s;
-      border: none; cursor: pointer; font-family: inherit;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 13px; font-weight: 700; letter-spacing: .04em;
+      padding: 13px 28px; border-radius: var(--radius);
+      text-decoration: none; transition: background .15s; border: none; cursor: pointer;
     }
-    .btn-primary:hover { opacity: .85; }
-    .btn-outline {
-      background: transparent; color: var(--text);
-      font-size: 14px; font-weight: 600;
-      padding: 13px 26px; border-radius: 8px;
-      text-decoration: none; border: 1px solid var(--border);
-      transition: border-color .15s, color .15s;
-      cursor: pointer; font-family: inherit;
+    .btn-hero-primary:hover { background: var(--accent-d); }
+    .btn-hero-ghost {
+      background: transparent; color: #c8ccd8;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 13px; font-weight: 700; letter-spacing: .04em;
+      padding: 13px 28px; border-radius: var(--radius);
+      text-decoration: none; border: 1px solid rgba(255,255,255,.2);
+      transition: border-color .15s, color .15s; cursor: pointer;
     }
-    .btn-outline:hover { border-color: rgba(255,255,255,.3); color: var(--white); }
-
+    .btn-hero-ghost:hover { border-color: rgba(255,255,255,.5); color: #fff; }
     .hero-stats {
-      position: relative; margin-top: 64px;
-      display: flex; gap: 48px; flex-wrap: wrap;
-      border-top: 1px solid var(--border); padding-top: 32px;
+      position: relative; z-index: 2;
+      display: flex; gap: 0;
+      margin-top: 56px;
+      background: rgba(255,255,255,.04);
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: 8px; overflow: hidden;
+      max-width: 560px;
     }
-    .hero-stat-num {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 36px; font-weight: 800; color: var(--white); line-height: 1;
+    .hero-stat {
+      flex: 1; padding: 18px 22px;
+      border-right: 1px solid rgba(255,255,255,.08);
+      text-align: center;
     }
-    .hero-stat-num span { color: var(--accent); }
-    .hero-stat-label { font-size: 12px; color: var(--muted); margin-top: 4px; text-transform: uppercase; letter-spacing: .08em; }
+    .hero-stat:last-child { border-right: none; }
+    .hero-stat-n {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 26px; font-weight: 800; color: #fff; line-height: 1;
+    }
+    .hero-stat-n span { color: var(--accent); }
+    .hero-stat-l { font-size: 10px; color: #7a8199; margin-top: 5px; text-transform: uppercase; letter-spacing: .08em; font-weight: 600; }
 
-    /* ── SECTION SHELL ── */
-    section { padding: 80px 40px; }
-    .section-label {
-      font-size: 11px; font-weight: 700; color: var(--accent);
-      text-transform: uppercase; letter-spacing: .15em; margin-bottom: 12px;
+    /* ─── SECTION SHELL ─── */
+    .sec { padding: 80px 40px; }
+    .sec-label {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 10.5px; font-weight: 700; letter-spacing: .14em;
+      text-transform: uppercase; color: var(--accent); margin-bottom: 10px;
     }
-    .section-title {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: clamp(30px, 5vw, 52px); font-weight: 800;
-      text-transform: uppercase; letter-spacing: .02em;
-      color: var(--white); line-height: 1.05; margin-bottom: 16px;
+    .sec-h2 {
+      font-family: 'Montserrat', sans-serif;
+      font-size: clamp(26px, 4vw, 40px);
+      font-weight: 800; color: var(--text); line-height: 1.1;
+      margin-bottom: 14px; letter-spacing: -.01em;
     }
-    .section-sub { font-size: 16px; color: var(--muted); max-width: 600px; line-height: 1.7; }
-    .section-header { margin-bottom: 52px; }
+    .sec-sub { font-size: 15px; color: var(--muted); line-height: 1.75; max-width: 600px; }
+    .sec-header { margin-bottom: 50px; }
+    .divider { height: 1px; background: var(--border); }
 
-    /* ── DIVIDER ── */
-    .divider { height: 1px; background: var(--border); margin: 0 40px; }
-
-    /* ── APPLICATIONS ── */
-    #applications { background: var(--dark); }
-    .apps-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap: 16px;
-    }
-    .app-card {
-      background: var(--card); border: 1px solid var(--border);
-      border-radius: 12px; padding: 28px;
-      transition: border-color .2s, transform .2s;
-    }
-    .app-card:hover { border-color: rgba(59,127,255,.35); transform: translateY(-2px); }
-    .app-card.featured {
-      border-color: rgba(59,127,255,.3);
-      background: linear-gradient(135deg, rgba(59,127,255,.08), var(--card));
-      grid-column: span 2;
-    }
-    @media (max-width: 700px) { .app-card.featured { grid-column: span 1; } }
-    .app-icon {
-      width: 44px; height: 44px; border-radius: 10px;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 22px; margin-bottom: 16px;
-    }
-    .app-icon.space  { background: rgba(59,127,255,.15); }
-    .app-icon.glass  { background: rgba(16,185,129,.12); }
-    .app-icon.coats  { background: rgba(200,122,65,.12); }
-    .app-icon.brake  { background: rgba(239,68,68,.12); }
-    .app-icon.plast  { background: rgba(139,92,246,.12); }
-    .app-icon.wool   { background: rgba(6,182,212,.12); }
-    .app-card h3 {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 18px; font-weight: 700; text-transform: uppercase;
-      color: var(--white); margin-bottom: 8px; letter-spacing: .04em;
-    }
-    .app-card p { font-size: 13px; color: var(--muted); line-height: 1.65; }
-    .app-tag {
-      display: inline-block; margin-top: 14px;
-      font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .1em;
-      padding: 3px 10px; border-radius: 4px;
-      background: rgba(59,127,255,.15); color: #93bbff; border: 1px solid rgba(59,127,255,.25);
-    }
-
-    /* ── PRODUCTS ── */
-    #products { background: var(--black); }
+    /* ─── PRODUCTS ─── */
+    #products { background: var(--bg2); }
     .products-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-      gap: 20px;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 24px;
     }
-    .product-card {
-      background: var(--card); border: 1px solid var(--border);
-      border-radius: 14px; overflow: hidden;
-      transition: border-color .2s, box-shadow .2s;
+    .prod-card {
+      background: var(--white); border: 1px solid var(--border);
+      border-radius: 10px; overflow: hidden;
+      transition: box-shadow .2s, transform .2s;
+      display: flex; flex-direction: column;
     }
-    .product-card:hover {
-      border-color: rgba(59,127,255,.4);
-      box-shadow: 0 0 0 1px rgba(59,127,255,.1), 0 12px 40px rgba(0,0,0,.4);
+    .prod-card:hover {
+      box-shadow: 0 8px 32px rgba(0,0,0,.10);
+      transform: translateY(-3px);
     }
-    .product-card.custom-card {
-      border: 1px dashed rgba(255,255,255,.15);
-      background: transparent;
-      display: flex; flex-direction: column; align-items: center; justify-content: center;
-      text-align: center; padding: 40px 28px; min-height: 220px;
+    .prod-img-wrap {
+      background: #f9f9f9;
+      padding: 24px 24px 0;
+      display: flex; align-items: flex-end; justify-content: center;
+      min-height: 220px;
     }
-    .product-top {
-      padding: 22px 22px 0;
-      display: flex; align-items: flex-start; justify-content: space-between; gap: 12px;
+    .prod-img-wrap img {
+      width: 100%; max-width: 220px;
+      object-fit: contain; display: block;
+      filter: drop-shadow(0 6px 18px rgba(0,0,0,.12));
     }
-    .product-name {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 22px; font-weight: 800; text-transform: uppercase;
-      color: var(--white); letter-spacing: .04em;
+    .prod-body { padding: 20px 22px 22px; flex: 1; display: flex; flex-direction: column; }
+    .prod-eyebrow {
+      font-size: 9.5px; font-weight: 700; letter-spacing: .12em;
+      text-transform: uppercase; color: var(--muted); margin-bottom: 5px;
     }
-    .product-type-badge {
-      font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .1em;
-      padding: 4px 10px; border-radius: 4px; white-space: nowrap; flex-shrink: 0;
+    .prod-name {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 19px; font-weight: 800; color: var(--text);
+      margin-bottom: 8px; letter-spacing: -.01em;
     }
-    .badge-ore     { background: rgba(200,122,65,.15); color: #fbbf8a; border: 1px solid rgba(200,122,65,.3); }
-    .badge-sand    { background: rgba(16,185,129,.12); color: #6ee7b7; border: 1px solid rgba(16,185,129,.25); }
-    .badge-powder  { background: rgba(59,127,255,.12); color: #93bbff; border: 1px solid rgba(59,127,255,.25); }
-    .badge-custom  { background: rgba(139,92,246,.12); color: #c4b5fd; border: 1px solid rgba(139,92,246,.25); }
-    .product-body { padding: 16px 22px 20px; }
-    .product-desc { font-size: 13px; color: var(--muted); line-height: 1.65; margin-bottom: 16px; }
-    .product-specs { display: flex; flex-direction: column; gap: 6px; margin-bottom: 20px; }
-    .spec-row { display: flex; justify-content: space-between; align-items: center; font-size: 12px; }
-    .spec-label { color: var(--muted); }
-    .spec-val { color: var(--text); font-weight: 600; }
-    .product-actions { display: flex; gap: 8px; }
-    .btn-sm {
-      font-size: 12px; font-weight: 600; padding: 8px 16px; border-radius: 6px;
-      border: none; cursor: pointer; font-family: inherit; text-decoration: none;
-      display: inline-flex; align-items: center; gap: 5px;
+    .prod-desc { font-size: 13px; color: var(--muted); line-height: 1.65; flex: 1; margin-bottom: 18px; }
+    .prod-specs {
+      background: var(--bg2); border-radius: 6px;
+      padding: 10px 12px; margin-bottom: 18px;
+      display: flex; flex-direction: column; gap: 5px;
     }
-    .btn-sm.primary { background: var(--accent); color: #fff; }
-    .btn-sm.ghost   { background: rgba(255,255,255,.06); color: var(--muted); border: 1px solid var(--border); }
-    .btn-sm:hover.primary { opacity: .85; }
-    .btn-sm.ghost:hover   { color: var(--white); border-color: rgba(255,255,255,.2); }
+    .spec { display: flex; justify-content: space-between; font-size: 12px; }
+    .spec-k { color: var(--muted); }
+    .spec-v { font-weight: 700; color: var(--text); }
+    .prod-btn {
+      background: var(--accent); color: #fff;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 12px; font-weight: 700; letter-spacing: .06em;
+      text-transform: uppercase; padding: 10px 18px;
+      border-radius: var(--radius); border: none; cursor: pointer;
+      width: 100%; text-decoration: none; display: block; text-align: center;
+      transition: background .15s;
+    }
+    .prod-btn:hover { background: var(--accent-d); }
 
-    .custom-icon { font-size: 36px; margin-bottom: 16px; }
-    .custom-title {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 22px; font-weight: 800; text-transform: uppercase;
-      color: var(--white); margin-bottom: 8px;
+    /* ─── LUNAR SECTION ─── */
+    #lunar {
+      background: var(--nav-bg);
+      position: relative; overflow: hidden;
     }
-    .custom-desc { font-size: 13px; color: var(--muted); line-height: 1.65; margin-bottom: 20px; }
+    #lunar::before {
+      content: '';
+      position: absolute; inset: 0;
+      background-image:
+        radial-gradient(1px 1px at 8% 15%, rgba(255,255,255,.5) 0%, transparent 100%),
+        radial-gradient(1px 1px at 22% 35%, rgba(255,255,255,.3) 0%, transparent 100%),
+        radial-gradient(1.5px 1.5px at 38% 12%, rgba(255,255,255,.5) 0%, transparent 100%),
+        radial-gradient(1px 1px at 55% 28%, rgba(255,255,255,.4) 0%, transparent 100%),
+        radial-gradient(1px 1px at 70% 8%, rgba(255,255,255,.6) 0%, transparent 100%),
+        radial-gradient(1px 1px at 84% 42%, rgba(255,255,255,.3) 0%, transparent 100%),
+        radial-gradient(1px 1px at 94% 18%, rgba(255,255,255,.5) 0%, transparent 100%),
+        radial-gradient(1px 1px at 15% 78%, rgba(255,255,255,.4) 0%, transparent 100%),
+        radial-gradient(1px 1px at 45% 85%, rgba(255,255,255,.3) 0%, transparent 100%),
+        radial-gradient(1.5px 1.5px at 62% 68%, rgba(255,255,255,.5) 0%, transparent 100%),
+        radial-gradient(1px 1px at 78% 90%, rgba(255,255,255,.4) 0%, transparent 100%),
+        radial-gradient(1px 1px at 90% 75%, rgba(255,255,255,.3) 0%, transparent 100%);
+      pointer-events: none;
+    }
+    #lunar .sec-label { color: #e8a060; }
+    #lunar .sec-h2 { color: #fff; }
+    #lunar .sec-sub { color: #8a93aa; }
+    .lunar-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 50px; align-items: center; position: relative; z-index: 2; }
+    @media (max-width: 768px) { .lunar-grid { grid-template-columns: 1fr; } }
+    .lunar-facts { display: flex; flex-direction: column; gap: 20px; }
+    .lunar-fact {
+      display: flex; gap: 16px; align-items: flex-start;
+      padding: 18px 20px;
+      background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.07);
+      border-radius: 8px;
+    }
+    .lunar-fact-icon {
+      font-size: 22px; flex-shrink: 0; width: 42px; text-align: center; margin-top: 1px;
+    }
+    .lunar-fact-title { font-family: 'Montserrat', sans-serif; font-size: 14px; font-weight: 700; color: #fff; margin-bottom: 4px; }
+    .lunar-fact-desc { font-size: 13px; color: #8a93aa; line-height: 1.65; }
+    .lunar-visual {
+      background: rgba(255,255,255,.03); border: 1px solid rgba(255,255,255,.08);
+      border-radius: 12px; padding: 30px;
+    }
+    .lunar-visual-title {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .12em;
+      color: #6a7080; margin-bottom: 22px;
+    }
+    .comp-row { margin-bottom: 16px; }
+    .comp-label { display: flex; justify-content: space-between; font-size: 12.5px; margin-bottom: 7px; }
+    .comp-mineral { color: #c0c8d8; font-weight: 600; }
+    .comp-pct { color: var(--accent); font-weight: 700; font-family: 'Montserrat', sans-serif; }
+    .comp-track { height: 5px; background: rgba(255,255,255,.08); border-radius: 3px; }
+    .comp-fill { height: 100%; border-radius: 3px; background: linear-gradient(90deg, var(--accent) 0%, #f0a050 100%); }
 
-    /* ── WHY ANORTHOSITE ── */
-    #why { background: var(--dark); }
-    .why-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
-    @media (max-width: 768px) { .why-grid { grid-template-columns: 1fr; } }
-    .why-features { display: flex; flex-direction: column; gap: 24px; }
-    .why-feat { display: flex; gap: 16px; align-items: flex-start; }
-    .why-feat-icon {
-      width: 40px; height: 40px; border-radius: 8px; flex-shrink: 0;
-      background: rgba(59,127,255,.12); border: 1px solid rgba(59,127,255,.2);
-      display: flex; align-items: center; justify-content: center; font-size: 18px;
+    /* ─── APPLICATIONS ─── */
+    #applications { background: var(--bg); }
+    .apps-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 20px; }
+    .app-card {
+      border: 1px solid var(--border); border-radius: 8px; padding: 24px;
+      transition: box-shadow .2s, border-color .2s;
     }
-    .why-feat-title { font-size: 15px; font-weight: 600; color: var(--white); margin-bottom: 4px; }
-    .why-feat-desc  { font-size: 13px; color: var(--muted); line-height: 1.6; }
-    .why-visual {
-      background: var(--card); border: 1px solid var(--border); border-radius: 14px;
-      padding: 32px; display: flex; flex-direction: column; gap: 20px;
-    }
-    .why-visual-title {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 16px; font-weight: 700; text-transform: uppercase; color: var(--muted); letter-spacing: .08em;
-    }
-    .property-bar { }
-    .property-label { display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 6px; }
-    .property-name { color: var(--text); font-weight: 600; }
-    .property-pct  { color: var(--accent); font-weight: 700; }
-    .bar-track { height: 6px; background: rgba(255,255,255,.08); border-radius: 3px; }
-    .bar-fill  { height: 100%; border-radius: 3px; background: linear-gradient(90deg, var(--accent), #60a5fa); }
+    .app-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,.07); border-color: #c8cbd2; }
+    .app-icon { font-size: 26px; margin-bottom: 12px; }
+    .app-title { font-family: 'Montserrat', sans-serif; font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: 7px; }
+    .app-desc { font-size: 13px; color: var(--muted); line-height: 1.65; }
 
-    /* ── CONTACT ── */
-    #contact { background: var(--black); }
+    /* ─── CONTACT ─── */
+    #contact { background: var(--bg2); }
     .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: start; }
     @media (max-width: 768px) { .contact-grid { grid-template-columns: 1fr; gap: 40px; } }
-    .team-cards { display: flex; flex-direction: column; gap: 14px; }
+    .team-list { display: flex; flex-direction: column; gap: 14px; }
     .team-card {
-      background: var(--card); border: 1px solid var(--border); border-radius: 12px;
-      padding: 20px 22px; display: flex; align-items: center; gap: 16px;
-      transition: border-color .15s;
+      background: var(--white); border: 1px solid var(--border); border-radius: 8px;
+      padding: 18px 20px; display: flex; align-items: center; gap: 16px;
     }
-    .team-card:hover { border-color: rgba(59,127,255,.3); }
-    .team-avatar {
-      width: 46px; height: 46px; border-radius: 50%; flex-shrink: 0;
+    .team-av {
+      width: 44px; height: 44px; border-radius: 50%; flex-shrink: 0;
       background: var(--accent); display: flex; align-items: center; justify-content: center;
-      font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 18px; color: #fff;
+      font-family: 'Montserrat', sans-serif; font-weight: 800; font-size: 17px; color: #fff;
     }
-    .team-name { font-size: 14px; font-weight: 600; color: var(--white); }
-    .team-role { font-size: 11px; color: var(--muted); margin-top: 2px; }
-    .team-contact { margin-top: 6px; display: flex; flex-direction: column; gap: 2px; }
-    .team-contact a { font-size: 12px; color: var(--accent); text-decoration: none; }
-    .team-contact a:hover { text-decoration: underline; }
+    .team-name { font-family: 'Montserrat', sans-serif; font-size: 14px; font-weight: 700; color: var(--text); }
+    .team-role { font-size: 11.5px; color: var(--muted); margin-top: 2px; }
+    .team-links { margin-top: 6px; display: flex; flex-direction: column; gap: 2px; }
+    .team-links a { font-size: 12px; color: var(--accent); text-decoration: none; }
+    .team-links a:hover { text-decoration: underline; }
+    .addr-card {
+      background: var(--white); border: 1px solid var(--border); border-radius: 8px;
+      padding: 18px 20px; display: flex; align-items: flex-start; gap: 16px;
+    }
+    .addr-icon { font-size: 20px; margin-top: 2px; }
+    .addr-title { font-family: 'Montserrat', sans-serif; font-size: 13px; font-weight: 700; color: var(--text); margin-bottom: 3px; }
+    .addr-text { font-size: 12.5px; color: var(--muted); line-height: 1.6; }
 
-    .contact-form { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 32px; }
-    .form-title {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 22px; font-weight: 800; text-transform: uppercase;
-      color: var(--white); margin-bottom: 24px; letter-spacing: .04em;
-    }
-    .form-group { margin-bottom: 16px; }
-    .form-label { font-size: 12px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: .08em; display: block; margin-bottom: 6px; }
-    .form-input, .form-select, .form-textarea {
-      width: 100%; background: rgba(255,255,255,.04); border: 1px solid var(--border);
+    .contact-form { background: var(--white); border: 1px solid var(--border); border-radius: 10px; padding: 32px; }
+    .form-title { font-family: 'Montserrat', sans-serif; font-size: 18px; font-weight: 800; color: var(--text); margin-bottom: 24px; }
+    .fg { margin-bottom: 16px; }
+    .fl { font-size: 11.5px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: .07em; display: block; margin-bottom: 6px; }
+    .fi, .fs, .ft {
+      width: 100%; background: var(--bg2); border: 1px solid var(--border);
       color: var(--text); font-family: inherit; font-size: 14px;
-      padding: 11px 14px; border-radius: 8px; outline: none;
+      padding: 10px 13px; border-radius: var(--radius); outline: none;
       transition: border-color .15s;
     }
-    .form-input:focus, .form-select:focus, .form-textarea:focus { border-color: var(--accent); }
-    .form-input::placeholder, .form-textarea::placeholder { color: var(--muted); }
-    .form-select { appearance: none; cursor: pointer; }
-    .form-select option { background: #111d2e; }
-    .form-textarea { min-height: 100px; resize: vertical; line-height: 1.6; }
+    .fi:focus, .fs:focus, .ft:focus { border-color: var(--accent); }
+    .fi::placeholder, .ft::placeholder { color: #b0b5c0; }
+    .fs { appearance: none; cursor: pointer; }
+    .fs option { background: #fff; }
+    .ft { min-height: 96px; resize: vertical; line-height: 1.6; }
     .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-    @media (max-width: 500px) { .form-row { grid-template-columns: 1fr; } }
+    @media (max-width: 480px) { .form-row { grid-template-columns: 1fr; } }
+    .btn-submit {
+      width: 100%; background: var(--accent); color: #fff;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 13px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase;
+      padding: 13px; border-radius: var(--radius); border: none; cursor: pointer;
+      transition: background .15s;
+    }
+    .btn-submit:hover { background: var(--accent-d); }
 
-    /* ── FOOTER ── */
+    /* ─── FOOTER ─── */
     footer {
-      background: var(--dark); border-top: 1px solid var(--border);
-      padding: 40px 40px;
-      display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 20px;
+      background: var(--nav-bg); border-top: 1px solid rgba(255,255,255,.06);
+      padding: 32px 40px;
+      display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 18px;
     }
     .footer-logo { display: flex; align-items: center; gap: 10px; }
-    .footer-logo-mark {
-      width: 30px; height: 30px; background: var(--accent); border-radius: 5px;
+    .footer-logo-box {
+      width: 28px; height: 28px; background: var(--accent); border-radius: 3px;
       display: flex; align-items: center; justify-content: center;
-      font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 12px; color: #fff;
+      font-family: 'Montserrat', sans-serif; font-weight: 800; font-size: 11px; color: #fff;
     }
-    .footer-logo-text { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 14px; color: var(--white); }
-    .footer-copy { font-size: 12px; color: var(--muted); }
-    .footer-links { display: flex; gap: 20px; }
-    .footer-links a { font-size: 12px; color: var(--muted); text-decoration: none; }
-    .footer-links a:hover { color: var(--white); }
+    .footer-logo-text { font-family: 'Montserrat', sans-serif; font-size: 12px; font-weight: 700; color: #c0c8d8; }
+    .footer-copy { font-size: 11.5px; color: #5a6072; }
+    .footer-links { display: flex; gap: 18px; }
+    .footer-links a { font-size: 11.5px; color: #5a6072; text-decoration: none; }
+    .footer-links a:hover { color: #c0c8d8; }
 
-    @media (max-width: 640px) {
-      nav { padding: 0 20px; }
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 700px) {
+      nav { padding: 0 18px; }
       .nav-links { display: none; }
-      section { padding: 60px 20px; }
-      .hero { padding: 60px 20px; }
-      .divider { margin: 0 20px; }
-      footer { padding: 32px 20px; flex-direction: column; align-items: flex-start; }
+      .sec { padding: 60px 20px; }
+      .hero { padding: 70px 20px 60px; }
+      .hero::after { width: 280px; height: 280px; right: -100px; opacity: .3; }
+      footer { padding: 28px 20px; flex-direction: column; align-items: flex-start; }
     }
   </style>
 </head>
@@ -379,227 +403,166 @@
 
 <!-- NAV -->
 <nav>
-  <a class="nav-logo" href="#">
-    <div class="nav-logo-mark">SRT</div>
-    <div>
-      <div class="nav-logo-text">Space Resource Technologies</div>
-      <div class="nav-logo-sub">Space Materials Division</div>
+  <div class="nav-left">
+    <a class="nav-logo" href="#">
+      <div class="nav-logo-box">SRT</div>
+      <div>
+        <div class="nav-logo-name">Space Resource Technologies</div>
+        <div class="nav-logo-sub">Space Materials Division</div>
+      </div>
+    </a>
+    <div class="nav-links">
+      <a class="nav-a" href="#">Home</a>
+      <a class="nav-a" href="#">Simulants</a>
+      <a class="nav-a active" href="#products">Anorthosite</a>
+      <a class="nav-a" href="#">Resources</a>
+      <a class="nav-a" href="#contact">Contact</a>
     </div>
-  </a>
-  <div class="nav-links">
-    <a class="nav-link" href="#">Home</a>
-    <a class="nav-link" href="#">Simulants</a>
-    <a class="nav-link active" href="#products">Anorthosite</a>
-    <a class="nav-link" href="#">Resources</a>
-    <a class="nav-link" href="#contact">Contact</a>
   </div>
   <a class="nav-cta" href="#contact">Request a Sample</a>
 </nav>
 
 <!-- HERO -->
 <div class="hero">
-  <div class="hero-bg"></div>
-  <div class="hero-grid"></div>
   <div class="hero-content">
-    <div class="hero-badge">Space Materials Division — Lunar Analog Research</div>
-    <h1 class="hero-title">
-      High-Purity<br>
-      <span>Anorthosite</span><br>
-      for Space Research
+    <div class="hero-eyebrow">Lunar Analog Materials — Space Materials Division</div>
+    <h1 class="hero-h1">
+      The Closest Thing<br>to the <em>Moon</em><br>on Earth
     </h1>
-    <p class="hero-sub">
-      Sourced from the White Mountain deposit in Western Greenland — the world's closest terrestrial analog to lunar highland regolith. Enabling next-generation lunar exploration, ISRU research, and space materials science.
+    <p class="hero-p">
+      High-purity anorthosite sourced from Greenland's White Mountain — mineralogically and compositionally analogous to lunar highland regolith. Supporting ISRU research, simulant production, and lunar science worldwide.
     </p>
-    <div class="hero-actions">
-      <a class="btn-primary" href="#products">View Products</a>
-      <a class="btn-outline" href="#contact">Contact Sales</a>
+    <div class="hero-btns">
+      <a class="btn-hero-primary" href="#products">View Products</a>
+      <a class="btn-hero-ghost" href="#lunar">Why Anorthosite?</a>
     </div>
-    <div class="hero-stats">
-      <div>
-        <div class="hero-stat-num">99<span>%</span></div>
-        <div class="hero-stat-label">Purity Grade</div>
-      </div>
-      <div>
-        <div class="hero-stat-num">&lt;1<span>%</span></div>
-        <div class="hero-stat-label">Quartz Content</div>
-      </div>
-      <div>
-        <div class="hero-stat-num">5</div>
-        <div class="hero-stat-label">Product Grades</div>
-      </div>
-      <div>
-        <div class="hero-stat-num">0</div>
-        <div class="hero-stat-label">Toxic By-Products</div>
-      </div>
+  </div>
+  <div class="hero-stats">
+    <div class="hero-stat">
+      <div class="hero-stat-n">≥90<span>%</span></div>
+      <div class="hero-stat-l">Plagioclase</div>
+    </div>
+    <div class="hero-stat">
+      <div class="hero-stat-n">&lt;1<span>%</span></div>
+      <div class="hero-stat-l">Free Quartz</div>
+    </div>
+    <div class="hero-stat">
+      <div class="hero-stat-n">5</div>
+      <div class="hero-stat-l">Product Grades</div>
+    </div>
+    <div class="hero-stat">
+      <div class="hero-stat-n">0</div>
+      <div class="hero-stat-l">Toxic By-Products</div>
     </div>
   </div>
 </div>
 
-<div class="divider"></div>
-
-<!-- APPLICATIONS -->
-<section id="applications">
-  <div class="section-header">
-    <div class="section-label">Applications</div>
-    <h2 class="section-title">A Versatile Mineral<br>Across Sectors</h2>
-    <p class="section-sub">Anorthosite's unique geochemistry — high aluminum, low silica, no toxic by-products — makes it an ideal material across both terrestrial industry and space science.</p>
-  </div>
-  <div class="apps-grid">
-    <div class="app-card featured">
-      <div class="app-icon space">🌕</div>
-      <h3>Lunar Studies &amp; ISRU</h3>
-      <p>Anorthosite from Greenland's White Mountain is compositionally and mineralogically analogous to lunar highland regolith, making it the premier terrestrial simulant feedstock for lunar surface research, in-situ resource utilization (ISRU) experiments, and astronaut training scenarios.</p>
-      <span class="app-tag">Primary Space Application</span>
-    </div>
-    <div class="app-card">
-      <div class="app-icon glass">🔬</div>
-      <h3>E-Glass Fiber</h3>
-      <p>Delivers superior electrical insulation with a reduced environmental footprint for aerospace, automotive, and construction sectors.</p>
-    </div>
-    <div class="app-card">
-      <div class="app-icon coats">🎨</div>
-      <h3>Paints &amp; Coatings</h3>
-      <p>Greenspar products reduce volatile organic compound (VOC) emissions while improving coating performance and durability.</p>
-    </div>
-    <div class="app-card">
-      <div class="app-icon brake">⚙️</div>
-      <h3>Friction Materials</h3>
-      <p>Strengthens phenolic friction resins used in high-performance brake systems for automotive and aerospace applications.</p>
-    </div>
-    <div class="app-card">
-      <div class="app-icon plast">🧪</div>
-      <h3>Polymers &amp; Plastics</h3>
-      <p>Enhances anti-block properties, UV stability, flame resistance, and structural toughness in polymer compounds.</p>
-    </div>
-    <div class="app-card">
-      <div class="app-icon wool">🏗️</div>
-      <h3>Mineral Wool</h3>
-      <p>High aluminum and calcium content makes Greenspar ideal for mineral wool production and thermal insulation manufacturing.</p>
-    </div>
-  </div>
-</section>
-
-<div class="divider"></div>
-
 <!-- PRODUCTS -->
-<section id="products">
-  <div class="section-header">
-    <div class="section-label">Product Catalog</div>
-    <h2 class="section-title">Greenspar Product Line</h2>
-    <p class="section-sub">From run-of-mine ore to ultra-fine milled powder — five grades engineered for precision applications in space research and advanced industry.</p>
+<section id="products" class="sec">
+  <div class="sec-header">
+    <div class="sec-label">Product Catalog</div>
+    <h2 class="sec-h2">Greenspar Anorthosite Line</h2>
+    <p class="sec-sub">From run-of-mine lump ore to ultra-fine milled powder — five grades for space research, ISRU simulation, and advanced industrial applications.</p>
   </div>
   <div class="products-grid">
 
     <!-- AnoRoq -->
-    <div class="product-card">
-      <div class="product-top">
-        <div class="product-name">AnoRoq</div>
-        <span class="product-type-badge badge-ore">Run-of-Mine Ore</span>
+    <div class="prod-card">
+      <div class="prod-img-wrap">
+        <img src="images/anoroq.png" alt="AnoRoq — Run-of-Mine Anorthosite Lump Ore">
       </div>
-      <div class="product-body">
-        <p class="product-desc">Lump ore feedstock with high purity, low quartz, and low alkali content. Used as primary feedstock for Greenspar production and large-volume lunar analog studies.</p>
-        <div class="product-specs">
-          <div class="spec-row"><span class="spec-label">Form</span><span class="spec-val">Lump ore</span></div>
-          <div class="spec-row"><span class="spec-label">Quartz</span><span class="spec-val">Very low</span></div>
-          <div class="spec-row"><span class="spec-label">Alkali</span><span class="spec-val">Low</span></div>
-          <div class="spec-row"><span class="spec-label">Use</span><span class="spec-val">Feedstock / Simulant bulk</span></div>
+      <div class="prod-body">
+        <div class="prod-eyebrow">High-Purity Anorthosite</div>
+        <div class="prod-name">AnoRoq</div>
+        <p class="prod-desc">Run-of-mine lump ore. High purity, very low quartz, low alkali — the primary feedstock for all Greenspar products and large-volume lunar analog studies.</p>
+        <div class="prod-specs">
+          <div class="spec"><span class="spec-k">Form</span><span class="spec-v">Lump ore</span></div>
+          <div class="spec"><span class="spec-k">Quartz</span><span class="spec-v">Very low</span></div>
+          <div class="spec"><span class="spec-k">Application</span><span class="spec-v">Feedstock / Bulk simulant</span></div>
         </div>
-        <div class="product-actions">
-          <a class="btn-sm primary" href="#contact">Contact Sales</a>
-        </div>
+        <a class="prod-btn" href="#contact">Contact Sales</a>
       </div>
     </div>
 
     <!-- Greenspar 2000 -->
-    <div class="product-card">
-      <div class="product-top">
-        <div class="product-name">Greenspar 2000</div>
-        <span class="product-type-badge badge-sand">Sand Grade</span>
+    <div class="prod-card">
+      <div class="prod-img-wrap">
+        <img src="images/greenspar-2000.png" alt="Greenspar 2000 — Sand-Like Anorthosite">
       </div>
-      <div class="product-body">
-        <p class="product-desc">High-purity, low-iron sand-like product designed for fiberglass manufacturing, ISRU feedstock experiments, or micronized feldspar production.</p>
-        <div class="product-specs">
-          <div class="spec-row"><span class="spec-label">Form</span><span class="spec-val">Sand / coarse</span></div>
-          <div class="spec-row"><span class="spec-label">Top cut</span><span class="spec-val">~2000 µm</span></div>
-          <div class="spec-row"><span class="spec-label">Iron</span><span class="spec-val">Low</span></div>
-          <div class="spec-row"><span class="spec-label">Use</span><span class="spec-val">Fiberglass / ISRU feedstock</span></div>
+      <div class="prod-body">
+        <div class="prod-eyebrow">High-Purity Anorthosite</div>
+        <div class="prod-name">Greenspar 2000</div>
+        <p class="prod-desc">Sand-like anorthosite product. High purity, low iron — ideal for fiberglass manufacturing, ISRU feedstock experiments, and lunar regolith analog studies.</p>
+        <div class="prod-specs">
+          <div class="spec"><span class="spec-k">Form</span><span class="spec-v">Coarse sand</span></div>
+          <div class="spec"><span class="spec-k">Top cut</span><span class="spec-v">~2000 µm</span></div>
+          <div class="spec"><span class="spec-k">Application</span><span class="spec-v">Fiberglass / ISRU</span></div>
         </div>
-        <div class="product-actions">
-          <a class="btn-sm primary" href="#contact">Contact Sales</a>
-          <a class="btn-sm ghost" href="#">TDS &amp; SDS</a>
-        </div>
+        <a class="prod-btn" href="#contact">Contact Sales</a>
       </div>
     </div>
 
     <!-- Greenspar 60 -->
-    <div class="product-card">
-      <div class="product-top">
-        <div class="product-name">Greenspar 60</div>
-        <span class="product-type-badge badge-powder">Milled Powder</span>
+    <div class="prod-card">
+      <div class="prod-img-wrap">
+        <img src="images/greenspar-60.png" alt="Greenspar 60 — 60 µm Milled Anorthosite Powder">
       </div>
-      <div class="product-body">
-        <p class="product-desc">Milled powder with 60-micrometer top cut. High whiteness, low quartz — targeted for coatings, polymeric applications, and simulant blending.</p>
-        <div class="product-specs">
-          <div class="spec-row"><span class="spec-label">Form</span><span class="spec-val">Milled powder</span></div>
-          <div class="spec-row"><span class="spec-label">Top cut</span><span class="spec-val">60 µm</span></div>
-          <div class="spec-row"><span class="spec-label">Whiteness</span><span class="spec-val">High</span></div>
-          <div class="spec-row"><span class="spec-label">Use</span><span class="spec-val">Coatings / polymers</span></div>
+      <div class="prod-body">
+        <div class="prod-eyebrow">High-Purity Anorthosite</div>
+        <div class="prod-name">Greenspar 60</div>
+        <p class="prod-desc">60 µm milled anorthosite powder. High whiteness, low quartz — for coatings, polymer applications, and simulant blending.</p>
+        <div class="prod-specs">
+          <div class="spec"><span class="spec-k">Form</span><span class="spec-v">Milled powder</span></div>
+          <div class="spec"><span class="spec-k">Top cut</span><span class="spec-v">60 µm</span></div>
+          <div class="spec"><span class="spec-k">Application</span><span class="spec-v">Coatings / Polymers</span></div>
         </div>
-        <div class="product-actions">
-          <a class="btn-sm primary" href="#contact">Contact Sales</a>
-          <a class="btn-sm ghost" href="#">TDS &amp; SDS</a>
-        </div>
+        <a class="prod-btn" href="#contact">Contact Sales</a>
       </div>
     </div>
 
     <!-- Greenspar 45 -->
-    <div class="product-card">
-      <div class="product-top">
-        <div class="product-name">Greenspar 45</div>
-        <span class="product-type-badge badge-powder">Milled Powder</span>
+    <div class="prod-card">
+      <div class="prod-img-wrap">
+        <img src="images/greenspar-45.png" alt="Greenspar 45 — 45 µm Milled Anorthosite Powder">
       </div>
-      <div class="product-body">
-        <p class="product-desc">Finer milled powder with 45-micrometer top cut, matching Greenspar 60 specifications with tighter particle sizing for precision applications.</p>
-        <div class="product-specs">
-          <div class="spec-row"><span class="spec-label">Form</span><span class="spec-val">Milled powder</span></div>
-          <div class="spec-row"><span class="spec-label">Top cut</span><span class="spec-val">45 µm</span></div>
-          <div class="spec-row"><span class="spec-label">Whiteness</span><span class="spec-val">High</span></div>
-          <div class="spec-row"><span class="spec-label">Use</span><span class="spec-val">Precision coatings</span></div>
+      <div class="prod-body">
+        <div class="prod-eyebrow">High-Purity Anorthosite</div>
+        <div class="prod-name">Greenspar 45</div>
+        <p class="prod-desc">45 µm milled anorthosite powder. Tighter particle sizing than GS-60 with the same high-whiteness, low-quartz specification for precision applications.</p>
+        <div class="prod-specs">
+          <div class="spec"><span class="spec-k">Form</span><span class="spec-v">Milled powder</span></div>
+          <div class="spec"><span class="spec-k">Top cut</span><span class="spec-v">45 µm</span></div>
+          <div class="spec"><span class="spec-k">Application</span><span class="spec-v">Precision coatings</span></div>
         </div>
-        <div class="product-actions">
-          <a class="btn-sm primary" href="#contact">Contact Sales</a>
-          <a class="btn-sm ghost" href="#">TDS &amp; SDS</a>
-        </div>
+        <a class="prod-btn" href="#contact">Contact Sales</a>
       </div>
     </div>
 
     <!-- Greenspar 15 -->
-    <div class="product-card">
-      <div class="product-top">
-        <div class="product-name">Greenspar 15</div>
-        <span class="product-type-badge badge-powder">Ultra-Fine</span>
+    <div class="prod-card">
+      <div class="prod-img-wrap">
+        <img src="images/greenspar-15.png" alt="Greenspar 15 — 15 µm Ultra-Fine Anorthosite Powder">
       </div>
-      <div class="product-body">
-        <p class="product-desc">Finest milled grade with 15-micrometer top cut. Engineered for specialized coating formulations, advanced polymer systems, and lunar dust simulant research.</p>
-        <div class="product-specs">
-          <div class="spec-row"><span class="spec-label">Form</span><span class="spec-val">Ultra-fine powder</span></div>
-          <div class="spec-row"><span class="spec-label">Top cut</span><span class="spec-val">15 µm</span></div>
-          <div class="spec-row"><span class="spec-label">Whiteness</span><span class="spec-val">High</span></div>
-          <div class="spec-row"><span class="spec-label">Use</span><span class="spec-val">Lunar dust analog / coatings</span></div>
+      <div class="prod-body">
+        <div class="prod-eyebrow">High-Purity Anorthosite</div>
+        <div class="prod-name">Greenspar 15</div>
+        <p class="prod-desc">15 µm ultra-fine milled powder. The finest grade — engineered for specialized coatings, advanced polymer systems, and lunar dust simulant research.</p>
+        <div class="prod-specs">
+          <div class="spec"><span class="spec-k">Form</span><span class="spec-v">Ultra-fine powder</span></div>
+          <div class="spec"><span class="spec-k">Top cut</span><span class="spec-v">15 µm</span></div>
+          <div class="spec"><span class="spec-k">Application</span><span class="spec-v">Lunar dust analog</span></div>
         </div>
-        <div class="product-actions">
-          <a class="btn-sm primary" href="#contact">Contact Sales</a>
-          <a class="btn-sm ghost" href="#">TDS &amp; SDS</a>
-        </div>
+        <a class="prod-btn" href="#contact">Contact Sales</a>
       </div>
     </div>
 
     <!-- Custom -->
-    <div class="product-card custom-card">
-      <div class="custom-icon">⚗️</div>
-      <div class="custom-title">Your Product</div>
-      <p class="custom-desc">Need a custom particle size, blended composition, or mission-specific specification? We collaborate directly with research teams to engineer tailored solutions.</p>
-      <a class="btn-sm primary" href="#contact">Start a Conversation</a>
+    <div class="prod-card" style="border-style:dashed; border-color:#c8cbd2; justify-content:center; align-items:center; text-align:center; padding:40px 28px; min-height:420px;">
+      <div style="font-size:38px; margin-bottom:16px;">⚗️</div>
+      <div class="prod-eyebrow" style="justify-content:center">Custom Development</div>
+      <div class="prod-name" style="margin-bottom:10px">Your Product</div>
+      <p class="prod-desc">Need a mission-specific particle size, custom blend, or tailored composition? We collaborate directly with research teams to engineer the right solution.</p>
+      <a class="prod-btn" href="#contact" style="margin-top:auto">Start a Conversation</a>
     </div>
 
   </div>
@@ -607,81 +570,106 @@
 
 <div class="divider"></div>
 
-<!-- WHY ANORTHOSITE -->
-<section id="why">
-  <div class="why-grid">
+<!-- LUNAR CONNECTION -->
+<section id="lunar" class="sec">
+  <div class="lunar-grid">
     <div>
-      <div class="section-label">Why Anorthosite</div>
-      <h2 class="section-title">The Lunar<br>Connection</h2>
-      <p class="section-sub" style="margin-bottom:40px">Greenland's White Mountain anorthosite is among the most compositionally accurate terrestrial analogs to lunar highland regolith — making it the material of choice for space agencies and research institutions.</p>
-      <div class="why-features">
-        <div class="why-feat">
-          <div class="why-feat-icon">🌑</div>
+      <div class="sec-label">The Lunar Connection</div>
+      <h2 class="sec-h2" style="color:#fff">Why Anorthosite for<br>Moon Research?</h2>
+      <p class="sec-sub" style="color:#8a93aa; margin-bottom:0">Greenland's White Mountain deposit yields some of the most mineralogically accurate terrestrial analogs to lunar highland regolith available anywhere on Earth.</p>
+      <div class="lunar-facts" style="margin-top:32px">
+        <div class="lunar-fact">
+          <div class="lunar-fact-icon">🌑</div>
           <div>
-            <div class="why-feat-title">Lunar Highland Analog</div>
-            <p class="why-feat-desc">Composed predominantly of plagioclase feldspar — the same mineral that dominates lunar highland crust — making it the most geologically accurate simulant feedstock available.</p>
+            <div class="lunar-fact-title">Same Mineralogy as Lunar Highlands</div>
+            <p class="lunar-fact-desc">Dominated by plagioclase feldspar — the mineral that makes up over 90% of the lunar highland crust — making it the most geologically accurate simulant feedstock available on Earth.</p>
           </div>
         </div>
-        <div class="why-feat">
-          <div class="why-feat-icon">⚡</div>
+        <div class="lunar-fact">
+          <div class="lunar-fact-icon">♻️</div>
           <div>
-            <div class="why-feat-title">Zero Toxic By-Products</div>
-            <p class="why-feat-desc">Unlike many industrial minerals, anorthosite processing produces no hazardous waste streams, making it safe for closed-loop ISRU system testing.</p>
+            <div class="lunar-fact-title">Zero Toxic By-Products</div>
+            <p class="lunar-fact-desc">Unlike many industrial minerals, anorthosite processing generates no hazardous waste, making it safe for closed-loop ISRU system testing and long-term lab use.</p>
           </div>
         </div>
-        <div class="why-feat">
-          <div class="why-feat-icon">♻️</div>
+        <div class="lunar-fact">
+          <div class="lunar-fact-icon">🏔️</div>
           <div>
-            <div class="why-feat-title">Sustainably Sourced</div>
-            <p class="why-feat-desc">Mined under strict environmental standards in Greenland with a commitment to minimal ecological impact and long-term deposit stewardship.</p>
+            <div class="lunar-fact-title">Sustainably Sourced</div>
+            <p class="lunar-fact-desc">Mined from the White Mountain deposit, Nuuk, Greenland under strict environmental standards with minimal ecological impact.</p>
           </div>
         </div>
       </div>
     </div>
-    <div class="why-visual">
-      <div class="why-visual-title">Mineral Composition</div>
-      <div class="property-bar">
-        <div class="property-label">
-          <span class="property-name">Plagioclase Feldspar</span>
-          <span class="property-pct">≥ 90%</span>
-        </div>
-        <div class="bar-track"><div class="bar-fill" style="width:90%"></div></div>
+    <div class="lunar-visual">
+      <div class="lunar-visual-title">Mineral Composition</div>
+      <div class="comp-row">
+        <div class="comp-label"><span class="comp-mineral">Plagioclase Feldspar</span><span class="comp-pct">≥ 90%</span></div>
+        <div class="comp-track"><div class="comp-fill" style="width:90%"></div></div>
       </div>
-      <div class="property-bar">
-        <div class="property-label">
-          <span class="property-name">Aluminum Oxide (Al₂O₃)</span>
-          <span class="property-pct">~27%</span>
-        </div>
-        <div class="bar-track"><div class="bar-fill" style="width:75%"></div></div>
+      <div class="comp-row">
+        <div class="comp-label"><span class="comp-mineral">Aluminum Oxide (Al₂O₃)</span><span class="comp-pct">~27%</span></div>
+        <div class="comp-track"><div class="comp-fill" style="width:75%"></div></div>
       </div>
-      <div class="property-bar">
-        <div class="property-label">
-          <span class="property-name">Calcium Oxide (CaO)</span>
-          <span class="property-pct">~14%</span>
-        </div>
-        <div class="bar-track"><div class="bar-fill" style="width:50%"></div></div>
+      <div class="comp-row">
+        <div class="comp-label"><span class="comp-mineral">Silicon Dioxide (SiO₂)</span><span class="comp-pct">~50%</span></div>
+        <div class="comp-track"><div class="comp-fill" style="width:60%"></div></div>
       </div>
-      <div class="property-bar">
-        <div class="property-label">
-          <span class="property-name">Silicon Dioxide (SiO₂)</span>
-          <span class="property-pct">~50%</span>
-        </div>
-        <div class="bar-track"><div class="bar-fill" style="width:60%"></div></div>
+      <div class="comp-row">
+        <div class="comp-label"><span class="comp-mineral">Calcium Oxide (CaO)</span><span class="comp-pct">~14%</span></div>
+        <div class="comp-track"><div class="comp-fill" style="width:48%"></div></div>
       </div>
-      <div class="property-bar">
-        <div class="property-label">
-          <span class="property-name">Quartz (free SiO₂)</span>
-          <span class="property-pct">&lt; 1%</span>
-        </div>
-        <div class="bar-track"><div class="bar-fill" style="width:4%"></div></div>
+      <div class="comp-row">
+        <div class="comp-label"><span class="comp-mineral">Free Quartz (SiO₂)</span><span class="comp-pct">&lt; 1%</span></div>
+        <div class="comp-track"><div class="comp-fill" style="width:3%"></div></div>
       </div>
-      <div class="property-bar">
-        <div class="property-label">
-          <span class="property-name">Iron Oxide (Fe₂O₃)</span>
-          <span class="property-pct">&lt; 0.5%</span>
-        </div>
-        <div class="bar-track"><div class="bar-fill" style="width:2%"></div></div>
+      <div class="comp-row" style="margin-bottom:0">
+        <div class="comp-label"><span class="comp-mineral">Iron Oxide (Fe₂O₃)</span><span class="comp-pct">&lt; 0.5%</span></div>
+        <div class="comp-track"><div class="comp-fill" style="width:2%"></div></div>
       </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- APPLICATIONS -->
+<section id="applications" class="sec">
+  <div class="sec-header">
+    <div class="sec-label">Applications</div>
+    <h2 class="sec-h2">Versatile Across Sectors</h2>
+    <p class="sec-sub">Anorthosite's unique chemistry — high aluminum, low silica, no toxic by-products — serves both space science and advanced terrestrial industry.</p>
+  </div>
+  <div class="apps-grid">
+    <div class="app-card">
+      <div class="app-icon">🌕</div>
+      <div class="app-title">Lunar Studies & ISRU</div>
+      <p class="app-desc">Premier terrestrial analog for lunar highland regolith — used in ISRU experiments, lunar surface research, and astronaut training scenarios.</p>
+    </div>
+    <div class="app-card">
+      <div class="app-icon">🔬</div>
+      <div class="app-title">E-Glass Fiber</div>
+      <p class="app-desc">Delivers superior electrical insulation with a reduced environmental footprint for aerospace, automotive, and construction sectors.</p>
+    </div>
+    <div class="app-card">
+      <div class="app-icon">🎨</div>
+      <div class="app-title">Paints & Coatings</div>
+      <p class="app-desc">Greenspar products reduce VOC emissions while improving coating performance and durability in demanding environments.</p>
+    </div>
+    <div class="app-card">
+      <div class="app-icon">⚙️</div>
+      <div class="app-title">Friction Materials</div>
+      <p class="app-desc">Strengthens phenolic friction resins in high-performance brake systems for automotive and aerospace applications.</p>
+    </div>
+    <div class="app-card">
+      <div class="app-icon">🧪</div>
+      <div class="app-title">Polymers & Plastics</div>
+      <p class="app-desc">Enhances anti-block properties, UV stability, flame resistance, and structural toughness in polymer compounds.</p>
+    </div>
+    <div class="app-card">
+      <div class="app-icon">🏗️</div>
+      <div class="app-title">Mineral Wool</div>
+      <p class="app-desc">High aluminum and calcium content makes Greenspar an ideal raw material for mineral wool and thermal insulation.</p>
     </div>
   </div>
 </section>
@@ -689,51 +677,51 @@
 <div class="divider"></div>
 
 <!-- CONTACT -->
-<section id="contact">
+<section id="contact" class="sec">
   <div class="contact-grid">
     <div>
-      <div class="section-label">Get in Touch</div>
-      <h2 class="section-title">Talk to<br>Our Team</h2>
-      <p class="section-sub" style="margin-bottom:36px">For product pricing, volume-based offers, delivery terms, or custom research collaborations — reach out directly to our sales team.</p>
-      <div class="team-cards">
+      <div class="sec-label">Get in Touch</div>
+      <h2 class="sec-h2">Talk to Our Team</h2>
+      <p class="sec-sub" style="margin-bottom:32px">For pricing, volume offers, delivery terms, or custom research collaborations — reach out directly.</p>
+      <div class="team-list">
         <div class="team-card">
-          <div class="team-avatar">B</div>
+          <div class="team-av">B</div>
           <div>
             <div class="team-name">Bent Olsvig Jensen</div>
             <div class="team-role">Head of Sales</div>
-            <div class="team-contact">
+            <div class="team-links">
               <a href="tel:+299499599">+299 49 95 99</a>
               <a href="mailto:bent@lumina.gl">bent@lumina.gl</a>
             </div>
           </div>
         </div>
         <div class="team-card">
-          <div class="team-avatar" style="background:#3b7fff">P</div>
+          <div class="team-av" style="background:#2563eb">P</div>
           <div>
             <div class="team-name">Peter Madsen</div>
             <div class="team-role">Director of Operations</div>
-            <div class="team-contact">
+            <div class="team-links">
               <a href="tel:+299493713">+299 49 37 13</a>
               <a href="mailto:peter@lumina.gl">peter@lumina.gl</a>
             </div>
           </div>
         </div>
         <div class="team-card">
-          <div class="team-avatar" style="background:#059669">G</div>
+          <div class="team-av" style="background:#16a34a">G</div>
           <div>
             <div class="team-name">Gerth Jacobsen</div>
             <div class="team-role">Head of Administration</div>
-            <div class="team-contact">
+            <div class="team-links">
               <a href="tel:+299843217">+299 84 32 17</a>
               <a href="mailto:gerth@lumina.gl">gerth@lumina.gl</a>
             </div>
           </div>
         </div>
-        <div class="team-card" style="border-color:rgba(255,255,255,.06)">
-          <div style="font-size:20px">📍</div>
+        <div class="addr-card">
+          <div class="addr-icon">📍</div>
           <div>
-            <div class="team-name">Headquarters</div>
-            <div class="team-role" style="margin-top:2px">Issortarfimmut 2, PO Box 540<br>3900 Nuuk, Greenland</div>
+            <div class="addr-title">Headquarters — Lumina Greenland</div>
+            <div class="addr-text">Issortarfimmut 2, PO Box 540<br>3900 Nuuk, Greenland</div>
           </div>
         </div>
       </div>
@@ -741,26 +729,14 @@
     <div class="contact-form">
       <div class="form-title">Request Information</div>
       <div class="form-row">
-        <div class="form-group">
-          <label class="form-label">First Name</label>
-          <input class="form-input" type="text" placeholder="Jane">
-        </div>
-        <div class="form-group">
-          <label class="form-label">Last Name</label>
-          <input class="form-input" type="text" placeholder="Smith">
-        </div>
+        <div class="fg"><label class="fl">First Name</label><input class="fi" type="text" placeholder="Jane"></div>
+        <div class="fg"><label class="fl">Last Name</label><input class="fi" type="text" placeholder="Smith"></div>
       </div>
-      <div class="form-group">
-        <label class="form-label">Institution / Company</label>
-        <input class="form-input" type="text" placeholder="NASA, ESA, University...">
-      </div>
-      <div class="form-group">
-        <label class="form-label">Email</label>
-        <input class="form-input" type="email" placeholder="jane@institution.edu">
-      </div>
-      <div class="form-group">
-        <label class="form-label">Product of Interest</label>
-        <select class="form-select">
+      <div class="fg"><label class="fl">Institution / Company</label><input class="fi" type="text" placeholder="NASA, ESA, University..."></div>
+      <div class="fg"><label class="fl">Email</label><input class="fi" type="email" placeholder="jane@institution.edu"></div>
+      <div class="fg">
+        <label class="fl">Product of Interest</label>
+        <select class="fs">
           <option value="">Select a product...</option>
           <option>AnoRoq (Run-of-mine ore)</option>
           <option>Greenspar 2000</option>
@@ -770,11 +746,8 @@
           <option>Custom Specification</option>
         </select>
       </div>
-      <div class="form-group">
-        <label class="form-label">Message</label>
-        <textarea class="form-textarea" placeholder="Describe your application, required volume, or research context..."></textarea>
-      </div>
-      <button class="btn-primary" style="width:100%;padding:13px">Send Request</button>
+      <div class="fg"><label class="fl">Message</label><textarea class="ft" placeholder="Describe your application, required volume, or research context..."></textarea></div>
+      <button class="btn-submit">Send Request</button>
     </div>
   </div>
 </section>
@@ -782,10 +755,10 @@
 <!-- FOOTER -->
 <footer>
   <div class="footer-logo">
-    <div class="footer-logo-mark">SRT</div>
+    <div class="footer-logo-box">SRT</div>
     <div class="footer-logo-text">Space Resource Technologies</div>
   </div>
-  <div class="footer-copy">© 2026 Space Resource Technologies. Anorthosite sourced from Lumina Greenland.</div>
+  <div class="footer-copy">© 2026 Space Resource Technologies · Anorthosite sourced from Lumina Greenland</div>
   <div class="footer-links">
     <a href="#">Privacy</a>
     <a href="#">Terms</a>
