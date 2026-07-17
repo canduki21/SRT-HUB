@@ -7,44 +7,63 @@
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&family=Open+Sans:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
   <style>
-    .prod-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:0; border:1px solid var(--border); border-radius:6px; overflow:hidden; }
-    .prod-card { display:flex; flex-direction:column; border-right:1px solid var(--border); border-bottom:1px solid var(--border); background:var(--bg); transition:background .15s; }
-    .prod-card:hover { background:#fafbfc; }
-    .prod-img-wrap { background:#f7f8fa; padding:28px 20px 0; display:flex; align-items:flex-end; justify-content:center; height:240px; overflow:hidden; position:relative; }
-    .prod-img-wrap img { max-width:100%; max-height:210px; object-fit:contain; filter:drop-shadow(0 6px 14px rgba(0,0,0,.13)); transition:opacity .2s; }
+    /* ── Single-product layout ── */
+    .product-wrap { display:grid; grid-template-columns:1fr 1fr; gap:56px; align-items:start; }
+    @media(max-width:900px){ .product-wrap{grid-template-columns:1fr;gap:32px;} }
 
-    .pkg-tabs { display:flex; gap:0; border-top:1px solid var(--border); }
-    .pkg-tab { flex:1; padding:8px 4px; font-family:'Montserrat',sans-serif; font-size:9.5px; font-weight:700; letter-spacing:.07em; text-transform:uppercase; text-align:center; background:var(--bg2); color:var(--muted); border:none; cursor:pointer; border-right:1px solid var(--border); transition:background .15s,color .15s; }
+    /* Left column */
+    .prod-img-box { background:#f7f8fa; border:1px solid var(--border); border-radius:8px; padding:36px 32px; display:flex; align-items:center; justify-content:center; min-height:320px; }
+    .prod-img-box img { max-width:100%; max-height:280px; object-fit:contain; filter:drop-shadow(0 8px 20px rgba(0,0,0,.12)); }
+
+    .pkg-tabs { display:flex; margin-top:16px; border:1px solid var(--border); border-radius:var(--radius); overflow:hidden; }
+    .pkg-tab { flex:1; padding:10px 6px; font-family:'Montserrat',sans-serif; font-size:10px; font-weight:700; letter-spacing:.07em; text-transform:uppercase; text-align:center; background:var(--bg2); color:var(--muted); border:none; cursor:pointer; border-right:1px solid var(--border); transition:background .15s,color .15s; }
     .pkg-tab:last-child { border-right:none; }
     .pkg-tab.active { background:#fff; color:var(--orange); }
 
-    .prod-body { padding:20px 22px 24px; flex:1; display:flex; flex-direction:column; border-top:1px solid var(--border); }
-    .prod-grade { font-size:9.5px; font-weight:700; letter-spacing:.13em; text-transform:uppercase; color:var(--muted); margin-bottom:5px; }
-    .prod-name { font-family:'Montserrat',sans-serif; font-size:19px; font-weight:800; color:var(--text); margin-bottom:6px; }
-    .prod-price { font-family:'Montserrat',sans-serif; font-size:17px; font-weight:800; color:var(--orange); margin-bottom:10px; }
-    .prod-price span { font-size:12px; font-weight:600; color:var(--muted); }
-    .prod-desc { font-size:13px; color:var(--muted); line-height:1.65; flex:1; margin-bottom:16px; }
-    .prod-specs { display:flex; flex-direction:column; gap:4px; margin-bottom:18px; padding:10px 12px; background:var(--bg2); border-radius:var(--radius); }
-    .spec-row { display:flex; justify-content:space-between; font-size:11.5px; }
-    .spec-k { color:var(--muted); }
-    .spec-v { font-weight:700; color:var(--text); }
-    .prod-qty-row { display:flex; align-items:center; gap:10px; margin-bottom:12px; }
+    .prod-qty-row { display:flex; align-items:center; gap:12px; margin:20px 0 14px; }
     .qty-label { font-size:11px; font-weight:700; color:var(--muted); text-transform:uppercase; letter-spacing:.08em; }
     .qty-ctrl { display:flex; align-items:center; border:1px solid var(--border); border-radius:var(--radius); overflow:hidden; }
-    .qty-btn { width:32px; height:32px; border:none; background:var(--bg2); cursor:pointer; font-size:16px; font-weight:700; color:var(--text); display:flex; align-items:center; justify-content:center; transition:background .15s; }
+    .qty-btn { width:36px; height:36px; border:none; background:var(--bg2); cursor:pointer; font-size:16px; font-weight:700; color:var(--text); display:flex; align-items:center; justify-content:center; transition:background .15s; }
     .qty-btn:hover { background:var(--border); }
-    .qty-val { width:36px; text-align:center; font-family:'Montserrat',sans-serif; font-size:13px; font-weight:700; color:var(--text); background:var(--bg); border:none; outline:none; }
-    .btn-cart { display:block; width:100%; text-align:center; background:var(--orange); color:#fff; font-family:'Montserrat',sans-serif; font-size:11.5px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; padding:12px 16px; border-radius:var(--radius); border:none; cursor:pointer; transition:background .15s; }
+    .qty-val { width:44px; text-align:center; font-family:'Montserrat',sans-serif; font-size:14px; font-weight:700; color:var(--text); background:var(--bg); border:none; outline:none; }
+    .btn-cart { display:block; width:100%; text-align:center; background:var(--orange); color:#fff; font-family:'Montserrat',sans-serif; font-size:12px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; padding:14px 16px; border-radius:var(--radius); border:none; cursor:pointer; transition:background .15s; margin-bottom:10px; }
     .btn-cart:hover { background:var(--orange-d); }
-    .prod-card.custom { align-items:center; justify-content:center; text-align:center; padding:44px 28px; border-right:none; }
-    .custom-icon { width:58px; height:58px; border-radius:50%; background:rgba(224,120,32,.1); border:2px solid rgba(224,120,32,.25); display:flex; align-items:center; justify-content:center; margin:0 auto 18px; }
-    .custom-icon svg { width:26px; height:26px; stroke:var(--orange); fill:none; stroke-width:1.8; }
-    .custom-name { font-family:'Montserrat',sans-serif; font-size:18px; font-weight:800; color:var(--text); margin-bottom:10px; }
-    .custom-desc { font-size:13px; color:var(--muted); line-height:1.65; margin-bottom:22px; }
-    .btn-custom-outline { display:inline-block; padding:12px 24px; border:2px solid var(--orange); color:var(--orange); font-family:'Montserrat',sans-serif; font-size:11.5px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; border-radius:var(--radius); transition:background .15s,color .15s; }
-    .btn-custom-outline:hover { background:var(--orange); color:#fff; }
-    @media(max-width:900px){ .prod-grid{grid-template-columns:repeat(2,1fr);} }
-    @media(max-width:560px){ .prod-grid{grid-template-columns:1fr;} .prod-card.custom{border-right:none;} }
+    .btn-datasheet { display:block; width:100%; text-align:center; background:transparent; color:var(--orange); font-family:'Montserrat',sans-serif; font-size:11.5px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; padding:12px 16px; border-radius:var(--radius); border:2px solid var(--orange); cursor:pointer; transition:background .15s,color .15s; }
+    .btn-datasheet:hover { background:var(--orange); color:#fff; }
+
+    /* Right column */
+    .prod-eyebrow { font-size:10px; font-weight:700; letter-spacing:.18em; text-transform:uppercase; color:var(--orange); margin-bottom:8px; }
+    .prod-name { font-family:'Montserrat',sans-serif; font-size:clamp(28px,4vw,40px); font-weight:900; color:var(--text); line-height:1.05; margin-bottom:16px; }
+    .prod-tagline { font-size:15px; color:var(--muted); line-height:1.75; margin-bottom:24px; }
+
+    /* Key-value pill row */
+    .kv-row { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:28px; }
+    .kv-pill { background:var(--bg2); border:1px solid var(--border); border-radius:4px; padding:6px 12px; font-size:11.5px; }
+    .kv-pill strong { font-weight:700; color:var(--text); }
+    .kv-pill span { color:var(--muted); margin-left:4px; }
+
+    /* Tables */
+    .tbl-section { margin-top:40px; }
+    .tbl-title { font-family:'Montserrat',sans-serif; font-size:11px; font-weight:700; letter-spacing:.14em; text-transform:uppercase; color:var(--muted); margin-bottom:12px; }
+    table { width:100%; border-collapse:collapse; font-size:13px; }
+    thead th { background:#1b2030; color:#fff; font-family:'Montserrat',sans-serif; font-size:10px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; padding:9px 12px; text-align:left; }
+    tbody tr { border-bottom:1px solid var(--border); }
+    tbody tr:last-child { border-bottom:none; }
+    tbody td { padding:8px 12px; color:var(--text); }
+    tbody td:not(:first-child) { font-weight:700; }
+    tbody tr:nth-child(even) td { background:var(--bg2); }
+
+    .two-tables { display:grid; grid-template-columns:1fr 1fr; gap:32px; margin-top:40px; }
+    @media(max-width:700px){ .two-tables{grid-template-columns:1fr;} }
+
+    /* Disclaimer note */
+    .note { font-size:11px; color:var(--muted); line-height:1.65; margin-top:14px; }
+
+    /* Mine info strip */
+    .mine-strip { background:var(--bg2); border:1px solid var(--border); border-radius:6px; padding:20px 24px; margin-top:40px; display:flex; gap:32px; flex-wrap:wrap; }
+    .mine-stat { text-align:center; }
+    .mine-stat-num { font-family:'Montserrat',sans-serif; font-size:26px; font-weight:900; color:var(--orange); line-height:1; }
+    .mine-stat-label { font-size:10.5px; color:var(--muted); text-transform:uppercase; letter-spacing:.1em; font-weight:600; margin-top:4px; }
 
     .view-cart-bar { background:var(--bg2); border-top:1px solid var(--border); padding:14px 40px; display:flex; align-items:center; justify-content:space-between; gap:14px; position:sticky; bottom:0; z-index:100; }
     .view-cart-bar span { font-family:'Montserrat',sans-serif; font-size:13px; font-weight:700; color:var(--text); }
@@ -80,184 +99,134 @@
 <div class="page-hero">
   <div class="page-hero-inner">
     <div class="page-hero-eyebrow">Greenspar Product Line</div>
-    <div class="page-hero-title">Anorthosite Products</div>
-    <div class="page-hero-sub">From run-of-mine lump ore to ultra-fine milled powder &mdash; five grades in two formats, engineered for space research and advanced industry.</div>
+    <div class="page-hero-title">Lunar 16A</div>
+    <div class="page-hero-sub">High-purity anorthosite derived from the Qaqortorsuaq deposit in Western Greenland &mdash; elevated Al &amp; Ca, low alkali, bulk handleable.</div>
   </div>
 </div>
 
 <div class="wrap-white">
   <div class="sec">
-    <div class="prod-grid">
+    <div class="product-wrap">
 
-      <!-- AnoRoq -->
-      <div class="prod-card">
-        <div class="prod-img-wrap">
-          <img id="img-anoroq" src="../images/anoroq.png" alt="AnoRoq">
+      <!-- LEFT: Image + order controls -->
+      <div>
+        <div class="prod-img-box">
+          <img id="prod-img" src="../images/anoroq.png" alt="Lunar 16A Anorthosite">
         </div>
         <div class="pkg-tabs">
-          <button class="pkg-tab active" id="tab-anoroq-2kg" onclick="switchPkg('anoroq','2kg')">2 kg</button>
-          <button class="pkg-tab" id="tab-anoroq-bucket" onclick="switchPkg('anoroq','bucket')">25 kg Bucket</button>
-          <button class="pkg-tab" id="tab-anoroq-bag" onclick="switchPkg('anoroq','bag')">Bulk Bag</button>
+          <button class="pkg-tab active" id="tab-sample" onclick="switchPkg('sample')">2 kg Sample</button>
+          <button class="pkg-tab" id="tab-bucket" onclick="switchPkg('bucket')">25 kg Bucket</button>
+          <button class="pkg-tab" id="tab-bulk" onclick="switchPkg('bulk')">Bulk Bag</button>
         </div>
-        <div class="prod-body">
-          <div class="prod-grade">High-Purity Anorthosite</div>
-          <div class="prod-name">AnoRoq</div>
-          <div class="prod-price" id="price-anoroq">$X <span>/ 2 kg</span></div>
-          <p class="prod-desc">Run-of-mine lump ore. High purity, very low quartz, low alkali &mdash; primary feedstock for all Greenspar products and bulk lunar analog studies.</p>
-          <div class="prod-specs">
-            <div class="spec-row"><span class="spec-k">Form</span><span class="spec-v">Lump ore</span></div>
-            <div class="spec-row"><span class="spec-k">Quartz</span><span class="spec-v">Very low</span></div>
-            <div class="spec-row"><span class="spec-k">Use</span><span class="spec-v">Feedstock / Bulk simulant</span></div>
+        <div class="prod-qty-row">
+          <span class="qty-label">Qty (kg)</span>
+          <div class="qty-ctrl">
+            <button class="qty-btn" onclick="changeQty(-1)">&#8722;</button>
+            <input class="qty-val" id="qty-val" value="1" type="number" min="1">
+            <button class="qty-btn" onclick="changeQty(1)">+</button>
           </div>
-          <div class="prod-qty-row">
-            <span class="qty-label">Qty (kg)</span>
-            <div class="qty-ctrl">
-              <button class="qty-btn" onclick="changeQty('anoroq',-1)">&#8722;</button>
-              <input class="qty-val" id="qty-anoroq" value="1" type="number" min="1">
-              <button class="qty-btn" onclick="changeQty('anoroq',1)">+</button>
-            </div>
-          </div>
-          <button class="btn-cart" onclick="addToCart('anoroq')">Add to Cart</button>
         </div>
+        <button class="btn-cart" onclick="addToCart()">Add to Cart</button>
+        <a class="btn-datasheet" href="USA-LUNAR200-technical-sheet.pdf" download>Download Technical Datasheet</a>
       </div>
 
-      <!-- Greenspar 2000 -->
-      <div class="prod-card">
-        <div class="prod-img-wrap">
-          <img id="img-gs2000" src="../images/greenspar-2000.png" alt="Greenspar 2000">
+      <!-- RIGHT: Product details -->
+      <div>
+        <div class="prod-eyebrow">High-Purity Anorthosite &mdash; Calcic Plagioclase Feldspar</div>
+        <div class="prod-name">Lunar 16A</div>
+        <p class="prod-tagline">Derived from igneous rock anorthosite (&gt;85% calcic plagioclase feldspar), sourced from the near mono-mineralic Archean-aged Qaqortorsuaq deposit. Chemically stable with elevated Al and Ca, low Si, and minimal alkali (K+Na). The anorthite mineral (CaAl&#8322;Si&#8322;O&#8328;) present gives this material the highest density and hardness of all feldspathic minerals, along with the highest refractive index. Bulk handleable with low dust and water content — suitable for mineral wool insulation and advanced industrial applications.</p>
+
+        <div class="kv-row">
+          <div class="kv-pill"><strong>Hardness</strong><span>6.0 – 6.5 Mohs</span></div>
+          <div class="kv-pill"><strong>Colour</strong><span>White</span></div>
+          <div class="kv-pill"><strong>Sp. Gravity</strong><span>2.75 g/cm³</span></div>
+          <div class="kv-pill"><strong>Absorption</strong><span>0.1 – 0.2%</span></div>
+          <div class="kv-pill"><strong>Chloride</strong><span>&lt; 0.001%</span></div>
+          <div class="kv-pill"><strong>Alkali Reactivity</strong><span>0.006% (&plusmn;0.002)</span></div>
         </div>
-        <div class="pkg-tabs">
-          <button class="pkg-tab active" id="tab-gs2000-2kg" onclick="switchPkg('gs2000','2kg')">2 kg</button>
-          <button class="pkg-tab" id="tab-gs2000-bucket" onclick="switchPkg('gs2000','bucket')">25 kg Bucket</button>
-          <button class="pkg-tab" id="tab-gs2000-bag" onclick="switchPkg('gs2000','bag')">Bulk Bag</button>
+
+        <!-- Chemical analysis -->
+        <div class="tbl-section">
+          <div class="tbl-title">Chemical Analysis</div>
+          <table>
+            <thead>
+              <tr>
+                <th>Oxide</th>
+                <th>Wt %</th>
+                <th>Range (&plusmn;)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>Silicon Dioxide (SiO&#8322;)</td><td>49.55</td><td>&plusmn;2.45</td></tr>
+              <tr><td>Aluminum Oxide (Al&#8322;O&#8323;)</td><td>29.80</td><td>&plusmn;2.00</td></tr>
+              <tr><td>Iron Oxide (Fe&#8322;O&#8323;)</td><td>1.00</td><td>&plusmn;0.50</td></tr>
+              <tr><td>Sodium Oxide (Na&#8322;O)</td><td>2.40</td><td>&plusmn;0.25</td></tr>
+              <tr><td>Potassium Oxide (K&#8322;O)</td><td>0.27</td><td>&plusmn;0.20</td></tr>
+              <tr><td>Magnesium Oxide (MgO)</td><td>0.40</td><td>&plusmn;0.30</td></tr>
+              <tr><td>Calcium Oxide (CaO)</td><td>15.40</td><td>&plusmn;3.00</td></tr>
+              <tr><td>Loss on Ignition (L.O.I. + H&#8322;O)</td><td>2.30</td><td>&plusmn;1.15</td></tr>
+            </tbody>
+          </table>
+          <p class="note">All data averaged from third-party certified laboratories (ICP-MS or lab XRF with internal QAQC). Product is under active development; no round-robin analysis completed yet.</p>
         </div>
-        <div class="prod-body">
-          <div class="prod-grade">High-Purity Anorthosite</div>
-          <div class="prod-name">Greenspar 2000</div>
-          <div class="prod-price" id="price-gs2000">$X <span>/ 2 kg</span></div>
-          <p class="prod-desc">Sand-like anorthosite product. High purity, low iron &mdash; ideal for fiberglass manufacturing and ISRU feedstock experiments.</p>
-          <div class="prod-specs">
-            <div class="spec-row"><span class="spec-k">Form</span><span class="spec-v">Coarse sand</span></div>
-            <div class="spec-row"><span class="spec-k">Top cut</span><span class="spec-v">~2000 &micro;m</span></div>
-            <div class="spec-row"><span class="spec-k">Use</span><span class="spec-v">Fiberglass / ISRU</span></div>
+
+        <div class="mine-strip">
+          <div class="mine-stat">
+            <div class="mine-stat-num">60M+</div>
+            <div class="mine-stat-label">Tonnes Defined Resource</div>
           </div>
-          <div class="prod-qty-row">
-            <span class="qty-label">Qty (kg)</span>
-            <div class="qty-ctrl">
-              <button class="qty-btn" onclick="changeQty('gs2000',-1)">&#8722;</button>
-              <input class="qty-val" id="qty-gs2000" value="1" type="number" min="1">
-              <button class="qty-btn" onclick="changeQty('gs2000',1)">+</button>
-            </div>
+          <div class="mine-stat">
+            <div class="mine-stat-num">30</div>
+            <div class="mine-stat-label">Year Mining License</div>
           </div>
-          <button class="btn-cart" onclick="addToCart('gs2000')">Add to Cart</button>
+          <div class="mine-stat">
+            <div class="mine-stat-num">&gt;85%</div>
+            <div class="mine-stat-label">Calcic Plagioclase</div>
+          </div>
         </div>
       </div>
-
-      <!-- Greenspar 60 -->
-      <div class="prod-card">
-        <div class="prod-img-wrap">
-          <img id="img-gs60" src="../images/greenspar-60.png" alt="Greenspar 60">
-        </div>
-        <div class="pkg-tabs">
-          <button class="pkg-tab active" id="tab-gs60-2kg" onclick="switchPkg('gs60','2kg')">2 kg</button>
-          <button class="pkg-tab" id="tab-gs60-bucket" onclick="switchPkg('gs60','bucket')">25 kg Bucket</button>
-          <button class="pkg-tab" id="tab-gs60-bag" onclick="switchPkg('gs60','bag')">Bulk Bag</button>
-        </div>
-        <div class="prod-body">
-          <div class="prod-grade">High-Purity Anorthosite</div>
-          <div class="prod-name">Greenspar 60</div>
-          <div class="prod-price" id="price-gs60">$X <span>/ 2 kg</span></div>
-          <p class="prod-desc">60 &micro;m milled anorthosite powder. High whiteness, low quartz &mdash; for coatings, polymer applications, and simulant blending.</p>
-          <div class="prod-specs">
-            <div class="spec-row"><span class="spec-k">Form</span><span class="spec-v">Milled powder</span></div>
-            <div class="spec-row"><span class="spec-k">Top cut</span><span class="spec-v">60 &micro;m</span></div>
-            <div class="spec-row"><span class="spec-k">Use</span><span class="spec-v">Coatings / Polymers</span></div>
-          </div>
-          <div class="prod-qty-row">
-            <span class="qty-label">Qty (kg)</span>
-            <div class="qty-ctrl">
-              <button class="qty-btn" onclick="changeQty('gs60',-1)">&#8722;</button>
-              <input class="qty-val" id="qty-gs60" value="1" type="number" min="1">
-              <button class="qty-btn" onclick="changeQty('gs60',1)">+</button>
-            </div>
-          </div>
-          <button class="btn-cart" onclick="addToCart('gs60')">Add to Cart</button>
-        </div>
-      </div>
-
-      <!-- Greenspar 45 -->
-      <div class="prod-card">
-        <div class="prod-img-wrap">
-          <img id="img-gs45" src="../images/greenspar-45.png" alt="Greenspar 45">
-        </div>
-        <div class="pkg-tabs">
-          <button class="pkg-tab active" id="tab-gs45-2kg" onclick="switchPkg('gs45','2kg')">2 kg</button>
-          <button class="pkg-tab" id="tab-gs45-bucket" onclick="switchPkg('gs45','bucket')">25 kg Bucket</button>
-          <button class="pkg-tab" id="tab-gs45-bag" onclick="switchPkg('gs45','bag')">Bulk Bag</button>
-        </div>
-        <div class="prod-body">
-          <div class="prod-grade">High-Purity Anorthosite</div>
-          <div class="prod-name">Greenspar 45</div>
-          <div class="prod-price" id="price-gs45">$X <span>/ 2 kg</span></div>
-          <p class="prod-desc">45 &micro;m milled powder. Tighter particle sizing than GS-60 with the same high-whiteness, low-quartz specification.</p>
-          <div class="prod-specs">
-            <div class="spec-row"><span class="spec-k">Form</span><span class="spec-v">Milled powder</span></div>
-            <div class="spec-row"><span class="spec-k">Top cut</span><span class="spec-v">45 &micro;m</span></div>
-            <div class="spec-row"><span class="spec-k">Use</span><span class="spec-v">Precision coatings</span></div>
-          </div>
-          <div class="prod-qty-row">
-            <span class="qty-label">Qty (kg)</span>
-            <div class="qty-ctrl">
-              <button class="qty-btn" onclick="changeQty('gs45',-1)">&#8722;</button>
-              <input class="qty-val" id="qty-gs45" value="1" type="number" min="1">
-              <button class="qty-btn" onclick="changeQty('gs45',1)">+</button>
-            </div>
-          </div>
-          <button class="btn-cart" onclick="addToCart('gs45')">Add to Cart</button>
-        </div>
-      </div>
-
-      <!-- Greenspar 15 -->
-      <div class="prod-card">
-        <div class="prod-img-wrap">
-          <img id="img-gs15" src="../images/greenspar-15.png" alt="Greenspar 15">
-        </div>
-        <div class="pkg-tabs">
-          <button class="pkg-tab active" id="tab-gs15-2kg" onclick="switchPkg('gs15','2kg')">2 kg</button>
-          <button class="pkg-tab" id="tab-gs15-bucket" onclick="switchPkg('gs15','bucket')">25 kg Bucket</button>
-          <button class="pkg-tab" id="tab-gs15-bag" onclick="switchPkg('gs15','bag')">Bulk Bag</button>
-        </div>
-        <div class="prod-body">
-          <div class="prod-grade">High-Purity Anorthosite</div>
-          <div class="prod-name">Greenspar 15</div>
-          <div class="prod-price" id="price-gs15">$X <span>/ 2 kg</span></div>
-          <p class="prod-desc">15 &micro;m ultra-fine milled powder. Finest grade &mdash; for specialized coatings, advanced polymers, and lunar dust simulant research.</p>
-          <div class="prod-specs">
-            <div class="spec-row"><span class="spec-k">Form</span><span class="spec-v">Ultra-fine powder</span></div>
-            <div class="spec-row"><span class="spec-k">Top cut</span><span class="spec-v">15 &micro;m</span></div>
-            <div class="spec-row"><span class="spec-k">Use</span><span class="spec-v">Lunar dust analog</span></div>
-          </div>
-          <div class="prod-qty-row">
-            <span class="qty-label">Qty (kg)</span>
-            <div class="qty-ctrl">
-              <button class="qty-btn" onclick="changeQty('gs15',-1)">&#8722;</button>
-              <input class="qty-val" id="qty-gs15" value="1" type="number" min="1">
-              <button class="qty-btn" onclick="changeQty('gs15',1)">+</button>
-            </div>
-          </div>
-          <button class="btn-cart" onclick="addToCart('gs15')">Add to Cart</button>
-        </div>
-      </div>
-
-      <!-- Custom -->
-      <div class="prod-card custom">
-        <div class="custom-icon"><svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg></div>
-        <div class="custom-name">Custom Grade</div>
-        <p class="custom-desc">Need a mission-specific particle size or tailored composition? We engineer solutions in direct collaboration with your research team.</p>
-        <a class="btn-custom-outline" href="contact.html">Start a Conversation</a>
-      </div>
-
     </div>
+
+    <!-- Physical properties + PSD tables -->
+    <div class="two-tables">
+      <div>
+        <div class="tbl-title">Physical Properties</div>
+        <table>
+          <thead><tr><th>Test</th><th>Value</th></tr></thead>
+          <tbody>
+            <tr><td>Hardness (Mohs)</td><td>6.0 – 6.5</td></tr>
+            <tr><td>Absorption (H&#8322;O)</td><td>0.1 – 0.2 %</td></tr>
+            <tr><td>Specific Gravity</td><td>2.75 g/cm³</td></tr>
+            <tr><td>Bulk Density, loose pack</td><td>2.73 g/cm³</td></tr>
+            <tr><td>Bulk Density, dry</td><td>2.72 g/cm³</td></tr>
+            <tr><td>Chloride Content</td><td>&lt; 0.001 %</td></tr>
+            <tr><td>Colour</td><td>White</td></tr>
+            <tr><td>Alkali Reactivity</td><td>0.006% (&plusmn;0.002)</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div>
+        <div class="tbl-title">Particle Size Distribution (Indicative)</div>
+        <table>
+          <thead>
+            <tr>
+              <th>Classification</th>
+              <th>Diameter (mm)</th>
+              <th>Retention %</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>Gravel</td><td>4.75 – 80</td><td>13 – 17</td></tr>
+            <tr><td>Sand coarse</td><td>2.00 – 4.75</td><td>3 – 7</td></tr>
+            <tr><td>Sand medium</td><td>0.425 – 2.00</td><td>12 – 16</td></tr>
+            <tr><td>Sand fine</td><td>0.074 – 0.42</td><td>28 – 32</td></tr>
+            <tr><td>Silt</td><td>Below 0.074</td><td>34 – 38</td></tr>
+          </tbody>
+        </table>
+        <p class="note">Indicative typical PSD results shown for information purposes only.</p>
+      </div>
+    </div>
+
   </div>
 </div>
 
@@ -270,9 +239,9 @@
   <div class="footer-inner">
     <div class="footer-cols">
       <div class="footer-logo"><img src="../images/lumina-logo.webp" alt="Lumina"><p class="footer-brand-desc">Pioneering sustainable anorthosite materials for advanced industry and space research.</p></div>
-      <div><div class="footer-col-title">Products</div><div class="footer-links-list"><a href="products.html">AnoRoq</a><a href="products.html">Greenspar 2000</a><a href="products.html">Greenspar 60</a><a href="products.html">Greenspar 45</a><a href="products.html">Greenspar 15</a></div></div>
+      <div><div class="footer-col-title">Products</div><div class="footer-links-list"><a href="products.html">Lunar 16A</a><a href="contact.html">Custom Orders</a></div></div>
       <div><div class="footer-col-title">Company</div><div class="footer-links-list"><a href="about.html">About</a><a href="lunar.html">Lunar Research</a><a href="applications.html">Applications</a><a href="contact.html">Contact</a></div></div>
-      <div><div class="footer-col-title">Help</div><div class="footer-links-list"><a href="checkout.html">View Cart</a><a href="contact.html">Custom Orders</a></div></div>
+      <div><div class="footer-col-title">Help</div><div class="footer-links-list"><a href="checkout.html">View Cart</a><a href="USA-LUNAR200-technical-sheet.pdf" download>Technical Datasheet</a></div></div>
     </div>
     <div class="footer-bottom">
       <div class="footer-copy">&copy; 2026 Lumina Greenland ApS. All rights reserved.</div>
@@ -283,60 +252,31 @@
 <div class="toast" id="toast"></div>
 <script src="cart.js"></script>
 <script>
-const PRODUCTS = {
-  anoroq: { name:'AnoRoq',        formats: {
-    '2kg':   { label:'2 kg',        img:'../images/anoroq.png' },
-    bucket:  { label:'25 kg Bucket', img:'../images/anoroq-bucket.png' },
-    bag:     { label:'Bulk Bag',     img:'../images/anoroq-bag.png' }
-  }},
-  gs2000: { name:'Greenspar 2000', formats: {
-    '2kg':   { label:'2 kg',        img:'../images/greenspar-2000.png' },
-    bucket:  { label:'25 kg Bucket', img:'../images/greenspar-2000-bucket.png' },
-    bag:     { label:'Bulk Bag',     img:'../images/greenspar-2000-bag.png' }
-  }},
-  gs60:   { name:'Greenspar 60',   formats: {
-    '2kg':   { label:'2 kg',        img:'../images/greenspar-60.png' },
-    bucket:  { label:'25 kg Bucket', img:'../images/greenspar-60-bucket.png' },
-    bag:     { label:'Bulk Bag',     img:'../images/greenspar-60-bag.png' }
-  }},
-  gs45:   { name:'Greenspar 45',   formats: {
-    '2kg':   { label:'2 kg',        img:'../images/greenspar-45.png' },
-    bucket:  { label:'25 kg Bucket', img:'../images/greenspar-45-bucket.png' },
-    bag:     { label:'Bulk Bag',     img:'../images/greenspar-45-bag.png' }
-  }},
-  gs15:   { name:'Greenspar 15',   formats: {
-    '2kg':   { label:'2 kg',        img:'../images/greenspar-15.png' },
-    bucket:  { label:'25 kg Bucket', img:'../images/greenspar-15-bucket.png' },
-    bag:     { label:'Bulk Bag',     img:'../images/greenspar-15-bag.png' }
-  }}
+const FORMATS = {
+  sample: { label:'2 kg Sample',   img:'../images/anoroq.png' },
+  bucket: { label:'25 kg Bucket',  img:'../images/anoroq-bucket.png' },
+  bulk:   { label:'Bulk Bag',      img:'../images/anoroq-bag.png' }
 };
+let currentFormat = 'sample';
 
-const selectedFormat = {};
-Object.keys(PRODUCTS).forEach(id => selectedFormat[id] = '2kg');
-
-function switchPkg(pid, format) {
-  selectedFormat[pid] = format;
-  const f = PRODUCTS[pid].formats[format];
-  document.getElementById('img-' + pid).src = f.img;
-  document.getElementById('price-' + pid).innerHTML = '$X <span>/ ' + f.label + '</span>';
-  ['2kg','bucket','bag'].forEach(fmt => {
-    const tab = document.getElementById('tab-' + pid + '-' + fmt);
-    if (tab) tab.classList.toggle('active', fmt === format);
+function switchPkg(fmt) {
+  currentFormat = fmt;
+  document.getElementById('prod-img').src = FORMATS[fmt].img;
+  Object.keys(FORMATS).forEach(f => {
+    document.getElementById('tab-' + f).classList.toggle('active', f === fmt);
   });
 }
 
-function changeQty(id, delta) {
-  const el = document.getElementById('qty-' + id);
+function changeQty(delta) {
+  const el = document.getElementById('qty-val');
   el.value = Math.max(1, parseInt(el.value || 1) + delta);
 }
 
-function addToCart(pid) {
-  const p = PRODUCTS[pid];
-  const format = selectedFormat[pid];
-  const f = p.formats[format];
-  const qty = parseInt(document.getElementById('qty-' + pid).value) || 1;
-  Cart.add({ id: pid + '-' + format, name: p.name + ' (' + f.label + ')', price: 0, img: f.img, qty });
-  showToast(p.name + ' (' + f.label + ') added to cart');
+function addToCart() {
+  const f = FORMATS[currentFormat];
+  const qty = parseInt(document.getElementById('qty-val').value) || 1;
+  Cart.add({ id: 'lunar16a-' + currentFormat, name: 'Lunar 16A (' + f.label + ')', price: 0, img: f.img, qty });
+  showToast('Lunar 16A (' + f.label + ') added to cart');
   updateCartBar();
 }
 
