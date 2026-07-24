@@ -1,296 +1,524 @@
 <!-- SRT Hub — paste into a Shopify custom page (HTML editor) -->
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
 <style>
-  #srt-hub * { box-sizing: border-box; margin: 0; padding: 0; }
-  #srt-hub {
-    font-family: 'Inter', sans-serif;
-    background: #001219;
-    color: #fafafa;
-    padding: 28px 24px;
-    border-radius: 10px;
-  }
+#srthub,#srthub *{box-sizing:border-box;margin:0;padding:0;}
+#srthub{font-family:'Inter',sans-serif;background:#001219;color:#fafafa;border-radius:10px;overflow:hidden;min-height:600px;}
 
-  /* Header */
-  #srt-hub .sh-header {
-    display: flex; align-items: center; justify-content: space-between;
-    margin-bottom: 20px; flex-wrap: wrap; gap: 12px;
-  }
-  #srt-hub .sh-title-row { display: flex; align-items: center; gap: 10px; }
-  #srt-hub .sh-logo {
-    width: 34px; height: 34px; background: #c87a41; border-radius: 8px;
-    display: flex; align-items: center; justify-content: center;
-    font-weight: 700; font-size: 13px; color: #fff; flex-shrink: 0;
-  }
-  #srt-hub .sh-title { font-size: 17px; font-weight: 700; }
-  #srt-hub .sh-sub   { font-size: 11px; color: #8f8d8d; margin-top: 1px; }
-  #srt-hub .sh-join-btn {
-    display: inline-flex; align-items: center; gap: 6px;
-    background: #c87a41; color: #fff; border: none; border-radius: 8px;
-    font-family: inherit; font-size: 13px; font-weight: 600;
-    padding: 9px 16px; cursor: pointer; text-decoration: none;
-    transition: opacity .15s;
-  }
-  #srt-hub .sh-join-btn:hover { opacity: .85; }
+/* ── Top bar ── */
+#srthub .h-topbar{display:flex;align-items:center;gap:10px;padding:16px 20px;background:#01202f;border-bottom:1px solid rgba(143,141,141,.25);flex-wrap:wrap;}
+#srthub .h-logo{display:flex;align-items:center;gap:8px;cursor:pointer;}
+#srthub .h-logo-mark{width:30px;height:30px;background:#c87a41;border-radius:7px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px;color:#fff;flex-shrink:0;}
+#srthub .h-logo-text{font-weight:700;font-size:15px;}
+#srthub .h-logo-sub{font-size:10px;color:#8f8d8d;}
+#srthub .h-spacer{flex:1;}
+#srthub .h-auth-area{display:flex;align-items:center;gap:8px;}
+#srthub .h-btn{display:inline-flex;align-items:center;gap:6px;border:none;border-radius:7px;font-family:inherit;font-size:12px;font-weight:600;cursor:pointer;padding:7px 14px;transition:opacity .15s;}
+#srthub .h-btn:hover{opacity:.85;}
+#srthub .h-btn-primary{background:#c87a41;color:#fff;}
+#srthub .h-btn-ghost{background:none;border:1px solid rgba(143,141,141,.35);color:#8f8d8d;}
+#srthub .h-btn-ghost:hover{border-color:#fafafa;color:#fafafa;}
+#srthub .h-user-row{display:flex;align-items:center;gap:7px;cursor:pointer;}
+#srthub .h-user-name{font-size:12px;font-weight:600;}
+#srthub .h-signout{background:none;border:none;cursor:pointer;font-size:11px;color:#8f8d8d;font-family:inherit;}
+#srthub .h-signout:hover{color:#fafafa;}
+#srthub .h-new-btn{display:inline-flex;align-items:center;gap:5px;background:#c87a41;color:#fff;border:none;border-radius:7px;font-family:inherit;font-size:12px;font-weight:600;cursor:pointer;padding:7px 14px;transition:opacity .15s;}
+#srthub .h-new-btn:hover{opacity:.85;}
 
-  /* Search + filters */
-  #srt-hub .sh-filters { display: flex; flex-direction: column; gap: 10px; margin-bottom: 16px; }
-  #srt-hub .sh-search-wrap { position: relative; }
-  #srt-hub .sh-search-icon {
-    position: absolute; left: 11px; top: 50%; transform: translateY(-50%);
-    color: #8f8d8d; pointer-events: none;
-  }
-  #srt-hub .sh-search {
-    width: 100%; background: #022e4b; border: 1px solid rgba(143,141,141,.25);
-    color: #fafafa; font-family: inherit; font-size: 13px;
-    padding: 10px 14px 10px 36px; border-radius: 8px; outline: none;
-    transition: border-color .15s;
-  }
-  #srt-hub .sh-search:focus { border-color: #c87a41; }
-  #srt-hub .sh-search::placeholder { color: #8f8d8d; }
-  #srt-hub .sh-cats { display: flex; flex-wrap: wrap; gap: 6px; }
-  #srt-hub .sh-cat-btn {
-    background: #022e4b; border: 1px solid rgba(143,141,141,.25);
-    color: #8f8d8d; font-family: inherit; font-size: 11px; font-weight: 700;
-    text-transform: uppercase; letter-spacing: .08em;
-    padding: 5px 12px; border-radius: 6px; cursor: pointer;
-    transition: background .12s, color .12s, border-color .12s;
-  }
-  #srt-hub .sh-cat-btn:hover { border-color: #c87a41; color: #fafafa; }
-  #srt-hub .sh-cat-btn.active { background: rgba(200,122,65,.15); border-color: rgba(200,122,65,.5); color: #c87a41; }
+/* ── Cat tabs ── */
+#srthub .h-tabs{display:flex;align-items:center;gap:4px;padding:10px 20px;background:#01202f;border-bottom:1px solid rgba(143,141,141,.25);overflow-x:auto;flex-wrap:nowrap;}
+#srthub .h-tab{background:none;border:none;color:#8f8d8d;font-family:inherit;font-size:12px;font-weight:500;padding:6px 12px;border-radius:7px;cursor:pointer;white-space:nowrap;transition:background .12s,color .12s;}
+#srthub .h-tab:hover{background:rgba(255,255,255,.05);color:#fafafa;}
+#srthub .h-tab.active{background:rgba(200,122,65,.15);color:#c87a41;font-weight:600;}
+#srthub .h-tab-count{font-size:10px;font-weight:700;background:#001219;border-radius:999px;padding:1px 6px;color:#8f8d8d;margin-left:4px;}
+#srthub .h-tab.active .h-tab-count{background:rgba(200,122,65,.2);color:#c87a41;}
 
-  /* Stats row */
-  #srt-hub .sh-stats {
-    display: flex; gap: 16px; margin-bottom: 16px;
-    font-size: 12px; color: #8f8d8d; font-weight: 600;
-  }
-  #srt-hub .sh-stats span { color: #c87a41; }
+/* ── Body ── */
+#srthub .h-body{padding:20px;}
 
-  /* Cards */
-  #srt-hub .sh-list { display: flex; flex-direction: column; gap: 10px; }
-  #srt-hub .sh-card {
-    background: #022e4b; border: 1px solid rgba(143,141,141,.25);
-    border-radius: 8px; padding: 16px 18px;
-    transition: border-color .15s; cursor: pointer; text-decoration: none; display: block;
-  }
-  #srt-hub .sh-card:hover { border-color: rgba(200,122,65,.45); }
-  #srt-hub .sh-card-top { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
-  #srt-hub .sh-avatar {
-    width: 30px; height: 30px; border-radius: 50%; flex-shrink: 0;
-    background: #001219; border: 1px solid rgba(143,141,141,.25);
-    display: flex; align-items: center; justify-content: center;
-    font-size: 12px; font-weight: 700; color: #fff; overflow: hidden;
-  }
-  #srt-hub .sh-avatar img { width: 100%; height: 100%; object-fit: cover; }
-  #srt-hub .sh-author { font-size: 12px; font-weight: 600; color: #fafafa; }
-  #srt-hub .sh-bot-badge {
-    font-size: 9px; font-weight: 800; background: rgba(200,122,65,.2);
-    color: #c87a41; border: 1px solid rgba(200,122,65,.4);
-    border-radius: 4px; padding: 1px 5px; letter-spacing: .06em;
-  }
-  #srt-hub .sh-date { font-size: 11px; color: #8f8d8d; margin-left: auto; white-space: nowrap; }
-  #srt-hub .sh-cat-pill {
-    font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .07em;
-    padding: 2px 8px; border-radius: 4px; white-space: nowrap; flex-shrink: 0;
-  }
-  #srt-hub .sh-card-title { font-size: 14px; font-weight: 700; line-height: 1.4; color: #fafafa; margin-bottom: 6px; }
-  #srt-hub .sh-card-preview { font-size: 12px; color: #8f8d8d; line-height: 1.6; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-  #srt-hub .sh-card-footer { display: flex; align-items: center; gap: 10px; margin-top: 10px; padding-top: 10px; border-top: 1px solid rgba(143,141,141,.15); font-size: 11px; color: #8f8d8d; }
+/* ── Search ── */
+#srthub .h-search-wrap{position:relative;margin-bottom:16px;}
+#srthub .h-search-icon{position:absolute;left:11px;top:50%;transform:translateY(-50%);color:#8f8d8d;pointer-events:none;}
+#srthub .h-search{width:100%;background:#022e4b;border:1px solid rgba(143,141,141,.25);color:#fafafa;font-family:inherit;font-size:13px;padding:10px 14px 10px 36px;border-radius:8px;outline:none;transition:border-color .15s;}
+#srthub .h-search:focus{border-color:#c87a41;}
+#srthub .h-search::placeholder{color:#8f8d8d;}
 
-  /* Category pill colors */
-  #srt-hub .cp-general       { background: rgba(59,130,246,.15);  color: #93c5fd; border: 1px solid rgba(59,130,246,.3); }
-  #srt-hub .cp-ideas         { background: rgba(139,92,246,.15);  color: #c4b5fd; border: 1px solid rgba(139,92,246,.3); }
-  #srt-hub .cp-show-and-tell { background: rgba(16,185,129,.15);  color: #6ee7b7; border: 1px solid rgba(16,185,129,.3); }
-  #srt-hub .cp-q-a           { background: rgba(245,158,11,.15);  color: #fcd34d; border: 1px solid rgba(245,158,11,.3); }
-  #srt-hub .cp-announcements { background: rgba(200,122,65,.15);  color: #fbbf8a; border: 1px solid rgba(200,122,65,.3); }
-  #srt-hub .cp-polls         { background: rgba(239,68,68,.15);   color: #fca5a5; border: 1px solid rgba(239,68,68,.3); }
-  #srt-hub .cp-research      { background: rgba(6,182,212,.15);   color: #67e8f9; border: 1px solid rgba(6,182,212,.3); }
-  #srt-hub .cp-academia      { background: rgba(99,102,241,.15);  color: #a5b4fc; border: 1px solid rgba(99,102,241,.3); }
-  #srt-hub .cp-hobby         { background: rgba(249,115,22,.15);  color: #fdba74; border: 1px solid rgba(249,115,22,.3); }
-  #srt-hub .cp-just-for-fun  { background: rgba(236,72,153,.15);  color: #f9a8d4; border: 1px solid rgba(236,72,153,.3); }
-  #srt-hub .cp-default       { background: rgba(143,141,141,.1);  color: #8f8d8d; border: 1px solid rgba(143,141,141,.2); }
+/* ── Feed ── */
+#srthub .h-list{display:flex;flex-direction:column;gap:10px;}
+#srthub .h-card{background:#022e4b;border:1px solid rgba(143,141,141,.25);border-radius:8px;padding:16px 18px;cursor:pointer;transition:box-shadow .15s,transform .1s;}
+#srthub .h-card:hover{box-shadow:0 4px 18px rgba(0,0,0,.5);transform:translateY(-1px);}
+#srthub .h-card-top{display:flex;align-items:center;gap:8px;margin-bottom:10px;}
+#srthub .h-avatar{width:32px;height:32px;border-radius:50%;object-fit:cover;flex-shrink:0;background:#001219;border:1px solid rgba(143,141,141,.25);}
+#srthub .h-author-name{font-size:12px;font-weight:600;color:#fafafa;display:flex;align-items:center;gap:4px;}
+#srthub .h-author-date{font-size:11px;color:#8f8d8d;margin-top:1px;}
+#srthub .h-bot-badge{font-size:9px;font-weight:800;background:rgba(200,122,65,.2);color:#c87a41;border:1px solid rgba(200,122,65,.4);border-radius:4px;padding:1px 5px;letter-spacing:.06em;}
+#srthub .h-cat-pill{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;padding:2px 8px;border-radius:4px;white-space:nowrap;margin-left:auto;flex-shrink:0;}
+#srthub .h-card-title{font-size:15px;font-weight:700;line-height:1.4;margin-bottom:6px;}
+#srthub .h-card-preview{font-size:12px;color:#8f8d8d;line-height:1.6;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;margin-bottom:10px;}
+#srthub .h-card-footer{display:flex;align-items:center;gap:10px;font-size:11px;color:#8f8d8d;padding-top:10px;border-top:1px solid rgba(143,141,141,.15);}
+#srthub .h-tag{font-size:10px;font-weight:700;padding:2px 7px;border-radius:4px;background:rgba(200,122,65,.15);color:#fbbf8a;border:1px solid rgba(200,122,65,.3);}
+#srthub .h-empty{text-align:center;padding:60px 20px;color:#8f8d8d;}
+#srthub .h-empty h3{font-size:16px;color:#fafafa;margin-bottom:8px;}
 
-  /* Load more */
-  #srt-hub .sh-load-more {
-    display: block; width: 100%; margin-top: 16px;
-    background: none; border: 1px solid rgba(143,141,141,.25);
-    color: #8f8d8d; font-family: inherit; font-size: 13px; font-weight: 600;
-    padding: 11px; border-radius: 8px; cursor: pointer;
-    transition: border-color .15s, color .15s;
-  }
-  #srt-hub .sh-load-more:hover { border-color: #c87a41; color: #fafafa; }
+/* ── Detail ── */
+#srthub .h-back{display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:600;color:#8f8d8d;cursor:pointer;margin-bottom:16px;background:none;border:none;font-family:inherit;padding:0;transition:color .15s;}
+#srthub .h-back:hover{color:#fafafa;}
+#srthub .h-detail-header{background:#022e4b;border-radius:8px;padding:20px;margin-bottom:12px;}
+#srthub .h-detail-title{font-size:20px;font-weight:700;line-height:1.35;margin-bottom:4px;}
+#srthub .h-detail-body{background:#022e4b;border-radius:8px;padding:20px;margin-bottom:12px;line-height:1.8;font-size:14px;}
+#srthub .h-detail-body h1,#srthub .h-detail-body h2,#srthub .h-detail-body h3{margin:16px 0 8px;font-weight:700;}
+#srthub .h-detail-body p{margin-bottom:12px;}
+#srthub .h-detail-body a{color:#c87a41;text-decoration:none;}
+#srthub .h-detail-body a:hover{text-decoration:underline;}
+#srthub .h-detail-body code{background:#001219;padding:2px 5px;border-radius:4px;font-family:monospace;font-size:12px;border:1px solid rgba(143,141,141,.25);}
+#srthub .h-detail-body pre{background:#001219;border:1px solid rgba(143,141,141,.25);padding:14px;border-radius:8px;overflow-x:auto;margin-bottom:12px;}
+#srthub .h-detail-body pre code{background:none;border:none;padding:0;}
+#srthub .h-detail-body ul,#srthub .h-detail-body ol{padding-left:22px;margin-bottom:12px;}
+#srthub .h-detail-body li{margin-bottom:4px;}
+#srthub .h-detail-body blockquote{border-left:3px solid #c87a41;padding-left:12px;color:#8f8d8d;margin-bottom:12px;}
+#srthub .h-moon-btn{display:inline-flex;align-items:center;gap:5px;background:#001219;border:1px solid rgba(143,141,141,.25);border-radius:999px;padding:5px 12px;font-size:12px;font-weight:600;color:#8f8d8d;cursor:pointer;font-family:inherit;transition:all .15s;}
+#srthub .h-moon-btn:hover,#srthub .h-moon-btn.reacted{background:rgba(139,92,246,.08);border-color:#a78bfa;color:#7c3aed;}
+#srthub .h-post-actions{display:flex;gap:6px;}
+#srthub .h-action-btn{background:none;border:1px solid rgba(143,141,141,.25);cursor:pointer;font-size:11px;font-weight:600;color:#8f8d8d;padding:5px 11px;border-radius:999px;font-family:inherit;transition:all .15s;}
+#srthub .h-action-btn:hover{border-color:#fafafa;color:#fafafa;}
+#srthub .h-action-btn.del:hover{border-color:#ef4444;color:#dc2626;}
 
-  /* Empty / loading */
-  #srt-hub .sh-empty { text-align: center; padding: 60px 0; color: #8f8d8d; font-size: 14px; }
-  #srt-hub .sh-spinner {
-    width: 20px; height: 20px; border: 2px solid rgba(143,141,141,.3);
-    border-top-color: #c87a41; border-radius: 50%;
-    animation: sh-spin .7s linear infinite; display: inline-block;
-  }
-  @keyframes sh-spin { to { transform: rotate(360deg); } }
+/* ── Comments ── */
+#srthub .h-comments{background:#022e4b;border-radius:8px;padding:20px;}
+#srthub .h-comments-heading{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#8f8d8d;margin-bottom:14px;}
+#srthub .h-comment{display:flex;gap:10px;padding:14px 0;border-bottom:1px solid rgba(143,141,141,.15);}
+#srthub .h-comment:last-of-type{border-bottom:none;}
+#srthub .h-comment-body{flex:1;}
+#srthub .h-comment-meta{font-size:11px;color:#8f8d8d;margin-bottom:6px;display:flex;align-items:center;justify-content:space-between;}
+#srthub .h-comment-meta strong{color:#fafafa;}
+#srthub .h-comment-text{font-size:13px;line-height:1.6;}
+#srthub .h-comment-text p{margin-bottom:6px;}
+#srthub .h-comment-text p:last-child{margin-bottom:0;}
+#srthub .h-reply-btn{background:none;border:none;cursor:pointer;font-size:11px;font-weight:600;color:#8f8d8d;font-family:inherit;transition:color .15s;}
+#srthub .h-reply-btn:hover{color:#c87a41;}
+#srthub .h-replies{margin-top:10px;padding-left:16px;border-left:2px solid rgba(143,141,141,.2);}
+#srthub .h-reply-form{margin-top:8px;display:none;}
+#srthub .h-reply-form.open{display:block;}
+#srthub .h-textarea{width:100%;background:#001219;border:1px solid rgba(143,141,141,.25);color:#fafafa;font-family:inherit;font-size:13px;padding:10px 12px;border-radius:8px;outline:none;resize:vertical;line-height:1.5;transition:border-color .15s;}
+#srthub .h-textarea:focus{border-color:#c87a41;}
+#srthub .h-textarea::placeholder{color:#8f8d8d;}
+#srthub .h-form-footer{display:flex;justify-content:flex-end;gap:6px;margin-top:6px;}
+#srthub .h-comment-form{margin-top:16px;border-top:1px solid rgba(143,141,141,.15);padding-top:16px;}
+#srthub .h-login-prompt{background:rgba(200,122,65,.06);border:1px solid rgba(200,122,65,.2);border-radius:8px;padding:14px 16px;font-size:12px;color:#8f8d8d;display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:16px;}
 
-  @media (max-width: 600px) {
-    #srt-hub { padding: 20px 16px; }
-    #srt-hub .sh-header { flex-direction: column; align-items: flex-start; }
-  }
+/* ── Category pill colors ── */
+#srthub .cp-general{background:rgba(59,130,246,.15);color:#93c5fd;border:1px solid rgba(59,130,246,.3);}
+#srthub .cp-ideas{background:rgba(139,92,246,.15);color:#c4b5fd;border:1px solid rgba(139,92,246,.3);}
+#srthub .cp-show-and-tell{background:rgba(16,185,129,.15);color:#6ee7b7;border:1px solid rgba(16,185,129,.3);}
+#srthub .cp-q-a{background:rgba(245,158,11,.15);color:#fcd34d;border:1px solid rgba(245,158,11,.3);}
+#srthub .cp-announcements{background:rgba(200,122,65,.15);color:#fbbf8a;border:1px solid rgba(200,122,65,.3);}
+#srthub .cp-polls{background:rgba(239,68,68,.15);color:#fca5a5;border:1px solid rgba(239,68,68,.3);}
+#srthub .cp-research{background:rgba(6,182,212,.15);color:#67e8f9;border:1px solid rgba(6,182,212,.3);}
+#srthub .cp-academia{background:rgba(99,102,241,.15);color:#a5b4fc;border:1px solid rgba(99,102,241,.3);}
+#srthub .cp-hobby{background:rgba(249,115,22,.15);color:#fdba74;border:1px solid rgba(249,115,22,.3);}
+#srthub .cp-just-for-fun{background:rgba(236,72,153,.15);color:#f9a8d4;border:1px solid rgba(236,72,153,.3);}
+#srthub .cp-default{background:rgba(143,141,141,.1);color:#8f8d8d;border:1px solid rgba(143,141,141,.2);}
+
+/* ── Modals ── */
+#srthub .h-overlay{display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,.5);backdrop-filter:blur(4px);align-items:center;justify-content:center;padding:20px;}
+#srthub .h-overlay.open{display:flex;}
+#srthub .h-modal{background:#022e4b;border-radius:12px;width:100%;max-width:580px;max-height:90vh;overflow-y:auto;padding:24px;position:relative;box-shadow:0 20px 60px rgba(0,0,0,.6),0 0 0 1px rgba(255,255,255,.06);}
+#srthub .h-modal-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;}
+#srthub .h-modal-title{font-size:17px;font-weight:700;}
+#srthub .h-modal-x{background:none;border:none;cursor:pointer;color:#8f8d8d;padding:4px;border-radius:6px;transition:color .15s;}
+#srthub .h-modal-x:hover{color:#fafafa;}
+#srthub .h-field{display:flex;flex-direction:column;gap:6px;margin-bottom:14px;}
+#srthub .h-label{font-size:10px;font-weight:700;color:#8f8d8d;text-transform:uppercase;letter-spacing:.08em;}
+#srthub .h-input,#srthub .h-select{background:#001219;border:1px solid rgba(143,141,141,.25);color:#fafafa;font-family:inherit;font-size:13px;padding:10px 12px;border-radius:8px;outline:none;transition:border-color .15s;width:100%;}
+#srthub .h-input:focus,#srthub .h-select:focus{border-color:#c87a41;}
+#srthub .h-input::placeholder{color:#8f8d8d;}
+#srthub .h-modal-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:4px;}
+#srthub .h-modal-actions.sb{justify-content:space-between;align-items:center;flex-wrap:wrap;}
+#srthub .h-alert{padding:10px 12px;border-radius:8px;font-size:12px;margin-bottom:12px;display:none;}
+#srthub .h-alert-err{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.2);color:#dc2626;}
+#srthub .h-alert-ok{background:rgba(16,185,129,.08);border:1px solid rgba(16,185,129,.2);color:#059669;}
+#srthub .h-spinner{width:14px;height:14px;border:2px solid rgba(143,141,141,.3);border-top-color:#c87a41;border-radius:50%;animation:hspin .7s linear infinite;display:inline-block;}
+@keyframes hspin{to{transform:rotate(360deg)}}
+#srthub .h-loading{display:flex;justify-content:center;padding:60px 0;}
+#srthub .h-spinner-lg{width:24px;height:24px;border-width:3px;}
+
+/* ── Views ── */
+#srthub .h-view{display:none;}
+#srthub .h-view.active{display:block;}
 </style>
 
-<div id="srt-hub">
-  <div class="sh-header">
-    <div class="sh-title-row">
-      <div class="sh-logo">SRT</div>
-      <div>
-        <div class="sh-title">SRT Hub</div>
-        <div class="sh-sub">Community Research</div>
+<!-- Auth overlay -->
+<div id="srthub">
+<div class="h-overlay" id="h-auth-ov">
+  <div class="h-modal" style="max-width:400px">
+    <div class="h-modal-hdr">
+      <div class="h-modal-title" id="h-auth-title">Sign In</div>
+      <button class="h-modal-x" id="h-auth-x">
+        <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+      </button>
+    </div>
+    <div class="h-alert h-alert-err" id="h-auth-err"></div>
+    <div class="h-alert h-alert-ok"  id="h-auth-ok"></div>
+    <div class="h-field">
+      <label class="h-label">Username</label>
+      <input class="h-input" id="h-auth-user" type="text" placeholder="your_username" autocomplete="username" maxlength="30">
+    </div>
+    <div class="h-field" id="h-auth-email-wrap" style="display:none">
+      <label class="h-label">Email</label>
+      <input class="h-input" id="h-auth-email" type="email" placeholder="you@example.com">
+    </div>
+    <div class="h-field">
+      <label class="h-label">Password</label>
+      <input class="h-input" id="h-auth-pw" type="password" placeholder="••••••••">
+    </div>
+    <div class="h-modal-actions sb">
+      <button class="h-btn h-btn-ghost" id="h-auth-switch">No account? Register</button>
+      <button class="h-btn h-btn-primary" id="h-auth-submit"><span id="h-auth-lbl">Sign In</span><span id="h-auth-sp" style="display:none"><span class="h-spinner"></span></span></button>
+    </div>
+  </div>
+</div>
+
+<!-- New Post overlay -->
+<div class="h-overlay" id="h-post-ov">
+  <div class="h-modal">
+    <div class="h-modal-hdr">
+      <div class="h-modal-title">New Post</div>
+      <button class="h-modal-x" id="h-post-x">
+        <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+      </button>
+    </div>
+    <div class="h-alert h-alert-err" id="h-post-err"></div>
+    <div class="h-alert h-alert-ok"  id="h-post-ok"></div>
+    <div class="h-field">
+      <label class="h-label">Title</label>
+      <input class="h-input" id="h-post-title" type="text" placeholder="Give your post a clear title…">
+    </div>
+    <div style="display:flex;gap:10px">
+      <div class="h-field" style="flex:1">
+        <label class="h-label">Category</label>
+        <select class="h-select" id="h-post-cat"></select>
+      </div>
+      <div class="h-field" style="flex:1">
+        <label class="h-label">Simulant (optional)</label>
+        <select class="h-select" id="h-post-sim">
+          <option value="">None</option>
+          <option>LHS-1</option><option>LHS-1E</option><option>LHS-1D</option>
+          <option>LMS-1</option><option>LMS-1E</option>
+          <option>MGS-1</option><option>MGS-1C</option><option>MGS-1S</option>
+          <option>JEZ-1</option><option>CI-E</option><option>CM-E</option>
+        </select>
       </div>
     </div>
-    <a class="sh-join-btn" href="https://canduki21.github.io/SRT-HUB/" target="_blank" rel="noopener">
-      <svg width="13" height="13" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/></svg>
-      Join the Hub
-    </a>
-  </div>
-
-  <div class="sh-filters">
-    <div class="sh-search-wrap">
-      <svg class="sh-search-icon" width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
-      <input class="sh-search" id="sh-search" type="text" placeholder="Search posts…">
+    <div class="h-field">
+      <label class="h-label">Content <span style="font-weight:400;text-transform:none;letter-spacing:0;font-size:10px">(Markdown supported)</span></label>
+      <textarea class="h-textarea" id="h-post-body" style="min-height:140px" placeholder="Share your research, notes, or start a discussion…"></textarea>
     </div>
-    <div class="sh-cats" id="sh-cats"></div>
+    <div class="h-modal-actions">
+      <button class="h-btn h-btn-ghost" id="h-post-cancel">Cancel</button>
+      <button class="h-btn h-btn-primary" id="h-post-submit"><span id="h-post-lbl">Publish</span><span id="h-post-sp" style="display:none"><span class="h-spinner"></span></span></button>
+    </div>
+  </div>
+</div>
+
+<!-- Top bar -->
+<div class="h-topbar">
+  <div class="h-logo" id="h-logo">
+    <div class="h-logo-mark">SRT</div>
+    <div><div class="h-logo-text">SRT Hub</div><div class="h-logo-sub">Community Research</div></div>
+  </div>
+  <div class="h-spacer"></div>
+  <div class="h-auth-area" id="h-auth-area"></div>
+</div>
+
+<!-- Category tabs -->
+<div class="h-tabs" id="h-tabs"></div>
+
+<!-- Body -->
+<div class="h-body">
+
+  <!-- Feed view -->
+  <div class="h-view active" id="h-v-feed">
+    <div class="h-search-wrap">
+      <svg class="h-search-icon" width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+      <input class="h-search" id="h-search" type="text" placeholder="Search posts…">
+    </div>
+    <div class="h-list" id="h-list"><div class="h-loading"><span class="h-spinner h-spinner-lg"></span></div></div>
   </div>
 
-  <div class="sh-stats" id="sh-stats"></div>
-  <div class="sh-list"  id="sh-list"><div class="sh-empty"><span class="sh-spinner"></span></div></div>
-  <button class="sh-load-more" id="sh-load-more" style="display:none">Load more posts</button>
+  <!-- Detail view -->
+  <div class="h-view" id="h-v-detail">
+    <button class="h-back" id="h-back">
+      <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+      Back to Hub
+    </button>
+    <div id="h-detail"></div>
+  </div>
+
+</div>
 </div>
 
 <script>
-(function () {
-  const SB_URL = 'https://mtdpaiadnldbvaqmyteg.supabase.co';
-  const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im10ZHBhaWFkbmxkYnZhcW15dGVnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODMwMDI5OTMsImV4cCI6MjA5ODU3ODk5M30.NnhrfI-GAioiylfl5zr8hiYGPAx52dGgpxM2j7htycI';
-  const HUB_URL = 'https://canduki21.github.io/SRT-HUB/';
-  const PAGE = 10;
+(function(){
+const SB_URL='https://mtdpaiadnldbvaqmyteg.supabase.co';
+const SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im10ZHBhaWFkbmxkYnZhcW15dGVnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODMwMDI5OTMsImV4cCI6MjA5ODU3ODk5M30.NnhrfI-GAioiylfl5zr8hiYGPAx52dGgpxM2j7htycI';
+const sb=supabase.createClient(SB_URL,SB_KEY);
+let session=null,authMode='signin',allPosts=[],allCats=[],profileMap={},reactionsMap={},activeCat='all',searchQ='',openComments=[];
 
-  const headers = { 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY };
+/* helpers */
+function slug(n){return(n||'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'');}
+function fmtDate(iso){return new Date(iso).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});}
+function stripMd(md){return(md||'').replace(/!\[.*?\]\(.*?\)/g,'').replace(/\[([^\]]+)\]\(.*?\)/g,'$1').replace(/#{1,6}\s+/g,'').replace(/(\*\*|__)(.*?)\1/g,'$2').replace(/(\*|_)(.*?)\1/g,'$2').replace(/`[^`]*`/g,'').replace(/>\s+/g,'').replace(/[-*+]\s+/g,'').replace(/\n+/g,' ').trim();}
+function displayName(n){return n||'Anonymous';}
+function botBadge(n){return n==='SRT'?'<span class="h-bot-badge">BOT</span>':'';}
+function avatarSrc(name){
+  const p=Object.values(profileMap).find(x=>x.username===name);
+  if(p?.avatar_url)return p.avatar_url;
+  const colors=['#c87a41','#3b82f6','#8b5cf6','#10b981','#f59e0b','#ef4444','#ec4899'];
+  const hash=[...(name||'?')].reduce((a,c)=>a+c.charCodeAt(0),0);
+  const color=colors[hash%colors.length];
+  const letter=(name||'?')[0].toUpperCase();
+  const svg=`<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><rect width="32" height="32" rx="16" fill="${color}"/><text x="16" y="21" font-size="14" font-family="sans-serif" fill="white" text-anchor="middle" font-weight="700">${letter}</text></svg>`;
+  return'data:image/svg+xml;base64,'+btoa(svg);
+}
+function catClass(n){const m={general:'cp-general',ideas:'cp-ideas','show-and-tell':'cp-show-and-tell','q-a':'cp-q-a',announcements:'cp-announcements',polls:'cp-polls',research:'cp-research',academia:'cp-academia',hobby:'cp-hobby','just-for-fun':'cp-just-for-fun'};return m[slug(n)]||'cp-default';}
+function currentUser(){return session?.user?.user_metadata?.username||session?.user?.email?.split('@')[0]||'user';}
+function showView(id){document.querySelectorAll('#srthub .h-view').forEach(v=>v.classList.remove('active'));document.getElementById(id).classList.add('active');document.getElementById('srthub').scrollIntoView({behavior:'smooth',block:'start'});}
 
-  let allPosts = [], allCats = [], profiles = {};
-  let search = '', activecat = 'all', offset = PAGE;
-
-  function api(path) {
-    return fetch(SB_URL + '/rest/v1/' + path, { headers }).then(r => r.json());
+/* auth */
+sb.auth.onAuthStateChange((_,s)=>{session=s;renderAuth();});
+function openAuth(mode){authMode=mode||'signin';syncAuthMode();['h-auth-user','h-auth-email','h-auth-pw'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});['h-auth-err','h-auth-ok'].forEach(id=>{document.getElementById(id).style.display='none';});document.getElementById('h-auth-ov').classList.add('open');setTimeout(()=>document.getElementById('h-auth-user').focus(),50);}
+function closeAuth(){document.getElementById('h-auth-ov').classList.remove('open');}
+function syncAuthMode(){const s=authMode==='signin';document.getElementById('h-auth-title').textContent=s?'Sign In':'Create Account';document.getElementById('h-auth-lbl').textContent=s?'Sign In':'Register';document.getElementById('h-auth-switch').textContent=s?'No account? Register':'Have an account? Sign In';document.getElementById('h-auth-email-wrap').style.display=s?'none':'';}
+document.getElementById('h-auth-x').onclick=closeAuth;
+document.getElementById('h-auth-ov').onclick=e=>{if(e.target===document.getElementById('h-auth-ov'))closeAuth();};
+document.getElementById('h-auth-switch').onclick=()=>{authMode=authMode==='signin'?'register':'signin';syncAuthMode();['h-auth-err','h-auth-ok'].forEach(id=>{document.getElementById(id).style.display='none';});};
+document.getElementById('h-auth-submit').onclick=handleAuth;
+document.getElementById('h-auth-pw').addEventListener('keydown',e=>{if(e.key==='Enter')handleAuth();});
+async function handleAuth(){
+  const username=document.getElementById('h-auth-user').value.trim();
+  const password=document.getElementById('h-auth-pw').value;
+  const errEl=document.getElementById('h-auth-err');
+  errEl.style.display='none';
+  if(!username||username.length<3){errEl.textContent='Username must be at least 3 characters.';errEl.style.display='block';return;}
+  if(!password||password.length<6){errEl.textContent='Password must be at least 6 characters.';errEl.style.display='block';return;}
+  document.getElementById('h-auth-lbl').style.display='none';document.getElementById('h-auth-sp').style.display='inline';document.getElementById('h-auth-submit').disabled=true;
+  if(authMode==='signin'){
+    const{data:profile}=await sb.from('hub_profiles').select('email').eq('username',username).single();
+    if(!profile){errEl.textContent='Username not found.';errEl.style.display='block';resetAuthBtn();return;}
+    const{error}=await sb.auth.signInWithPassword({email:profile.email,password});
+    resetAuthBtn();
+    if(error){errEl.textContent='Incorrect password.';errEl.style.display='block';return;}
+  }else{
+    const email=document.getElementById('h-auth-email').value.trim();
+    if(!email){errEl.textContent='Please enter your email.';errEl.style.display='block';resetAuthBtn();return;}
+    const{data:ex}=await sb.from('hub_profiles').select('id').eq('username',username).maybeSingle();
+    if(ex){errEl.textContent='Username already taken.';errEl.style.display='block';resetAuthBtn();return;}
+    const{data,error}=await sb.auth.signUp({email,password,options:{data:{username}}});
+    if(error){errEl.textContent=error.message;errEl.style.display='block';resetAuthBtn();return;}
+    if(data.user)await sb.from('hub_profiles').insert({user_id:data.user.id,username,email});
+    resetAuthBtn();
   }
+  closeAuth();
+}
+function resetAuthBtn(){document.getElementById('h-auth-lbl').style.display='inline';document.getElementById('h-auth-sp').style.display='none';document.getElementById('h-auth-submit').disabled=false;}
 
-  function slug(name) {
-    return (name || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+function renderAuth(){
+  const el=document.getElementById('h-auth-area');
+  if(session?.user){
+    const name=currentUser();const src=avatarSrc(name);
+    el.innerHTML=`<div class="h-user-row"><img class="h-avatar" src="${src}" alt="${name}" style="width:26px;height:26px"><span class="h-user-name">${name}</span></div><button class="h-signout" id="h-signout-btn">Sign out</button><button class="h-new-btn" id="h-new-btn"><svg width="11" height="11" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/></svg>New Post</button>`;
+    document.getElementById('h-signout-btn').onclick=()=>sb.auth.signOut();
+    document.getElementById('h-new-btn').onclick=openPostModal;
+  }else{
+    el.innerHTML=`<button class="h-btn h-btn-ghost" id="h-login-btn">Sign In</button><button class="h-btn h-btn-primary" id="h-reg-btn">Create Account</button>`;
+    document.getElementById('h-login-btn').onclick=()=>openAuth('signin');
+    document.getElementById('h-reg-btn').onclick=()=>openAuth('register');
   }
+}
 
-  function fmtDate(iso) {
-    return new Date(iso).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
-  }
-
-  function stripMd(md) {
-    return (md || '').replace(/!\[.*?\]\(.*?\)/g, '').replace(/\[([^\]]+)\]\(.*?\)/g, '$1')
-      .replace(/#{1,6}\s+/g, '').replace(/(\*\*|__)(.*?)\1/g, '$2').replace(/(\*|_)(.*?)\1/g, '$2')
-      .replace(/`[^`]*`/g, '').replace(/>\s+/g, '').replace(/[-*+]\s+/g, '')
-      .replace(/\n+/g, ' ').trim();
-  }
-
-  function avatar(name) {
-    const colors = ['#c87a41','#3b82f6','#8b5cf6','#10b981','#f59e0b','#ef4444','#ec4899'];
-    const hash = [...(name || '?')].reduce((a, c) => a + c.charCodeAt(0), 0);
-    const color = colors[hash % colors.length];
-    const letter = (name || '?')[0].toUpperCase();
-    const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 30 30"><rect width="30" height="30" rx="15" fill="${color}"/><text x="15" y="20" font-size="13" font-family="sans-serif" fill="white" text-anchor="middle" font-weight="700">${letter}</text></svg>`;
-    return 'data:image/svg+xml;base64,' + btoa(svg);
-  }
-
-  function getFiltered() {
-    let r = allPosts;
-    if (activecat !== 'all') r = r.filter(p => slug(p.category?.name) === activecat);
-    if (search) {
-      const q = search.toLowerCase();
-      r = r.filter(p => (p.title || '').toLowerCase().includes(q) || stripMd(p.body).toLowerCase().includes(q));
-    }
-    return r;
-  }
-
-  function renderCats() {
-    const counts = {};
-    allPosts.forEach(p => { const k = slug(p.category?.name); counts[k] = (counts[k] || 0) + 1; });
-    const el = document.getElementById('sh-cats');
-    el.innerHTML = `<button class="sh-cat-btn${activecat === 'all' ? ' active' : ''}" data-cat="all">All (${allPosts.length})</button>` +
-      allCats.filter(c => counts[slug(c.name)]).map(c =>
-        `<button class="sh-cat-btn${activecat === slug(c.name) ? ' active' : ''}" data-cat="${slug(c.name)}">${c.emoji} ${c.name} (${counts[slug(c.name)] || 0})</button>`
-      ).join('');
-    el.querySelectorAll('.sh-cat-btn').forEach(btn => btn.addEventListener('click', () => {
-      activecat = btn.dataset.cat; offset = PAGE; render();
-    }));
-  }
-
-  function cardHTML(p) {
-    const name = p.author_email || 'Anonymous';
-    const prof = Object.values(profiles).find(x => x.username === name);
-    const src = prof?.avatar_url || avatar(name);
-    const catSlug = slug(p.category?.name);
-    const preview = stripMd(p.body);
-    const isBot = name === 'SRT';
-    return `<a class="sh-card" href="${HUB_URL}" target="_blank" rel="noopener">
-      <div class="sh-card-top">
-        <div class="sh-avatar"><img src="${src}" alt="${name}" onerror="this.parentNode.textContent='${name[0].toUpperCase()}'"></div>
-        <div>
-          <div style="display:flex;align-items:center;gap:5px">
-            <span class="sh-author">${name}</span>
-            ${isBot ? '<span class="sh-bot-badge">BOT</span>' : ''}
-          </div>
-        </div>
-        <span class="sh-date">${fmtDate(p.created_at)}</span>
-        <span class="sh-cat-pill cp-${catSlug || 'default'}">${p.category?.emoji || ''} ${p.category?.name || ''}</span>
+/* feed */
+function getFiltered(){
+  let r=allPosts;
+  if(activeCat!=='all')r=r.filter(p=>slug(p.category?.name)===activeCat);
+  if(searchQ){const q=searchQ.toLowerCase();r=r.filter(p=>(p.title||'').toLowerCase().includes(q)||stripMd(p.body).toLowerCase().includes(q));}
+  return r;
+}
+function renderTabs(){
+  const counts={};allPosts.forEach(p=>{const k=slug(p.category?.name);counts[k]=(counts[k]||0)+1;});
+  const el=document.getElementById('h-tabs');
+  el.innerHTML=`<button class="h-tab${activeCat==='all'?' active':''}" data-cat="all">All<span class="h-tab-count">${allPosts.length}</span></button>`+
+    allCats.filter(c=>counts[slug(c.name)]).map(c=>`<button class="h-tab${activeCat===slug(c.name)?' active':''}" data-cat="${slug(c.name)}">${c.emoji} ${c.name}<span class="h-tab-count">${counts[slug(c.name)]||0}</span></button>`).join('');
+  el.querySelectorAll('.h-tab').forEach(btn=>btn.addEventListener('click',()=>{activeCat=btn.dataset.cat;renderTabs();renderFeed();}));
+}
+function renderFeed(){
+  const filtered=getFiltered();
+  const el=document.getElementById('h-list');
+  if(!filtered.length){el.innerHTML=`<div class="h-empty"><h3>${searchQ||activeCat!=='all'?'No posts match':'No posts yet'}</h3><p>${searchQ||activeCat!=='all'?'Try a different search or category.':'Be the first to share your research.'}</p></div>`;return;}
+  el.innerHTML=filtered.map(p=>{
+    const name=displayName(p.author_email);const src=avatarSrc(name);const preview=stripMd(p.body);const count=p.comment_count||0;const tag=p.simulant;
+    return`<div class="h-card" data-id="${p.id}">
+      <div class="h-card-top">
+        <img class="h-avatar" src="${src}" alt="${name}">
+        <div><div class="h-author-name">${name}${botBadge(name)}</div><div class="h-author-date">${fmtDate(p.created_at)}</div></div>
+        <span class="h-cat-pill ${catClass(p.category?.name)}">${p.category?.emoji||''} ${p.category?.name||''}</span>
       </div>
-      <div class="sh-card-title">${p.title}</div>
-      ${preview ? `<div class="sh-card-preview">${preview}</div>` : ''}
-      <div class="sh-card-footer">
+      <div class="h-card-title">${p.title}</div>
+      ${preview?`<div class="h-card-preview">${preview}</div>`:''}
+      <div class="h-card-footer">
         <svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
-        ${p.comment_count || 0} comment${p.comment_count !== 1 ? 's' : ''}
-        <span style="margin-left:auto;color:#c87a41;font-size:11px;font-weight:600">View on Hub →</span>
+        ${count} comment${count!==1?'s':''}
+        <span>🌙 ${reactionsMap[p.id]?.size||0}</span>
+        ${tag?`<span class="h-tag">${tag}</span>`:''}
       </div>
-    </a>`;
+    </div>`;
+  }).join('');
+  el.querySelectorAll('.h-card').forEach(c=>c.addEventListener('click',()=>openDetail(c.dataset.id)));
+}
+
+/* detail */
+async function openDetail(id){
+  const post=allPosts.find(x=>x.id===id);if(!post)return;
+  showView('h-v-detail');
+  document.getElementById('h-detail').innerHTML='<div class="h-loading"><span class="h-spinner h-spinner-lg"></span></div>';
+  const{data:comments}=await sb.from('hub_comments').select('*').eq('post_id',id).order('created_at',{ascending:true});
+  openComments=comments||[];
+  renderDetail(post,openComments);
+}
+function renderDetail(post,comments){
+  const name=displayName(post.author_email);const src=avatarSrc(name);
+  const isOwner=session?.user?.id===post.author_id;
+  const reacted=reactionsMap[post.id]?.has(session?.user?.id);
+  const moonCount=reactionsMap[post.id]?.size||0;
+  const topLevel=comments.filter(c=>!c.parent_id);
+  const repliesOf=id=>comments.filter(c=>c.parent_id===id);
+
+  function buildComment(c){
+    const cn=displayName(c.author_email);const cs=avatarSrc(cn);const cOwner=session?.user?.id===c.author_id;
+    const replies=repliesOf(c.id);
+    const replyForm=session?`<div class="h-reply-form" id="hrf-${c.id}"><textarea class="h-textarea" id="hri-${c.id}" placeholder="Reply to ${cn}…" style="min-height:60px"></textarea><div class="h-form-footer"><button class="h-btn h-btn-ghost" style="font-size:11px;padding:5px 10px" data-cr="${c.id}">Cancel</button><button class="h-btn h-btn-primary" style="font-size:11px;padding:5px 10px" data-sr="${c.id}">Reply</button></div></div>`:'';
+    return`<div class="h-comment" data-cid="${c.id}">
+      <img class="h-avatar" src="${cs}" alt="${cn}">
+      <div class="h-comment-body">
+        <div class="h-comment-meta"><span><strong>${cn}</strong> · ${fmtDate(c.created_at)}</span>
+          <div style="display:flex;gap:6px">${session?`<button class="h-reply-btn" data-or="${c.id}">↩ Reply</button>`:''} ${cOwner?`<button class="h-action-btn del" style="font-size:11px;padding:3px 8px" data-dc="${c.id}">Delete</button>`:''}</div>
+        </div>
+        <div class="h-comment-text">${marked.parse(c.body)}</div>
+        ${replyForm}
+        ${replies.length?`<div class="h-replies">${replies.map(buildComment).join('')}</div>`:''}
+      </div>
+    </div>`;
   }
 
-  function render() {
-    const filtered = getFiltered();
-    document.getElementById('sh-stats').innerHTML =
-      `<span class="sh-stat-val"><span>${filtered.length}</span> post${filtered.length !== 1 ? 's' : ''}</span>`;
+  const commentHtml=topLevel.map(buildComment).join('');
+  const commentForm=session
+    ?`<div class="h-comment-form"><textarea class="h-textarea" id="h-comment-input" placeholder="Write a comment… Markdown supported" style="min-height:90px"></textarea><div class="h-alert h-alert-err" id="h-comment-err"></div><div class="h-form-footer"><button class="h-btn h-btn-primary h-btn-sm" id="h-comment-submit"><span id="h-cl">Post Comment</span><span id="h-cs" style="display:none"><span class="h-spinner"></span></span></button></div></div>`
+    :`<div class="h-login-prompt"><span>Sign in to leave a comment</span><button class="h-btn h-btn-primary" style="font-size:12px;padding:7px 14px" onclick="document.getElementById('srthub').__openAuth()">Sign In</button></div>`;
 
-    const page = filtered.slice(0, offset);
-    if (!page.length) {
-      document.getElementById('sh-list').innerHTML = '<div class="sh-empty">No posts found.</div>';
-      document.getElementById('sh-load-more').style.display = 'none';
-      return;
-    }
+  document.getElementById('h-detail').innerHTML=`
+    <div class="h-detail-header">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px">
+        <img class="h-avatar" src="${src}" alt="${name}">
+        <div><div class="h-author-name">${name}${botBadge(name)}</div><div class="h-author-date">${fmtDate(post.created_at)}</div></div>
+        <span class="h-cat-pill ${catClass(post.category?.name)}" style="margin-left:auto">${post.category?.emoji||''} ${post.category?.name||''}</span>
+      </div>
+      <div class="h-detail-title">${post.title}</div>
+      <div style="display:flex;align-items:center;gap:8px;margin-top:12px">
+        <button class="h-moon-btn${reacted?' reacted':''}" id="h-moon">🌙 ${moonCount}</button>
+        ${isOwner?`<div class="h-post-actions"><button class="h-action-btn" id="h-edit-btn">Edit</button><button class="h-action-btn del" id="h-del-btn">Delete</button></div>`:''}
+      </div>
+    </div>
+    <div class="h-detail-body" id="h-dbody">${marked.parse(post.body)}</div>
+    <div id="h-edit-form" style="display:none;margin-bottom:12px">
+      <textarea class="h-textarea" id="h-edit-ta" style="min-height:180px">${post.body}</textarea>
+      <div class="h-form-footer"><button class="h-btn h-btn-ghost" id="h-edit-cancel">Cancel</button><button class="h-btn h-btn-primary" id="h-edit-save">Save</button></div>
+    </div>
+    <div class="h-comments">
+      <div class="h-comments-heading">${topLevel.length} Comment${topLevel.length!==1?'s':''}</div>
+      ${commentHtml}
+      ${commentForm}
+    </div>`;
 
-    document.getElementById('sh-list').innerHTML = page.map(cardHTML).join('');
-    document.getElementById('sh-load-more').style.display = offset < filtered.length ? 'block' : 'none';
+  document.getElementById('h-moon').onclick=()=>toggleReaction(post);
+  if(isOwner){
+    document.getElementById('h-edit-btn').onclick=()=>{document.getElementById('h-dbody').style.display='none';document.getElementById('h-edit-form').style.display='block';document.getElementById('h-edit-btn').style.display='none';};
+    document.getElementById('h-edit-cancel').onclick=()=>{document.getElementById('h-dbody').style.display='block';document.getElementById('h-edit-form').style.display='none';document.getElementById('h-edit-btn').style.display='inline-flex';};
+    document.getElementById('h-edit-save').onclick=async()=>{const nb=document.getElementById('h-edit-ta').value.trim();if(!nb)return;const{error}=await sb.from('hub_posts').update({body:nb}).eq('id',post.id);if(!error){post.body=nb;const idx=allPosts.findIndex(p=>p.id===post.id);if(idx!==-1)allPosts[idx].body=nb;renderDetail(post,openComments);}};
+    document.getElementById('h-del-btn').onclick=async()=>{if(!confirm('Delete this post?'))return;const{error}=await sb.from('hub_posts').delete().eq('id',post.id);if(!error){allPosts=allPosts.filter(p=>p.id!==post.id);renderTabs();renderFeed();showView('h-v-feed');}};
   }
+  document.querySelectorAll('#h-detail [data-or]').forEach(btn=>{btn.onclick=()=>{const f=document.getElementById('hrf-'+btn.dataset.or);if(f){f.classList.toggle('open');if(f.classList.contains('open'))f.querySelector('textarea').focus();}};});
+  document.querySelectorAll('#h-detail [data-cr]').forEach(btn=>{btn.onclick=()=>{const f=document.getElementById('hrf-'+btn.dataset.cr);if(f){f.classList.remove('open');f.querySelector('textarea').value='';}}; });
+  document.querySelectorAll('#h-detail [data-sr]').forEach(btn=>{btn.onclick=async()=>{const pid=btn.dataset.sr;const body=document.getElementById('hri-'+pid)?.value.trim();if(!body||!session)return;btn.disabled=true;const{data,error}=await sb.from('hub_comments').insert({post_id:post.id,parent_id:pid,body,author_id:session.user.id,author_email:currentUser()}).select().single();btn.disabled=false;if(!error&&data){openComments=[...openComments,data];post.comment_count=(post.comment_count||0)+1;renderDetail(post,openComments);}};});
+  document.querySelectorAll('#h-detail [data-dc]').forEach(btn=>{btn.onclick=async()=>{if(!confirm('Delete comment?'))return;const{error}=await sb.from('hub_comments').delete().eq('id',btn.dataset.dc);if(!error){openComments=openComments.filter(c=>c.id!==btn.dataset.dc&&c.parent_id!==btn.dataset.dc);post.comment_count=Math.max(0,(post.comment_count||1)-1);renderDetail(post,openComments);}};});
+  if(session)document.getElementById('h-comment-submit').onclick=()=>submitComment(post);
+}
+async function submitComment(post){
+  const body=document.getElementById('h-comment-input').value.trim();
+  const errEl=document.getElementById('h-comment-err');errEl.style.display='none';
+  if(!body||!session)return;
+  document.getElementById('h-cl').style.display='none';document.getElementById('h-cs').style.display='inline';document.getElementById('h-comment-submit').disabled=true;
+  const{data,error}=await sb.from('hub_comments').insert({post_id:post.id,body,author_id:session.user.id,author_email:currentUser()}).select().single();
+  document.getElementById('h-cl').style.display='inline';document.getElementById('h-cs').style.display='none';document.getElementById('h-comment-submit').disabled=false;
+  if(error){errEl.textContent=error.message||'Failed to post.';errEl.style.display='block';return;}
+  post.comment_count=(post.comment_count||0)+1;openComments=[...openComments,data];renderDetail(post,openComments);
+}
+async function toggleReaction(post){
+  if(!session){openAuth('signin');return;}
+  const uid=session.user.id;const set=reactionsMap[post.id]||new Set();
+  if(set.has(uid)){await sb.from('hub_reactions').delete().eq('post_id',post.id).eq('user_id',uid);set.delete(uid);}
+  else{await sb.from('hub_reactions').insert({post_id:post.id,user_id:uid});set.add(uid);}
+  reactionsMap[post.id]=set;renderDetail(post,openComments);renderFeed();
+}
 
-  document.getElementById('sh-search').addEventListener('input', e => {
-    search = e.target.value; offset = PAGE; render();
-  });
-  document.getElementById('sh-load-more').addEventListener('click', () => {
-    offset += PAGE; render();
-  });
+/* new post modal */
+function openPostModal(){if(!session){openAuth('signin');return;}document.getElementById('h-post-ov').classList.add('open');['h-post-title','h-post-body'].forEach(id=>{document.getElementById(id).value='';});document.getElementById('h-post-sim').value='';['h-post-err','h-post-ok'].forEach(id=>{document.getElementById(id).style.display='none';});}
+function closePostModal(){document.getElementById('h-post-ov').classList.remove('open');}
+document.getElementById('h-post-x').onclick=closePostModal;
+document.getElementById('h-post-cancel').onclick=closePostModal;
+document.getElementById('h-post-ov').onclick=e=>{if(e.target===document.getElementById('h-post-ov'))closePostModal();};
+document.getElementById('h-post-submit').onclick=async()=>{
+  const title=document.getElementById('h-post-title').value.trim();
+  const body=document.getElementById('h-post-body').value.trim();
+  const catId=document.getElementById('h-post-cat').value;
+  const simulant=document.getElementById('h-post-sim').value;
+  const errEl=document.getElementById('h-post-err');const okEl=document.getElementById('h-post-ok');
+  errEl.style.display='none';okEl.style.display='none';
+  if(!title){errEl.textContent='Please add a title.';errEl.style.display='block';return;}
+  if(!catId){errEl.textContent='Please select a category.';errEl.style.display='block';return;}
+  document.getElementById('h-post-lbl').style.display='none';document.getElementById('h-post-sp').style.display='inline';document.getElementById('h-post-submit').disabled=true;
+  const fullBody=simulant?`**Simulant:** ${simulant}\n\n${body}`:body;
+  const{data,error}=await sb.from('hub_posts').insert({title,body:fullBody,category_id:catId,simulant:simulant||null,author_id:session.user.id,author_email:currentUser()}).select('*,category:hub_categories(*)').single();
+  document.getElementById('h-post-lbl').style.display='inline';document.getElementById('h-post-sp').style.display='none';document.getElementById('h-post-submit').disabled=false;
+  if(error){errEl.textContent=error.message||'Failed to create post.';errEl.style.display='block';return;}
+  data.comment_count=0;allPosts.unshift(data);
+  okEl.textContent='Post published!';okEl.style.display='block';
+  setTimeout(()=>{closePostModal();renderTabs();renderFeed();},1000);
+};
 
-  Promise.all([
-    api('hub_categories?select=id,name,emoji&order=name'),
-    api('hub_posts?select=id,title,body,created_at,author_email,author_id,comment_count:hub_comments(count),category:hub_categories(name,emoji)&order=created_at.desc'),
-    api('hub_profiles?select=user_id,username,avatar_url'),
-  ]).then(([cats, posts, profs]) => {
-    allCats  = cats || [];
-    allPosts = (posts || []).map(p => ({ ...p, comment_count: p.comment_count?.[0]?.count ?? 0 }));
-    profiles = Object.fromEntries((profs || []).map(p => [p.user_id, p]));
-    renderCats();
-    render();
-  }).catch(() => {
-    document.getElementById('sh-list').innerHTML = '<div class="sh-empty">Failed to load posts. Please try again later.</div>';
-  });
+/* nav */
+document.getElementById('h-back').onclick=()=>showView('h-v-feed');
+document.getElementById('h-logo').onclick=()=>showView('h-v-feed');
+document.getElementById('h-search').oninput=e=>{searchQ=e.target.value;renderFeed();};
+document.getElementById('srthub').__openAuth=()=>openAuth('signin');
+
+/* init */
+async function init(){
+  const{data:{session:s}}=await sb.auth.getSession();session=s;renderAuth();
+  const[{data:cats},{data:posts},{data:profiles},{data:reactions}]=await Promise.all([
+    sb.from('hub_categories').select('*').order('name'),
+    sb.from('hub_posts').select('*,category:hub_categories(*),hub_comments(count)').order('created_at',{ascending:false}),
+    sb.from('hub_profiles').select('user_id,username,avatar_url'),
+    sb.from('hub_reactions').select('post_id,user_id'),
+  ]);
+  allCats=cats||[];
+  allPosts=(posts||[]).map(p=>({...p,comment_count:p.hub_comments?.[0]?.count??0}));
+  profileMap=Object.fromEntries((profiles||[]).map(p=>[p.user_id,p]));
+  reactionsMap={};(reactions||[]).forEach(r=>{if(!reactionsMap[r.post_id])reactionsMap[r.post_id]=new Set();reactionsMap[r.post_id].add(r.user_id);});
+  document.getElementById('h-post-cat').innerHTML='<option value="">Select category…</option>'+allCats.map(c=>`<option value="${c.id}">${c.emoji} ${c.name}</option>`).join('');
+  renderAuth();renderTabs();renderFeed();
+}
+init();
 })();
 </script>
