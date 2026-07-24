@@ -5,8 +5,11 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
 <style>
+/* ── Full-bleed: break out of Shopify's narrow page column ── */
+#srthub{width:100vw;margin-left:calc(50% - 50vw);margin-right:calc(50% - 50vw);}
+
 #srthub,#srthub *{box-sizing:border-box;margin:0;padding:0;}
-#srthub{font-family:'Inter',sans-serif;background:#001219;color:#fafafa;border-radius:10px;overflow:hidden;min-height:600px;}
+#srthub{font-family:'Inter',sans-serif;background:#001219;color:#fafafa;overflow-x:hidden;min-height:600px;}
 
 /* ── Top bar ── */
 #srthub .h-topbar{display:flex;align-items:center;gap:10px;padding:16px 20px;background:#01202f;border-bottom:1px solid rgba(143,141,141,.25);flex-wrap:wrap;}
