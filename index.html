@@ -116,8 +116,9 @@
     .hub-card:hover { box-shadow:0 4px 18px rgba(0,0,0,.5), 0 0 0 1px rgba(255,255,255,.06); transform:translateY(-1px); }
     .hub-card-top { display:flex; align-items:center; gap:10px; margin-bottom:14px; }
     .hub-avatar { width:38px; height:38px; border-radius:50%; object-fit:cover; flex-shrink:0; background:var(--bg); border:1px solid var(--border); }
-    .hub-author-name { font-size:13px; font-weight:600; color:var(--text); }
+    .hub-author-name { font-size:13px; font-weight:600; color:var(--text); display:flex; align-items:center; gap:5px; }
     .hub-author-date { font-size:11px; color:var(--muted); margin-top:1px; }
+    .bot-badge { font-size:9px; font-weight:800; background:rgba(200,122,65,.2); color:var(--accent); border:1px solid rgba(200,122,65,.4); border-radius:4px; padding:1px 5px; letter-spacing:.06em; vertical-align:middle; flex-shrink:0; }
     .hub-cat-pill {
       font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.08em;
       padding:3px 9px; border-radius:5px; white-space:nowrap; margin-left:auto;
@@ -508,6 +509,7 @@
   }
   function fmtDate(iso) { return new Date(iso).toLocaleDateString('en-US',{year:'numeric',month:'short',day:'numeric'}); }
   function displayName(name) { return name || 'Anonymous'; }
+  function botBadge(name) { return name === 'SRT' ? ' <span class="bot-badge">BOT</span>' : ''; }
   function initialAvatar(identifier) {
     const colors = ['#e8a020','#3b82f6','#8b5cf6','#10b981','#f59e0b','#ef4444','#ec4899'];
     const hash = [...(identifier||'?')].reduce((a,c) => a + c.charCodeAt(0), 0);
@@ -684,7 +686,7 @@
         <div class="hub-card-top">
           <img class="hub-avatar" src="${avatar}" alt="${name}" loading="lazy">
           <div class="hub-author-info">
-            <div class="hub-author-name">${name}</div>
+            <div class="hub-author-name">${name}${botBadge(name)}</div>
             <div class="hub-author-date">${fmtDate(p.created_at)}</div>
           </div>
           <span class="hub-cat-pill ${catClass(cat(p).name)}">${cat(p).emoji||''} ${cat(p).name||''}</span>
@@ -780,7 +782,7 @@
         <div class="detail-meta">
           <img class="hub-avatar" src="${authorSrc}" alt="${authorName}">
           <div class="detail-author-info">
-            <div class="hub-author-name">${authorName}</div>
+            <div class="hub-author-name">${authorName}${botBadge(authorName)}</div>
             <div class="hub-author-date">${fmtDate(post.created_at)}</div>
           </div>
           <span class="hub-cat-pill ${catClass(cat.name)}">${cat.emoji||''} ${cat.name||''}</span>
