@@ -5,11 +5,8 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
 <style>
-/* ── Full-bleed: break out of Shopify's narrow page column ── */
-#srthub{width:100vw;margin-left:calc(50% - 50vw);margin-right:calc(50% - 50vw);}
-
 #srthub,#srthub *{box-sizing:border-box;margin:0;padding:0;}
-#srthub{font-family:'Inter',sans-serif;background:#001219;color:#fafafa;overflow-x:hidden;min-height:600px;}
+#srthub{font-family:'Inter',sans-serif;background:#001219;color:#fafafa;width:100%;min-height:600px;overflow-x:hidden;}
 
 /* ── Top bar ── */
 #srthub .h-topbar{display:flex;align-items:center;gap:10px;padding:16px 20px;background:#01202f;border-bottom:1px solid rgba(143,141,141,.25);flex-wrap:wrap;}
@@ -244,9 +241,12 @@
 
   <!-- Feed view -->
   <div class="h-view active" id="h-v-feed">
-    <div class="h-search-wrap">
-      <svg class="h-search-icon" width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
-      <input class="h-search" id="h-search" type="text" placeholder="Search posts…">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;">
+      <div class="h-search-wrap" style="flex:1;margin-bottom:0;">
+        <svg class="h-search-icon" width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+        <input class="h-search" id="h-search" type="text" placeholder="Search posts…">
+      </div>
+      <button class="h-new-btn" id="h-new-btn-feed"><svg width="11" height="11" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/></svg>Create Post</button>
     </div>
     <div class="h-list" id="h-list"><div class="h-loading"><span class="h-spinner h-spinner-lg"></span></div></div>
   </div>
@@ -476,6 +476,7 @@ async function toggleReaction(post){
 }
 
 /* new post modal */
+document.getElementById('h-new-btn-feed').onclick=openPostModal;
 function openPostModal(){if(!session){openAuth('signin');return;}document.getElementById('h-post-ov').classList.add('open');['h-post-title','h-post-body'].forEach(id=>{document.getElementById(id).value='';});document.getElementById('h-post-sim').value='';['h-post-err','h-post-ok'].forEach(id=>{document.getElementById(id).style.display='none';});}
 function closePostModal(){document.getElementById('h-post-ov').classList.remove('open');}
 document.getElementById('h-post-x').onclick=closePostModal;
