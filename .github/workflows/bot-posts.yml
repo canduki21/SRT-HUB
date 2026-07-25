@@ -1,0 +1,20 @@
+name: SRT Bot Posts
+
+on:
+  schedule:
+    - cron: '0 9 * * *'   # daily at 9am UTC
+  workflow_dispatch:        # allow manual trigger
+
+jobs:
+  post:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: pip install requests
+
+      - name: Post new hub content
+        run: python3 scripts/bot_post.py
+        env:
+          SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
